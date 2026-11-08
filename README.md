@@ -1,8 +1,35 @@
 # VHS
 
-A native macOS visual performance instrument built with Swift and Metal.
+A real-time visual performance instrument for macOS, built with Swift and Metal. Build procedural scenes in a control window and perform through a separate GPU-rendered output window for performance and projection.
 
-Phase 1 provides a solid-color scene, live preview, a separate resizable output window, and grouped undo/redo. Project files, other sources/effects, and audio arrive in the later phases of [the roadmap](docs/PLAN.md).
+## Current status
+
+Phase 1 is implemented and functionally verified:
+
+- Solid-color source with live RGB controls and preview.
+- Separate resizable output window that preserves the scene when reopened.
+- Immutable scene state with grouped undo and redo.
+- Shared Metal renderer and clock, with deterministic GPU rendering tests.
+- Native menu shortcuts, app icon, and light/dark layout verification.
+
+Changes currently live in memory. Project persistence, additional sources/effects, and audio are planned. Accessibility and macOS 26 verification gaps are tracked in [the follow-up issue](https://github.com/kikeonline/vhs-viz/issues/10).
+
+The implementation currently exists in the local development checkout; application sources and build scripts have not yet been published to this GitHub repository. The commands below apply to that checkout.
+
+## Roadmap
+
+| Phase | Scope | Status |
+| --- | --- | --- |
+| [1](https://github.com/kikeonline/vhs-viz/issues/2) | Runnable native core | Complete |
+| [2](https://github.com/kikeonline/vhs-viz/issues/3) | Project creation, rename, open, and atomic save | Planned |
+| [3](https://github.com/kikeonline/vhs-viz/issues/4) | Solid, gradient, noise, oscillator, and shape sources | Planned |
+| [4](https://github.com/kikeonline/vhs-viz/issues/5) | Ordered transform, blur, pixelate, threshold, colorize, and RGB split effects | Planned |
+| [5](https://github.com/kikeonline/vhs-viz/issues/6) | Microphone/interface capture and audio analysis | Planned |
+| [6](https://github.com/kikeonline/vhs-viz/issues/7) | macOS system-audio capture | Planned |
+| [7](https://github.com/kikeonline/vhs-viz/issues/8) | Persisted audio-to-visual mappings, curves, and smoothing | Planned |
+| [8](https://github.com/kikeonline/vhs-viz/issues/9) | Projection readiness, performance, FPS/frame-time metrics, and accessibility | Planned |
+
+See [the roadmap tracker](https://github.com/kikeonline/vhs-viz/issues/1) for dependencies and completion criteria.
 
 ## Requirements
 
