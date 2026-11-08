@@ -2,7 +2,6 @@ import SwiftUI
 import VHSCore
 
 struct ControlView: View {
-    @Environment(\.openWindow) private var openWindow
     let model: AppModel
     var body: some View {
         HStack(alignment: .top, spacing: Space.section) {
@@ -21,8 +20,6 @@ struct ControlView: View {
         .navigationTitle("Untitled Scene")
         .task {
             model.start()
-            try? await Task.sleep(for: .milliseconds(100))
-            model.commands.install(showControl: { openWindow(id: "control") })
             await Verification.runIfRequested(model: model)
         }
         .toolbar {

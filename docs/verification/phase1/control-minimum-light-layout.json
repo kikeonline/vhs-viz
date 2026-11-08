@@ -2,22 +2,22 @@
   "probes" : [
     {
       "area" : "color",
+      "height" : 196,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "color",
+      "width" : 280,
+      "x" : 580,
+      "y" : 162.5
+    },
+    {
+      "area" : "color",
       "edge" : "lead",
       "height" : 16,
       "inset" : 0,
       "kind" : "probe",
       "name" : "color-heading",
       "width" : 35,
-      "x" : 580,
-      "y" : 162.5
-    },
-    {
-      "area" : "color",
-      "height" : 196,
-      "inset" : 0,
-      "kind" : "area",
-      "name" : "color",
-      "width" : 280,
       "x" : 580,
       "y" : 162.5
     },
@@ -236,21 +236,21 @@
     },
     {
       "area" : "source.solid.red-area",
-      "edge" : "lead",
-      "height" : 16,
+      "height" : 40,
       "inset" : 0,
-      "kind" : "probe",
-      "name" : "source.solid.red-label",
+      "kind" : "area",
+      "name" : "source.solid.red-area",
       "width" : 280,
       "x" : 580,
       "y" : 198.5
     },
     {
       "area" : "source.solid.red-area",
-      "height" : 40,
+      "edge" : "lead",
+      "height" : 16,
       "inset" : 0,
-      "kind" : "area",
-      "name" : "source.solid.red-area",
+      "kind" : "probe",
+      "name" : "source.solid.red-label",
       "width" : 280,
       "x" : 580,
       "y" : 198.5

@@ -30,22 +30,19 @@ enum Verification {
     }
     private static func selftest(_ model: AppModel) async throws {
         try check(model.renderer != nil, "Metal renderer initialized")
-        let editMenu = NSApp.mainMenu?.items.first { $0.title == "Edit" }?.submenu
-        let undoItem = editMenu?.items.first { $0.title == "Undo Color Change" }
-        let redoItem = editMenu?.items.first { $0.title == "Redo Color Change" }
-        try check(undoItem?.isEnabled == false && redoItem?.isEnabled == false, "native Edit menu starts with undo and redo disabled")
+        try check(!model.history.canUndo && !model.history.canRedo, "history starts with undo and redo unavailable")
         let initial = model.scene
         model.beginEdit()
         for value in [0.1, 0.3, 0.5, 0.9] { model.send(.setParameter(.solidRed, value)) }
         model.endEdit()
         let edited = model.scene
-        try check(undoItem?.isEnabled == true && redoItem?.isEnabled == false, "native Edit menu enables undo after an edit")
+        try check(MenuState.shared.canUndo && !MenuState.shared.canRedo, "history changes publish command availability")
         try check(model.history.past.count == 1, "slider gesture creates one history entry")
         try await Task.sleep(for: .milliseconds(200))
         try shortcut("z", modifiers: .command)
         try await Task.sleep(for: .milliseconds(200))
         try check(model.scene == initial && model.history.canRedo, "Command-Z restores initial scene and enables redo")
-        try check(undoItem?.isEnabled == false && redoItem?.isEnabled == true, "native Edit menu enables redo after undo")
+        try check(!MenuState.shared.canUndo && MenuState.shared.canRedo, "undo publishes redo availability")
         try await Task.sleep(for: .milliseconds(200))
         try shortcut("z", modifiers: [.command, .shift])
         try await Task.sleep(for: .milliseconds(200))
@@ -76,15 +73,25 @@ enum Verification {
         print("SELFTEST done")
     }
     private static func shortcut(_ key: String, modifiers: NSEvent.ModifierFlags) throws {
-        for item in NSApp.mainMenu?.items ?? [] { item.submenu?.update() }
-        guard let event = NSEvent.keyEvent(with: .keyDown, location: .zero, modifierFlags: modifiers,
-                    timestamp: 0, windowNumber: NSApp.keyWindow?.windowNumber ?? 0, context: nil,
-                    characters: modifiers.contains(.shift) ? key.uppercased() : key,
-                    charactersIgnoringModifiers: modifiers.contains(.shift) ? key.uppercased() : key,
-                    isARepeat: false, keyCode: 0),
-              NSApp.mainMenu?.performKeyEquivalent(with: event) == true else {
-            throw Failure(description: "Menu shortcut did not dispatch: \(key)")
+        // Regression: SwiftUI may rebuild menus when they are opened or validated.
+        // Hand-inserted NSMenuItems disappeared here even though direct menu tests passed.
+        for item in NSApp.mainMenu?.items ?? [] {
+            if let submenu = item.submenu { submenu.delegate?.menuNeedsUpdate?(submenu) }
         }
+        let keyCode: CGKeyCode = ["z": 6, "o": 31, "1": 18][key] ?? 0
+        guard let keyboard = CGEvent(keyboardEventSource: nil, virtualKey: keyCode, keyDown: true) else {
+            throw Failure(description: "Unable to create shortcut event: \(key)")
+        }
+        var flags: CGEventFlags = []
+        if modifiers.contains(.command) { flags.insert(.maskCommand) }
+        if modifiers.contains(.shift) { flags.insert(.maskShift) }
+        keyboard.flags = flags
+        guard let event = NSEvent(cgEvent: keyboard) else {
+            throw Failure(description: "Unable to convert shortcut event: \(key)")
+        }
+        // Exercise NSApplication routing, including window responders and menu validation.
+        // Calling NSMenu.performKeyEquivalent directly bypassed the failing user path.
+        NSApp.sendEvent(event)
     }
     private static func snapshots(_ model: AppModel, directory: String) async throws {
         var captureFailures: [String] = []

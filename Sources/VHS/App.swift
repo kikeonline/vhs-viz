@@ -2,14 +2,14 @@ import SwiftUI
 
 @main struct VHSApp: App {
     @State private var model = AppModel()
+    @ObservedObject private var menu = MenuState.shared
     var body: some Scene {
-        Window("Untitled Scene", id: "control") { ControlView(model: model) }
+        // Read in App.body so command values change when history changes.
+        let canUndo = menu.canUndo
+        let canRedo = menu.canRedo
+        return Window("Untitled Scene", id: "control") { ControlView(model: model) }
             .defaultSize(width: Layout.defaultWidth, height: Layout.defaultHeight)
             .windowResizability(.contentMinSize)
-            .commands {
-                CommandGroup(replacing: .newItem) {}
-                // Native validated commands are installed once the menu exists.
-                CommandGroup(replacing: .undoRedo) {}
-            }
+            .commands { VHSCommands(model: model, canUndo: canUndo, canRedo: canRedo) }
     }
 }

@@ -3,6 +3,16 @@ import Observation
 import VHSCore
 import VHSRenderer
 
+final class MenuState: ObservableObject {
+    static let shared = MenuState()
+    @Published private(set) var canUndo = false
+    @Published private(set) var canRedo = false
+    func update(canUndo: Bool, canRedo: Bool) {
+        if self.canUndo != canUndo { self.canUndo = canUndo }
+        if self.canRedo != canRedo { self.canRedo = canRedo }
+    }
+}
+
 @Observable final class AppModel {
     private(set) var history = SceneHistory()
     var errorMessage: String?
@@ -10,7 +20,6 @@ import VHSRenderer
     @ObservationIgnored private let clock: RenderClock
     @ObservationIgnored private(set) var frame: RenderFrame
     @ObservationIgnored private var timer: Timer?
-    @ObservationIgnored lazy var commands = AppCommands(model: self)
     @ObservationIgnored lazy var output = OutputWindowController(model: self)
     var scene: SceneSnapshot { history.scene }
 
@@ -34,6 +43,6 @@ import VHSRenderer
     func undo() { history.undo(); sync() }
     func redo() { history.redo(); sync() }
     private func sync() {
-        tick(); commands.refresh()
+        tick(); MenuState.shared.update(canUndo: history.canUndo, canRedo: history.canRedo)
     }
 }

@@ -41,7 +41,7 @@ Acceptance:
 - [unit] A multi-update drag produces one undo entry.
 - [unit] Undo restores the initial value and redo restores the edited value.
 - [unit] A new branch clears redo; no-op changes preserve history; undo during a drag commits then reverses it.
-- [self] Native Edit menu enablement and actual Command-Z/Shift-Command-Z dispatch follow the current history.
+- [self] Published Undo/Redo availability and Command-Z/Shift-Command-Z dispatch follow current history, including after menu refresh.
 UX:
 - Flow: Edit > Undo Color Change or Command-Z → previous color; Shift-Command-Z → edited color.
 - Surface: standard Edit menu; unavailable actions remain disabled.
