@@ -1,0 +1,8 @@
+{
+  "fill": {"automatic-gradient": "srgb:0.34,0.15,0.74,1"},
+  "groups": [{"layers": [
+    {"glass": true, "image-name": "front.svg", "name": "signal"},
+    {"glass": true, "image-name": "back.svg", "name": "field", "opacity": 0.55}
+  ], "shadow": {"kind": "neutral", "opacity": 0.5}, "translucency": {"enabled": true, "value": 0.5}}],
+  "supported-platforms": {"squares": ["macOS"]}
+}
