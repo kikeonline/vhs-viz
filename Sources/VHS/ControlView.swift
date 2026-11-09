@@ -10,6 +10,7 @@ struct ControlView: View {
                 .gridProbe("preview-column", area: "page", edge: nil)
             Divider()
             parameters.frame(width: Layout.controlWidth)
+                .disabled(model.files.blocksSceneEditing)
                 .gridProbe("parameters-column", area: "page", edge: nil)
         }
         .padding(Space.margin)
@@ -17,10 +18,17 @@ struct ControlView: View {
         .frame(minWidth: Layout.minWidth, minHeight: Layout.minHeight)
         .background(.background)
         .overlay { if GridOverlay.enabled { GridOverlay() } }
-        .navigationTitle("Untitled Scene")
+        .navigationTitle(model.projectName)
+        .background {
+            ProjectWindow(model: model, title: model.projectName, fileURL: model.fileURL, isDirty: model.isDirty)
+                .frame(width: 0, height: 0)
+        }
+        .sheet(isPresented: Binding(get: { model.files.isRenaming }, set: { model.files.isRenaming = $0 })) {
+            RenameProjectView(model: model)
+        }
         .task {
             model.start()
-            await Verification.runIfRequested(model: model)
+            Task { await Verification.runIfRequested(model: model) }
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -43,9 +51,13 @@ struct ControlView: View {
             .aspectRatio(16.0 / 9, contentMode: .fit)
             .clipShape(RoundedRectangle(cornerRadius: Layout.previewRadius))
             .gridProbe("preview-surface", area: "preview")
-            Label("Solid", systemImage: "square.fill")
-                .font(.subheadline).foregroundStyle(.secondary)
-                .gridProbe("preview-source", area: "preview")
+            HStack {
+                Label("Solid", systemImage: "square.fill")
+                Spacer()
+                Text(model.isDirty ? "Edited" : (model.fileURL == nil ? "Not saved" : "Saved"))
+            }
+            .font(.subheadline).foregroundStyle(.secondary)
+            .gridProbe("preview-source", area: "preview")
             Spacer(minLength: 0)
         }
         .gridArea("preview", inset: 0)

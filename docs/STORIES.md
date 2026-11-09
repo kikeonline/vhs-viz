@@ -1,6 +1,6 @@
 # VHS stories
 
-Phase 1 approved on 2026-11-08. Later phases remain in PLAN.md.
+Phases 1–2 approved and completed. Later phases remain in PLAN.md.
 
 ## Phase 1 — Runnable native core
 
@@ -93,4 +93,79 @@ Status: done
 
 ## Verification record
 
-Phase 1 acceptance checks passed. See [PHASE-1-VERIFICATION.md](PHASE-1-VERIFICATION.md) for evidence and manual checks not performed. Later-phase stories have not been started.
+Phase 1 acceptance checks passed. See [PHASE-1-VERIFICATION.md](PHASE-1-VERIFICATION.md) for evidence and manual checks not performed. Phase 2 evidence is recorded in [PHASE-2-VERIFICATION.md](PHASE-2-VERIFICATION.md). Phases 3–8 have not started.
+
+## Phase 2 — Reliable projects
+
+Approved on 2026-11-08. One active project; output follows that project.
+
+### S-007 Create a project without losing edits
+As a performer, I choose New Project and start a fresh solid scene.
+Screens: control-light.png, unsaved-light.png, unsaved-dark.png
+Acceptance:
+- [self] New resets identity, scene, file URL, and history after save/discard confirmation.
+- [self] Cancel and cancelled/failed Save leave the current project intact.
+UX:
+- Flow: File > New Project / Command-N → Save / Don't Save / Cancel if edited → new Untitled project.
+- Surface: native confirmation sheet only if there are edits to lose.
+- States: pristine Untitled needs no prompt; error preserves current edits.
+- Access: standard native alert buttons, Return saves, Escape cancels.
+Status: done
+
+### S-008 Save and Save As
+As a performer, I save a project and continue editing it after reopening.
+Screens: save-light.png, save-dark.png, saved-light.png, saved-dark.png
+Acceptance:
+- [unit] Versioned JSON round-trips identity, name, scene values, and seed.
+- [unit] Temporary sibling write and atomic replacement preserve the previous valid file on injected write/commit failure.
+- [self] Save establishes a baseline; edits during a save remain dirty; undo back to the baseline clears dirty state.
+- [self] Save As switches the active URL only after success, retaining the original file.
+UX:
+- Flow: Command-S → native save panel for Untitled → saved title and clean state; Shift-Command-S chooses a new path.
+- Surface: native save panel, restricted to .vhsproject.
+- States: native edited indicator plus visible Edited text; cancellation is silent; failures offer an actionable error and retain unsaved changes.
+- Access: panel keyboard navigation and standard buttons; Save/Save As in File menu.
+Status: done
+
+### S-009 Open a project safely
+As a performer, I open a saved project without corrupting my current scene.
+Screens: open-light.png, open-dark.png, open-error-light.png, open-error-dark.png
+Acceptance:
+- [unit] Reject malformed JSON, invalid values, oversized files, and unsupported schema versions.
+- [self] Invalid files leave current state, history, URL, and saved baseline intact.
+- [self] Valid files replace state and reset undo only after unsaved changes are resolved.
+- [self] The same shared frame feeds preview and output after loading.
+UX:
+- Flow: File > Open Project / Command-O or Finder open → validate candidate → resolve edited current project → display loaded scene.
+- Surface: native open panel or Finder document event; native error sheet on failure.
+- States: unsupported future versions explain that a newer VHS is needed; cancellation preserves the current scene.
+- Access: native file panel and .vhsproject document registration.
+Status: done
+
+### S-010 Rename a project
+As a performer, I rename the project and, if saved, its file.
+Screens: rename-light.png, rename-dark.png, rename-invalid-light.png, rename-invalid-dark.png
+Acceptance:
+- [unit] Empty, dot-only, too-long, and path-containing names are rejected.
+- [unit] Renaming a saved file never overwrites a different existing file; failure leaves the original usable.
+- [self] Unsaved rename changes the suggested save filename; saved rename changes the file and title while preserving unsaved scene changes.
+- [self] Reopening an externally renamed file uses its filename as the visible title.
+UX:
+- Flow: File > Rename Project / Shift-Command-R → focused name field → Return renames; Escape cancels.
+- Surface: short SwiftUI sheet with inline validation, Cancel, Rename.
+- States: collision/I/O error stays in the sheet; existing filename is authoritative on open, with the JSON name updated on next save.
+- Access: Project name label, initial name selected for replacement, keyboard submit/cancel.
+Status: done
+
+### S-011 Close or quit safely
+As a performer, I close the editor or quit without silently losing edits.
+Screens: unsaved-light.png, unsaved-dark.png
+Acceptance:
+- [self] Save, Don't Save, and Cancel gate editor close and application termination; failed/cancelled Save prevents departure.
+- [self] Closing output never asks to save or changes document state.
+- [self] Reopening the control window keeps the active project.
+UX:
+- Flow: native Close / Command-W or Quit / Command-Q → confirmation if dirty → close/quit only after resolution.
+- Surface: native save-changes sheet; separate output remains an independent window.
+- Access: standard close/quit shortcuts and confirmation choices.
+Status: done

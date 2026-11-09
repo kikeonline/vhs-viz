@@ -13,5 +13,19 @@
 <key>LSMinimumSystemVersion</key><string>26.0</string>
 <key>LSApplicationCategoryType</key><string>public.app-category.graphics-design</string>
 <key>NSHighResolutionCapable</key><true/>
+<key>CFBundleDocumentTypes</key><array><dict>
+<key>CFBundleTypeName</key><string>VHS Project</string>
+<key>CFBundleTypeRole</key><string>Editor</string>
+<key>LSHandlerRank</key><string>Owner</string>
+<key>LSItemContentTypes</key><array><string>com.kike.vhs.project</string></array>
+</dict></array>
+<key>UTExportedTypeDeclarations</key><array><dict>
+<key>UTTypeIdentifier</key><string>com.kike.vhs.project</string>
+<key>UTTypeDescription</key><string>VHS Project</string>
+<key>UTTypeConformsTo</key><array><string>public.json</string></array>
+<key>UTTypeTagSpecification</key><dict>
+<key>public.filename-extension</key><array><string>vhsproject</string></array>
+<key>public.mime-type</key><string>application/vnd.vhs.project+json</string>
+</dict></dict></array>
 <key>NSPrincipalClass</key><string>NSApplication</string>
 </dict></plist>

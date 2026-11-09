@@ -38,4 +38,4 @@ Node graphs or scene mixing; video recording/streaming and third-party plugins; 
 Implement the requested AudioWorklet analysis behavior natively in Swift/Accelerate. AudioWorklet itself belongs to the browser platform and will not be embedded in the native app.
 
 ## Status
-Plan approved on 2026-11-08. Phase 1 is implemented and verified; later phases have not started.
+Plan approved on 2026-11-08. Phases 1–2 are implemented and functionally verified; Phases 3–8 have not started. Accessibility and macOS 26 runtime checks remain tracked in GitHub #10.

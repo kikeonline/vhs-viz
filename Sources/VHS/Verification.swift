@@ -4,15 +4,24 @@ import VHSCore
 /// Opt-in verification against ephemeral scene state; no user files are read or written.
 enum Verification {
     private static var started = false
+    static func log(_ message: String) { FileHandle.standardOutput.write(Data((message + "\n").utf8)) }
     static func runIfRequested(model: AppModel) async {
         guard !started else { return }
         started = true
         let env = ProcessInfo.processInfo.environment
         guard env["APP_SNAPSHOT"] != nil || CommandLine.arguments.contains("--selftest") else { return }
+        let watchdog = DispatchWorkItem { @Sendable in
+            FileHandle.standardError.write(Data("FAIL verification timed out\n".utf8))
+            exit(1)
+        }
+        DispatchQueue.global().asyncAfter(deadline: .now() + 60, execute: watchdog)
+        defer { watchdog.cancel() }
         do {
             try await Task.sleep(for: .seconds(1))
             if CommandLine.arguments.contains("--selftest") {
                 try await selftest(model)
+                try await ProjectVerification.run(model)
+                log("SELFTEST done")
             }
             if let directory = env["APP_SNAPSHOT"] {
                 try await snapshots(model, directory: directory)
@@ -26,7 +35,7 @@ enum Verification {
     private struct Failure: Error, CustomStringConvertible { let description: String }
     private static func check(_ condition: Bool, _ message: String) throws {
         guard condition else { throw Failure(description: message) }
-        print("PASS \(message)")
+        log("PASS \(message)")
     }
     private static func selftest(_ model: AppModel) async throws {
         try check(model.renderer != nil, "Metal renderer initialized")
@@ -60,7 +69,7 @@ enum Verification {
         try check(model.output.window !== output && model.scene == edited, "reopening output uses existing scene")
         try shortcut("1", modifiers: .command)
         try await Task.sleep(for: .milliseconds(200))
-        try check(NSApp.windows.contains { $0.title == "Untitled Scene" && $0.isVisible }, "Command-1 shows control window from output")
+        try check(NSApp.windows.contains { $0.identifier?.rawValue == "vhs-control" && $0.isVisible }, "Command-1 shows control window from output")
         if let renderer = model.renderer {
             let pixels = try renderer.readPixels(model.frame, width: 8, height: 8)
             try check(pixels.count == 256 && pixels[2] > pixels[1], "GPU draws edited scene")
@@ -70,15 +79,15 @@ enum Verification {
         try check(model.errorMessage == nil && model.frame.time > 0, "live rendering and shared clock run without errors")
         model.output.window?.performClose(nil)
         model.undo()
-        print("SELFTEST done")
+        model.discardChanges()
     }
-    private static func shortcut(_ key: String, modifiers: NSEvent.ModifierFlags) throws {
+    static func shortcut(_ key: String, modifiers: NSEvent.ModifierFlags) throws {
         // Regression: SwiftUI may rebuild menus when they are opened or validated.
         // Hand-inserted NSMenuItems disappeared here even though direct menu tests passed.
         for item in NSApp.mainMenu?.items ?? [] {
             if let submenu = item.submenu { submenu.delegate?.menuNeedsUpdate?(submenu) }
         }
-        let keyCode: CGKeyCode = ["z": 6, "o": 31, "1": 18][key] ?? 0
+        let keyCode: CGKeyCode = ["z": 6, "o": 31, "1": 18, "n": 45, "s": 1, "r": 15, "a": 0, "q": 12][key] ?? 0
         guard let keyboard = CGEvent(keyboardEventSource: nil, virtualKey: keyCode, keyDown: true) else {
             throw Failure(description: "Unable to create shortcut event: \(key)")
         }
@@ -93,10 +102,28 @@ enum Verification {
         // Calling NSMenu.performKeyEquivalent directly bypassed the failing user path.
         NSApp.sendEvent(event)
     }
+    static func typeText(_ text: String) throws {
+        for character in text {
+            guard let event = NSEvent.keyEvent(with: .keyDown, location: .zero, modifierFlags: [], timestamp: 0,
+                        windowNumber: NSApp.keyWindow?.windowNumber ?? 0, context: nil,
+                        characters: String(character), charactersIgnoringModifiers: String(character), isARepeat: false, keyCode: 0) else {
+                throw Failure(description: "Unable to type text")
+            }
+            NSApp.sendEvent(event)
+        }
+    }
+    static func pressReturn() throws {
+        guard let event = NSEvent.keyEvent(with: .keyDown, location: .zero, modifierFlags: [], timestamp: 0,
+                    windowNumber: NSApp.keyWindow?.windowNumber ?? 0, context: nil,
+                    characters: "\r", charactersIgnoringModifiers: "\r", isARepeat: false, keyCode: 36) else {
+            throw Failure(description: "Unable to press Return")
+        }
+        NSApp.sendEvent(event)
+    }
     private static func snapshots(_ model: AppModel, directory: String) async throws {
         var captureFailures: [String] = []
         try FileManager.default.createDirectory(atPath: directory, withIntermediateDirectories: true)
-        guard let control = NSApp.windows.first(where: { $0.title == "Untitled Scene" }) else {
+        guard let control = NSApp.windows.first(where: { $0.identifier?.rawValue == "vhs-control" }) else {
             throw Failure(description: "control window missing")
         }
         for mode in ["light", "dark"] {
@@ -122,9 +149,10 @@ enum Verification {
         if !captureFailures.isEmpty {
             throw Failure(description: captureFailures.joined(separator: "\n"))
         }
-        print("SNAPSHOT done \(directory)")
+        try await ProjectSnapshots.run(model, control: control, directory: directory)
+        log("SNAPSHOT done \(directory)")
     }
-    private static func capture(_ window: NSWindow, to path: String) throws {
+    static func capture(_ window: NSWindow, to path: String) throws {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/sbin/screencapture")
         process.arguments = ["-x", "-o", "-l", String(window.windowNumber), path]
@@ -132,6 +160,6 @@ enum Verification {
         guard process.terminationStatus == 0, FileManager.default.fileExists(atPath: path) else {
             throw Failure(description: "Unable to capture window. Allow Screen Recording for the launching terminal.")
         }
-        print("SNAPSHOT \(path)")
+        log("SNAPSHOT \(path)")
     }
 }

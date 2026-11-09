@@ -1,0 +1,316 @@
+{
+  "probes" : [
+    {
+      "area" : "color",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "color-heading",
+      "width" : 35,
+      "x" : 700,
+      "y" : 162.5
+    },
+    {
+      "area" : "color",
+      "height" : 196,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "color",
+      "width" : 280,
+      "x" : 700,
+      "y" : 162.5
+    },
+    {
+      "area" : "color",
+      "edge" : "lead",
+      "height" : 40,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.red",
+      "width" : 280,
+      "x" : 700,
+      "y" : 198.5
+    },
+    {
+      "area" : "color",
+      "edge" : "lead",
+      "height" : 40,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.green",
+      "width" : 280,
+      "x" : 700,
+      "y" : 258.5
+    },
+    {
+      "area" : "color",
+      "edge" : "lead",
+      "height" : 40,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.blue",
+      "width" : 280,
+      "x" : 700,
+      "y" : 318.5
+    },
+    {
+      "area" : "page",
+      "height" : 548,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "page",
+      "width" : 1000,
+      "x" : 0,
+      "y" : 52
+    },
+    {
+      "area" : "page",
+      "height" : 508,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-column",
+      "width" : 615,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "page",
+      "height" : 325.5,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "parameters-column",
+      "width" : 280,
+      "x" : 700,
+      "y" : 72
+    },
+    {
+      "area" : "parameters",
+      "edge" : "lead",
+      "height" : 66.5,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source-heading",
+      "width" : 170.5,
+      "x" : 700,
+      "y" : 72
+    },
+    {
+      "area" : "parameters",
+      "height" : 325.5,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "parameters",
+      "width" : 280,
+      "x" : 700,
+      "y" : 72
+    },
+    {
+      "area" : "parameters",
+      "edge" : "lead",
+      "height" : 196,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "color-controls",
+      "width" : 280,
+      "x" : 700,
+      "y" : 162.5
+    },
+    {
+      "area" : "parameters",
+      "edge" : "lead",
+      "height" : 15,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source-help",
+      "width" : 271.5,
+      "x" : 700,
+      "y" : 382.5
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-title",
+      "width" : 81,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "height" : 508,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "preview",
+      "width" : 615,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 345.9375,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-surface",
+      "width" : 615,
+      "x" : 20,
+      "y" : 104
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 14,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-source",
+      "width" : 615,
+      "x" : 20,
+      "y" : 465.9375
+    },
+    {
+      "area" : "rename",
+      "height" : 167,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "rename",
+      "width" : 480,
+      "x" : 0,
+      "y" : 0
+    },
+    {
+      "area" : "rename",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "rename-heading",
+      "width" : 102,
+      "x" : 20,
+      "y" : 20
+    },
+    {
+      "area" : "rename",
+      "edge" : "lead",
+      "height" : 47,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "rename-field",
+      "width" : 440,
+      "x" : 20,
+      "y" : 56
+    },
+    {
+      "area" : "rename",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "rename-buttons",
+      "width" : 440,
+      "x" : 20,
+      "y" : 123
+    },
+    {
+      "area" : "source.solid.blue-area",
+      "height" : 40,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "source.solid.blue-area",
+      "width" : 280,
+      "x" : 700,
+      "y" : 318.5
+    },
+    {
+      "area" : "source.solid.blue-area",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.blue-label",
+      "width" : 280,
+      "x" : 700,
+      "y" : 318.5
+    },
+    {
+      "area" : "source.solid.blue-area",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.blue-slider",
+      "width" : 280,
+      "x" : 700,
+      "y" : 342.5
+    },
+    {
+      "area" : "source.solid.green-area",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.green-label",
+      "width" : 280,
+      "x" : 700,
+      "y" : 258.5
+    },
+    {
+      "area" : "source.solid.green-area",
+      "height" : 40,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "source.solid.green-area",
+      "width" : 280,
+      "x" : 700,
+      "y" : 258.5
+    },
+    {
+      "area" : "source.solid.green-area",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.green-slider",
+      "width" : 280,
+      "x" : 700,
+      "y" : 282.5
+    },
+    {
+      "area" : "source.solid.red-area",
+      "height" : 40,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "source.solid.red-area",
+      "width" : 280,
+      "x" : 700,
+      "y" : 198.5
+    },
+    {
+      "area" : "source.solid.red-area",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.red-label",
+      "width" : 280,
+      "x" : 700,
+      "y" : 198.5
+    },
+    {
+      "area" : "source.solid.red-area",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.red-slider",
+      "width" : 280,
+      "x" : 700,
+      "y" : 222.5
+    }
+  ],
+  "window" : {
+    "height" : 167,
+    "width" : 480
+  }
+}

@@ -6,8 +6,23 @@ struct VHSCommands: Commands {
     let model: AppModel
     let canUndo: Bool
     let canRedo: Bool
+    let fileCommandsEnabled: Bool
+    let canSave: Bool
     var body: some Commands {
-        CommandGroup(replacing: .newItem) {}
+        CommandGroup(replacing: .newItem) {
+            Button("New Project") { openWindow(id: "control"); Task { await model.files.newProject() } }
+                .keyboardShortcut("n").disabled(!fileCommandsEnabled)
+            Button("Open Project…") { openWindow(id: "control"); Task { await model.files.openProject() } }
+                .keyboardShortcut("o").disabled(!fileCommandsEnabled)
+        }
+        CommandGroup(replacing: .saveItem) {
+            Button("Save Project") { Task { _ = await model.files.saveProject() } }
+                .keyboardShortcut("s").disabled(!canSave)
+            Button("Save Project As…") { Task { _ = await model.files.saveProject(asNewFile: true) } }
+                .keyboardShortcut("s", modifiers: [.command, .shift]).disabled(!fileCommandsEnabled)
+            Button("Rename Project…") { openWindow(id: "control"); model.files.beginRename() }
+                .keyboardShortcut("r", modifiers: [.command, .shift]).disabled(!fileCommandsEnabled)
+        }
         CommandGroup(replacing: .undoRedo) {
             Button("Undo Color Change") { model.undo() }
                 .keyboardShortcut("z").disabled(!canUndo)

@@ -1,0 +1,13 @@
+{
+  "id" : "A5BA1AA2-69A8-458A-9BF7-587475A5944C",
+  "name" : "Verification Copy",
+  "scene" : {
+    "color" : {
+      "blue" : 0.62,
+      "green" : 0.08,
+      "red" : 0.44
+    },
+    "seed" : 1
+  },
+  "schemaVersion" : 1
+}

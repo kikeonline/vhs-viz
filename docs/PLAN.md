@@ -1,6 +1,6 @@
 # VHS implementation plan
 
-Status: approved on 2026-11-08. Phase 1 complete; subsequent phases require the user's direction.
+Status: approved on 2026-11-08. Phases 1–2 complete; subsequent phases require the user's direction.
 
 ## Planning basis
 

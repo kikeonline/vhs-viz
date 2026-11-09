@@ -4,15 +4,17 @@ A real-time visual performance instrument for macOS, built with Swift and Metal.
 
 ## Current status
 
-Phase 1 is implemented and functionally verified:
+Phases 1–2 are implemented and functionally verified:
 
 - Solid-color source with live RGB controls and preview.
 - Separate resizable output window that preserves the scene when reopened.
 - Immutable scene state with grouped undo and redo.
 - Shared Metal renderer and clock, with deterministic GPU rendering tests.
 - Native menu shortcuts, app icon, and light/dark layout verification.
+- New, Rename, Open, Save, and Save As with native file panels.
+- Versioned `.vhsproject` JSON, atomic saves, dirty-state tracking, and save/discard/cancel protection.
 
-Changes currently live in memory. Project persistence, additional sources/effects, and audio are planned. Accessibility and macOS 26 verification gaps are tracked in [the follow-up issue](https://github.com/kikeonline/vhs-viz/issues/10).
+Projects preserve scene values and seed across app restarts. Additional sources/effects and audio are planned. Accessibility and macOS 26 verification gaps are tracked in [the follow-up issue](https://github.com/kikeonline/vhs-viz/issues/10).
 
 The implementation currently exists in the local development checkout; application sources and build scripts have not yet been published to this GitHub repository. The commands below apply to that checkout.
 
@@ -21,7 +23,7 @@ The implementation currently exists in the local development checkout; applicati
 | Phase | Scope | Status |
 | --- | --- | --- |
 | [1](https://github.com/kikeonline/vhs-viz/issues/2) | Runnable native core | Complete |
-| [2](https://github.com/kikeonline/vhs-viz/issues/3) | Project creation, rename, open, and atomic save | Planned |
+| [2](https://github.com/kikeonline/vhs-viz/issues/3) | Project creation, rename, open, and atomic save | Complete |
 | [3](https://github.com/kikeonline/vhs-viz/issues/4) | Solid, gradient, noise, oscillator, and shape sources | Planned |
 | [4](https://github.com/kikeonline/vhs-viz/issues/5) | Ordered transform, blur, pixelate, threshold, colorize, and RGB split effects | Planned |
 | [5](https://github.com/kikeonline/vhs-viz/issues/6) | Microphone/interface capture and audio analysis | Planned |
@@ -50,12 +52,19 @@ Move the Red, Green, and Blue sliders to change the solid source. These values a
 
 | Action | Shortcut |
 | --- | --- |
+| New Project | Command-N |
+| Open Project | Command-O |
+| Save Project | Command-S |
+| Save Project As | Shift-Command-S |
+| Rename Project | Shift-Command-R |
 | Undo Color Change | Command-Z |
 | Redo Color Change | Shift-Command-Z |
 | Show Output | Shift-Command-O |
 | Show Control Window | Command-1 |
 
-Close and reopen the output without losing the scene. Changes currently live in memory; saving is Phase 2.
+Close and reopen the output without losing the scene. Save projects as `.vhsproject` files. Rename moves an existing file in its folder and refuses collisions; Save As keeps the original and switches to the new file. Opening a project resets undo history. Malformed or unsupported project files leave the active project intact.
+
+Saves write and synchronize a temporary sibling before atomically replacing the target. A failed write or replacement retains the previous valid file and unsaved edits. The filename supplies the visible project title on open.
 
 ## Verify
 
@@ -68,6 +77,6 @@ swift tools/check-layout.swift /tmp/VHS-shots/*-layout.json
 tools/icon_review.sh
 ```
 
-Self-tests and snapshots use ephemeral state. Snapshot mode writes actual window captures at default/minimum sizes in light/dark to `/tmp/VHS-shots`, plus layout measurements, and exits. It needs a live graphical session and Screen Recording access for the launching app. Override the output directory with `APP_SNAPSHOT`. Icon review writes `/tmp/VHS-icon.png`.
+Self-tests and snapshots use ephemeral state. Snapshot mode writes actual window captures at default/minimum sizes in light/dark to `/tmp/VHS-shots`, plus project states, Rename sheets, native file/confirmation/error panels, and layout measurements, then exits. It needs a live graphical session and Screen Recording access for the launching app. Override the output directory with `APP_SNAPSHOT`. Icon review writes `/tmp/VHS-icon.png`.
 
 `VHSCore` contains immutable snapshots, reducer, bounded edit history, and explicit clock. `VHSRenderer` contains the shared Metal device, command queue, pipeline, and shader. The app owns a shared frame for preview/output and native window lifecycle. The live render path uses bounded in-flight submissions and never waits for GPU completion. Only test fixtures perform synchronous readback.

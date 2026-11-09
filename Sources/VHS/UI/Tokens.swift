@@ -1,6 +1,7 @@
 import SwiftUI
 
 enum Layout {
+    static let sheetWidth: CGFloat = 480
     static let controlWidth: CGFloat = 280
     static let previewWidth: CGFloat = 560
     static let previewHeight: CGFloat = 316
