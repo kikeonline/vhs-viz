@@ -1,4 +1,5 @@
 import AppKit
+import MetalKit
 import VHSCore
 
 /// Opt-in verification against ephemeral scene state; no user files are read or written.
@@ -75,7 +76,20 @@ enum Verification {
             try check(pixels.count == 256 && pixels[2] > pixels[1], "GPU draws edited scene")
         }
         // Exercise the live display delegates and shared-clock timer, not just setup.
+        func coordinator(in view: NSView) -> MetalSurface.Coordinator? {
+            if let metal = view as? MTKView { return metal.delegate as? MetalSurface.Coordinator }
+            return view.subviews.lazy.compactMap { coordinator(in: $0) }.first
+        }
+        let control = NSApp.windows.first { $0.identifier?.rawValue == "vhs-control" }
+        guard let preview = control?.contentView.flatMap({ coordinator(in: $0) }),
+              let performance = model.output.window?.contentView.flatMap({ coordinator(in: $0) }) else {
+            throw Failure(description: "live surface coordinators exist")
+        }
+        let previewFrames = preview.drawableFrameCount
+        let outputFrames = performance.drawableFrameCount
         try await Task.sleep(for: .seconds(2))
+        try check(preview.drawableFrameCount > previewFrames && performance.drawableFrameCount > outputFrames,
+                  "preview and output acquire and render live drawables")
         try check(model.errorMessage == nil && model.frame.time > 0, "live rendering and shared clock run without errors")
         model.output.window?.performClose(nil)
         model.undo()

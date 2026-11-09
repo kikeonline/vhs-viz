@@ -1,5 +1,6 @@
 import AppKit
 import Observation
+import MetalKit
 import VHSCore
 import VHSRenderer
 
@@ -30,6 +31,7 @@ final class MenuState: ObservableObject {
     @ObservationIgnored private let clock: RenderClock
     @ObservationIgnored private(set) var frame: RenderFrame
     @ObservationIgnored private var timer: Timer?
+    @ObservationIgnored private let surfaces = NSHashTable<MTKView>.weakObjects()
     @ObservationIgnored lazy var output = OutputWindowController(model: self)
     var scene: SceneSnapshot { history.scene }
 
@@ -47,7 +49,16 @@ final class MenuState: ObservableObject {
         }
         RunLoop.main.add(timer!, forMode: .common)
     }
-    func tick() { frame = RenderFrame(scene: scene, time: clock.time) }
+    func registerSurface(_ view: MTKView) { surfaces.add(view) }
+    func unregisterSurface(_ view: MTKView) { surfaces.remove(view) }
+    func tick() {
+        frame = RenderFrame(scene: scene, time: clock.time)
+        // One common frame drives both surfaces. MTKView's automatic display
+        // link can remain unstarted for a SwiftUI window opened by a file event.
+        for view in surfaces.allObjects where view.window?.isVisible == true && !view.isHiddenOrHasHiddenAncestor {
+            view.draw()
+        }
+    }
     func beginEdit() {
         guard !files.blocksSceneEditing else { return }
         session.beginEdit(); sync()

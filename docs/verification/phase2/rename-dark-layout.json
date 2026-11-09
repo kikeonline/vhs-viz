@@ -86,22 +86,22 @@
     },
     {
       "area" : "parameters",
+      "height" : 325.5,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "parameters",
+      "width" : 280,
+      "x" : 700,
+      "y" : 72
+    },
+    {
+      "area" : "parameters",
       "edge" : "lead",
       "height" : 66.5,
       "inset" : 0,
       "kind" : "probe",
       "name" : "source-heading",
       "width" : 170.5,
-      "x" : 700,
-      "y" : 72
-    },
-    {
-      "area" : "parameters",
-      "height" : 325.5,
-      "inset" : 0,
-      "kind" : "area",
-      "name" : "parameters",
-      "width" : 280,
       "x" : 700,
       "y" : 72
     },
@@ -129,22 +129,22 @@
     },
     {
       "area" : "preview",
+      "height" : 508,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "preview",
+      "width" : 615,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
       "edge" : "lead",
       "height" : 16,
       "inset" : 0,
       "kind" : "probe",
       "name" : "preview-title",
       "width" : 81,
-      "x" : 20,
-      "y" : 72
-    },
-    {
-      "area" : "preview",
-      "height" : 508,
-      "inset" : 0,
-      "kind" : "area",
-      "name" : "preview",
-      "width" : 615,
       "x" : 20,
       "y" : 72
     },
@@ -214,21 +214,21 @@
     },
     {
       "area" : "source.solid.blue-area",
-      "height" : 40,
+      "edge" : "lead",
+      "height" : 16,
       "inset" : 0,
-      "kind" : "area",
-      "name" : "source.solid.blue-area",
+      "kind" : "probe",
+      "name" : "source.solid.blue-label",
       "width" : 280,
       "x" : 700,
       "y" : 318.5
     },
     {
       "area" : "source.solid.blue-area",
-      "edge" : "lead",
-      "height" : 16,
+      "height" : 40,
       "inset" : 0,
-      "kind" : "probe",
-      "name" : "source.solid.blue-label",
+      "kind" : "area",
+      "name" : "source.solid.blue-area",
       "width" : 280,
       "x" : 700,
       "y" : 318.5
@@ -246,21 +246,21 @@
     },
     {
       "area" : "source.solid.green-area",
-      "edge" : "lead",
-      "height" : 16,
+      "height" : 40,
       "inset" : 0,
-      "kind" : "probe",
-      "name" : "source.solid.green-label",
+      "kind" : "area",
+      "name" : "source.solid.green-area",
       "width" : 280,
       "x" : 700,
       "y" : 258.5
     },
     {
       "area" : "source.solid.green-area",
-      "height" : 40,
+      "edge" : "lead",
+      "height" : 16,
       "inset" : 0,
-      "kind" : "area",
-      "name" : "source.solid.green-area",
+      "kind" : "probe",
+      "name" : "source.solid.green-label",
       "width" : 280,
       "x" : 700,
       "y" : 258.5

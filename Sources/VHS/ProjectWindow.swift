@@ -70,16 +70,31 @@ final class ProjectAppDelegate: NSObject, NSApplicationDelegate {
     private weak var model: AppModel?
     private var pendingOpen: URL?
     private var showControl: (() -> Void)?
+    private var isReady = false
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        // File-open events can precede launch completion. Creating an MTKView
+        // must wait for AppKit and SwiftUI to finish initializing the app.
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.isReady = true
+            self.openPendingProject()
+        }
+    }
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
     func connect(_ model: AppModel, showControl: @escaping () -> Void) {
         self.model = model
         self.showControl = showControl
-        if let url = pendingOpen { pendingOpen = nil; openProject(url) }
+        openPendingProject()
     }
     func application(_ application: NSApplication, open urls: [URL]) {
         guard let url = urls.first else { return }
-        if model != nil { openProject(url) }
-        else { pendingOpen = url }
+        pendingOpen = url
+        openPendingProject()
+    }
+    private func openPendingProject() {
+        guard isReady, model != nil, let url = pendingOpen else { return }
+        pendingOpen = nil
+        openProject(url)
     }
     private func openProject(_ url: URL) {
         showControl?()

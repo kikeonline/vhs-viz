@@ -13,22 +13,27 @@ struct MetalSurface: NSViewRepresentable {
         view.preferredFramesPerSecond = 60
         view.framebufferOnly = true
         view.delegate = context.coordinator
-        view.isPaused = false
+        view.isPaused = true
+        model.registerSurface(view)
         view.setAccessibilityLabel("Live scene")
         return view
     }
     func updateNSView(_ view: MTKView, context: Context) {}
     static func dismantleNSView(_ view: MTKView, coordinator: Coordinator) {
+        coordinator.model.unregisterSurface(view)
         view.isPaused = true; view.delegate = nil
     }
     @MainActor final class Coordinator: NSObject, MTKViewDelegate {
+        private(set) var drawableFrameCount = 0
+        private var hasFailed = false
         let model: AppModel
         init(model: AppModel) { self.model = model }
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {}
         func draw(in view: MTKView) {
-            guard let drawable = view.currentDrawable, let renderer = model.renderer else { return }
+            guard !hasFailed, let drawable = view.currentDrawable, let renderer = model.renderer else { return }
+            drawableFrameCount += 1
             do { try renderer.draw(model.frame, drawable: drawable) }
-            catch { view.isPaused = true; model.errorMessage = error.localizedDescription }
+            catch { hasFailed = true; model.errorMessage = error.localizedDescription }
         }
     }
 }
