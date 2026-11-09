@@ -1,0 +1,183 @@
+{
+  "id" : "CFE1922C-1C75-4FFF-B729-181B64D258DA",
+  "name" : "Native Sources",
+  "scene" : {
+    "parameters" : {
+      "source.gradient.angle" : {
+        "type" : "number",
+        "value" : 0
+      },
+      "source.gradient.end" : {
+        "type" : "color",
+        "value" : {
+          "blue" : 0.1,
+          "green" : 0.48,
+          "red" : 1
+        }
+      },
+      "source.gradient.reverse" : {
+        "type" : "toggle",
+        "value" : false
+      },
+      "source.gradient.start" : {
+        "type" : "color",
+        "value" : {
+          "blue" : 0.5271151661872864,
+          "green" : 0.215860515832901,
+          "red" : 0.05126945674419403
+        }
+      },
+      "source.gradient.style" : {
+        "type" : "choice",
+        "value" : "radial"
+      },
+      "source.gradient.x" : {
+        "type" : "number",
+        "value" : 0.5
+      },
+      "source.gradient.y" : {
+        "type" : "number",
+        "value" : 0.5
+      },
+      "source.noise.animate" : {
+        "type" : "toggle",
+        "value" : false
+      },
+      "source.noise.contrast" : {
+        "type" : "number",
+        "value" : 1
+      },
+      "source.noise.high" : {
+        "type" : "color",
+        "value" : {
+          "blue" : 1,
+          "green" : 1,
+          "red" : 1
+        }
+      },
+      "source.noise.low" : {
+        "type" : "color",
+        "value" : {
+          "blue" : 0,
+          "green" : 0,
+          "red" : 0
+        }
+      },
+      "source.noise.scale" : {
+        "type" : "number",
+        "value" : 16
+      },
+      "source.noise.speed" : {
+        "type" : "number",
+        "value" : 0.25
+      },
+      "source.noise.style" : {
+        "type" : "choice",
+        "value" : "cells"
+      },
+      "source.oscillator.angle" : {
+        "type" : "number",
+        "value" : 0
+      },
+      "source.oscillator.animate" : {
+        "type" : "toggle",
+        "value" : false
+      },
+      "source.oscillator.background" : {
+        "type" : "color",
+        "value" : {
+          "blue" : 0,
+          "green" : 0,
+          "red" : 0
+        }
+      },
+      "source.oscillator.foreground" : {
+        "type" : "color",
+        "value" : {
+          "blue" : 0.62,
+          "green" : 0.08,
+          "red" : 0.24
+        }
+      },
+      "source.oscillator.frequency" : {
+        "type" : "number",
+        "value" : 5
+      },
+      "source.oscillator.phase" : {
+        "type" : "number",
+        "value" : 0
+      },
+      "source.oscillator.speed" : {
+        "type" : "number",
+        "value" : 0.25
+      },
+      "source.oscillator.wave" : {
+        "type" : "choice",
+        "value" : "square"
+      },
+      "source.shape.background" : {
+        "type" : "color",
+        "value" : {
+          "blue" : 0,
+          "green" : 0,
+          "red" : 0
+        }
+      },
+      "source.shape.fill" : {
+        "type" : "color",
+        "value" : {
+          "blue" : 0.62,
+          "green" : 0.08,
+          "red" : 0.24
+        }
+      },
+      "source.shape.kind" : {
+        "type" : "choice",
+        "value" : "triangle"
+      },
+      "source.shape.outline" : {
+        "type" : "toggle",
+        "value" : true
+      },
+      "source.shape.rotation" : {
+        "type" : "number",
+        "value" : 0
+      },
+      "source.shape.size" : {
+        "type" : "number",
+        "value" : 0.6
+      },
+      "source.shape.softness" : {
+        "type" : "number",
+        "value" : 0.005
+      },
+      "source.shape.width" : {
+        "type" : "number",
+        "value" : 0.02
+      },
+      "source.shape.x" : {
+        "type" : "number",
+        "value" : 0.5
+      },
+      "source.shape.y" : {
+        "type" : "number",
+        "value" : 0.5
+      },
+      "source.solid.blue" : {
+        "type" : "number",
+        "value" : 0.62
+      },
+      "source.solid.green" : {
+        "type" : "number",
+        "value" : 0.08
+      },
+      "source.solid.red" : {
+        "type" : "number",
+        "value" : 0.24
+      }
+    },
+    "seed" : 42,
+    "source" : "noise"
+  },
+  "schemaVersion" : 2
+}

@@ -17,7 +17,7 @@ public enum ProjectError: Error, LocalizedError, Equatable {
 }
 
 public struct ProjectDocument: Codable, Equatable, Sendable {
-    public static let currentVersion = 1
+    public static let currentVersion = 2
     public let schemaVersion: Int
     public let id: UUID
     public let name: String
@@ -36,9 +36,7 @@ public struct ProjectDocument: Codable, Equatable, Sendable {
     public func validate() throws {
         guard schemaVersion == Self.currentVersion else { throw ProjectError.unsupportedVersion(schemaVersion) }
         guard try Self.validatedName(name) == name else { throw ProjectError.invalidName }
-        guard [scene.color.red, scene.color.green, scene.color.blue].allSatisfy({ $0.isFinite && (0...1).contains($0) }) else {
-            throw ProjectError.invalidValues
-        }
+        try scene.validate()
     }
 }
 
@@ -56,8 +54,15 @@ public enum ProjectCodec {
         let decoder = JSONDecoder()
         do {
             let version = try decoder.decode(Header.self, from: data).schemaVersion
-            // Version dispatch is the migration boundary. Version 1 is the first
-            // public format; no historical schema is guessed or silently upgraded.
+            if version == 1 {
+                struct LegacyScene: Decodable { let color: SceneColor; let seed: UInt32 }
+                struct LegacyProject: Decodable { let id: UUID; let name: String; let scene: LegacyScene }
+                let old = try decoder.decode(LegacyProject.self, from: data)
+                guard old.scene.color.isValid else { throw ProjectError.invalidValues }
+                let migrated = ProjectDocument(id: old.id, name: old.name, scene: .init(color: old.scene.color, seed: old.scene.seed))
+                try migrated.validate()
+                return migrated
+            }
             guard version == ProjectDocument.currentVersion else { throw ProjectError.unsupportedVersion(version) }
             let document = try decoder.decode(ProjectDocument.self, from: data)
             try document.validate()

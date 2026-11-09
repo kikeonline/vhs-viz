@@ -1,0 +1,10 @@
+Building for production...
+[4 / 13] VHSCore
+[6 / 14] VHSCore
+[13 / 19] VHSRenderer
+[17 / 18] VHS-product
+[20 / 22] VHS-product
+Build complete! (3.78 secs.)
+wrote Resources/Assets.car and Resources/AppIcon.icns
+/Users/kike/Code/vhs/build/VHS.app: replacing existing signature
+Built /Users/kike/Applications/VHS.app

@@ -2,6 +2,7 @@ import AppKit
 import MetalKit
 import SwiftUI
 import VHSRenderer
+import VHSCore
 
 struct MetalSurface: NSViewRepresentable {
     let model: AppModel
@@ -25,6 +26,7 @@ struct MetalSurface: NSViewRepresentable {
     }
     @MainActor final class Coordinator: NSObject, MTKViewDelegate {
         private(set) var drawableFrameCount = 0
+        private(set) var lastScene: SceneSnapshot?
         private var hasFailed = false
         let model: AppModel
         init(model: AppModel) { self.model = model }
@@ -32,6 +34,7 @@ struct MetalSurface: NSViewRepresentable {
         func draw(in view: MTKView) {
             guard !hasFailed, let drawable = view.currentDrawable, let renderer = model.renderer else { return }
             drawableFrameCount += 1
+            lastScene = model.frame.scene
             do { try renderer.draw(model.frame, drawable: drawable) }
             catch { hasFailed = true; model.errorMessage = error.localizedDescription }
         }

@@ -24,9 +24,9 @@ struct VHSCommands: Commands {
                 .keyboardShortcut("r", modifiers: [.command, .shift]).disabled(!fileCommandsEnabled)
         }
         CommandGroup(replacing: .undoRedo) {
-            Button("Undo Color Change") { model.undo() }
+            Button("Undo Scene Change") { model.undo() }
                 .keyboardShortcut("z").disabled(!canUndo)
-            Button("Redo Color Change") { model.redo() }
+            Button("Redo Scene Change") { model.redo() }
                 .keyboardShortcut("z", modifiers: [.command, .shift]).disabled(!canRedo)
         }
         CommandGroup(after: .windowArrangement) {

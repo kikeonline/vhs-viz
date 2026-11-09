@@ -45,11 +45,9 @@ public final class MetalRenderer {
         pass.colorAttachments[0].loadAction = .dontCare
         pass.colorAttachments[0].storeAction = .store
         guard let encoder = command.makeRenderCommandEncoder(descriptor: pass) else { throw RendererError.resourceCreation }
-        struct Uniforms { var color: SIMD4<Float>; var time: Float; var seed: UInt32 }
-        var uniforms = Uniforms(color: SIMD4(Float(frame.scene.color.red), Float(frame.scene.color.green),
-                                            Float(frame.scene.color.blue), 1), time: Float(frame.time), seed: frame.scene.seed)
+        var uniforms = SourceUniforms(frame, width: texture.width, height: texture.height)
         encoder.setRenderPipelineState(pipeline)
-        encoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 0)
+        encoder.setFragmentBytes(&uniforms, length: MemoryLayout<SourceUniforms>.stride, index: 0)
         encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
         encoder.endEncoding()
     }

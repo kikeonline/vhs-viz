@@ -8,8 +8,8 @@ end press
 on expectMenu(labelText, expectedUndo, expectedRedo)
  tell application "System Events" to tell process "VHS"
   click menu bar item "Edit" of menu bar 1
-  set u to enabled of menu item "Undo Color Change" of menu 1 of menu bar item "Edit" of menu bar 1
-  set r to enabled of menu item "Redo Color Change" of menu 1 of menu bar item "Edit" of menu bar 1
+  set u to enabled of menu item "Undo Scene Change" of menu 1 of menu bar item "Edit" of menu bar 1
+  set r to enabled of menu item "Redo Scene Change" of menu 1 of menu bar item "Edit" of menu bar 1
   key code 53
  end tell
  if u is not expectedUndo or r is not expectedRedo then error "FAIL " & labelText & " menu"

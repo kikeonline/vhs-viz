@@ -11,3 +11,7 @@ Use semantic system background, primary and secondary text, native control tint,
 
 ## Motion and accessibility
 Phase 1 adds no custom animation. Use native sliders and buttons; preserve keyboard interaction, help, labels, and values. Do not convey meaning solely through color. Appearance follows macOS, including increased contrast.
+
+## Procedural source inspector
+
+SourceControls generates native sliders, color pickers, choices, toggles, and an integer field from SourceRegistry metadata. The Source picker stays above a vertically scrolling inspector. Scroll view content uses the same Space scale and its own probes; parameters remain reachable at the minimum editor size. Color swatches display scene content, not app theme tokens. Shape geometry is aspect-correct in the viewport and independent of inspector layout.

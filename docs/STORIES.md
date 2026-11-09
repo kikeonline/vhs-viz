@@ -1,6 +1,6 @@
 # VHS stories
 
-Phases 1–2 approved and completed. Later phases remain in PLAN.md.
+Phases 1–3 approved and completed. Later phases remain in PLAN.md.
 
 ## Phase 1 — Runnable native core
 
@@ -93,7 +93,7 @@ Status: done
 
 ## Verification record
 
-Phase 1 acceptance checks passed. See [PHASE-1-VERIFICATION.md](PHASE-1-VERIFICATION.md) for evidence and manual checks not performed. Phase 2 evidence is recorded in [PHASE-2-VERIFICATION.md](PHASE-2-VERIFICATION.md). Phases 3–8 have not started.
+Phase 1 acceptance checks passed. See [PHASE-1-VERIFICATION.md](PHASE-1-VERIFICATION.md) for evidence and manual checks not performed. Phase 2 evidence is recorded in [PHASE-2-VERIFICATION.md](PHASE-2-VERIFICATION.md). Phase 3 evidence is in [PHASE-3-VERIFICATION.md](PHASE-3-VERIFICATION.md). Phases 4–8 have not started.
 
 ## Phase 2 — Reliable projects
 
@@ -168,4 +168,62 @@ UX:
 - Flow: native Close / Command-W or Quit / Command-Q → confirmation if dirty → close/quit only after resolution.
 - Surface: native save-changes sheet; separate output remains an independent window.
 - Access: standard close/quit shortcuts and confirmation choices.
+Status: done
+
+## Phase 3 — All procedural sources
+
+Approved by the user after Phase 2. Effects and audio remain later phases.
+
+### S-012 Select a procedural source
+As a performer, I switch between Solid, Gradient, Noise, Oscillator, and Shape.
+Screens: source-solid-light.png, source-gradient-light.png, source-noise-light.png, source-oscillator-light.png, source-shape-light.png (and dark variants)
+Acceptance:
+- [unit] Registry has stable source/parameter IDs, typed defaults, valid bounds/options, and no duplicates.
+- [unit] Switching retains each source's settings, seed, and immutable original; switch and parameter edits undo/redo.
+- [self] Source selection changes the shared frame and both live views continue drawing.
+UX:
+- Flow: Source picker → choose a source → controls and preview update immediately; Command-Z restores the previous source.
+- Surface: native inline picker above a scrollable parameter inspector; preview/output stay visible.
+- States: Solid is the default; selecting the current source is a no-op; switching ends a slider gesture and creates its own undo step.
+- Words: Solid, Gradient, Noise, Oscillator, Shape; Undo Scene Change, Redo Scene Change.
+- Access: labeled native picker; keyboard selection; inspector returns to its top on source change.
+Status: done
+
+### S-013 Edit generated parameters
+As a performer, I edit numbers, colors, choices, and toggles using consistent controls.
+Screens: source-*-light.png, source-*-dark.png, source-shape-minimum-light.png, source-shape-minimum-dark.png
+Acceptance:
+- [unit] Metadata drives type checking, bounds, defaults and persistence validation; bad runtime values cannot poison state.
+- [self] Number gestures group into one undo step; color, choice, toggle, and seed changes undo/redo.
+- [snap] Every source's generated controls fit or scroll at default/minimum sizes in light/dark.
+UX:
+- Flow: adjust native slider / color picker / menu / toggle / integer seed field → both renders update → undo restores the value.
+- Surface: inline controls generated from registry metadata; native color panel for colors; exact UInt32 seed field on Noise.
+- States: typed file values are rejected if invalid; UI numeric actions clamp to valid bounds; animation toggles freeze time at zero while retaining speed/phase.
+- Words: source-specific names/units from metadata; colors are linear RGB content converted through the native color picker.
+- Access: native labels and numeric values; no color-only status; keyboard traversal and scrolling.
+Status: done
+
+### S-014 Render spatial and animated sources
+As a performer, I create gradients, seeded noise, animated waves, and geometric shapes.
+Screens: source-gradient-*, source-noise-*, source-oscillator-*, source-shape-*, source-output-*.png
+Acceptance:
+- [unit] Actual Metal fixtures check analytic gradient samples, seeded repeatability, time/seed variation, waveform/shape variants, aspect handling, and parameter extremes.
+- [self] Every source reaches preview/output through the same immutable frame without GPU completion waits.
+UX:
+- Variants: Gradient Linear/Radial and Reverse; Noise Smooth/Cells, contrast, scale, two colors, seed, optional animation; Oscillator Sine/Triangle/Square, cycles, speed, angle, phase, two colors, Animate; Shape Circle/Rectangle/Triangle, position, size, rotation, softness, outline and width, fill/background.
+- Geometry: positions are normalized from top-left; shape size is relative to the shorter output dimension so circles remain round; softness and outline width use the same scale.
+- Time: speed in cycles/second for Oscillator and cells/second for Noise; Animate off evaluates time zero. Time is runtime-only and does not create dirty/undo entries.
+Status: done
+
+### S-015 Save all sources and open older projects
+As a performer, I save my selected source and its settings and reopen the same scene.
+Screens: source-*-light.png
+Acceptance:
+- [unit] Every source round-trips with inactive settings and seed; schema 1 Solid projects migrate to schema 2 without changing color/seed/identity.
+- [unit] Malformed/missing/unknown parameters, wrong types, invalid choices, and unsupported versions are rejected without silently fixing files.
+- [self] Save/Open restores the source and settings, resets history, and leaves preview/output live; invalid Open preserves current state.
+UX:
+- Flow: Save → quit/reopen or Open → selected source and settings restored; schema 1 loads normally and next Save writes schema 2.
+- Surface: existing native project commands and panels; migration requires no extra dialog.
 Status: done

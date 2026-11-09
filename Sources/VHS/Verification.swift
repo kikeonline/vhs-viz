@@ -15,13 +15,14 @@ enum Verification {
             FileHandle.standardError.write(Data("FAIL verification timed out\n".utf8))
             exit(1)
         }
-        DispatchQueue.global().asyncAfter(deadline: .now() + 60, execute: watchdog)
+        DispatchQueue.global().asyncAfter(deadline: .now() + 120, execute: watchdog)
         defer { watchdog.cancel() }
         do {
             try await Task.sleep(for: .seconds(1))
             if CommandLine.arguments.contains("--selftest") {
                 try await selftest(model)
                 try await ProjectVerification.run(model)
+                try await SourceVerification.run(model)
                 log("SELFTEST done")
             }
             if let directory = env["APP_SNAPSHOT"] {
@@ -164,6 +165,7 @@ enum Verification {
             throw Failure(description: captureFailures.joined(separator: "\n"))
         }
         try await ProjectSnapshots.run(model, control: control, directory: directory)
+        try await SourceSnapshots.run(model, control: control, directory: directory)
         log("SNAPSHOT done \(directory)")
     }
     static func capture(_ window: NSWindow, to path: String) throws {

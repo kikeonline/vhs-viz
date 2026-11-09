@@ -1,37 +1,33 @@
 # VHS project format
 
-A `.vhsproject` is UTF-8 JSON. Version 1 is the first public schema:
+`.vhsproject` is a UTF-8 JSON document registered as `com.kike.vhs.project`, conforming to `public.json`. Current schema: **2**. Maximum encoded/read size: 8 MB.
 
-```json
-{
-  "schemaVersion": 1,
-  "id": "CE0BB40E-4F90-45BA-AC60-C62F61E5CC92",
-  "name": "Sunset Session",
-  "scene": {
-    "color": { "red": 0.24, "green": 0.08, "blue": 0.62 },
-    "seed": 1
-  }
-}
-```
+## Schema 2
 
-`id` is the logical project identity and survives Save As. Color components are finite linear-light numbers in 0–1. `seed` is an unsigned 32-bit integer. The source is implicitly Solid in version 1. Undo history, rendering time, windows, device handles, and transient runtime values are not serialized.
+The top-level keys are `schemaVersion` (2), `id` (UUID), `name`, and `scene`. The scene contains:
 
-`ProjectCodec` validates the schema header before decoding content and rejects unsupported versions, invalid values, malformed documents, and files larger than 8 MB. `schemaVersion` dispatch is the migration boundary. There is no invented legacy version: version 0 is rejected. When a later schema is introduced, add explicit migration from version 1 and round-trip fixtures, preserving identity, color, and seed. Never reinterpret a future version as the current format.
+- `source`: `solid`, `gradient`, `noise`, `oscillator`, or `shape`.
+- `seed`: an unsigned 32-bit integer, shared by the project and exposed on Noise.
+- `parameters`: a JSON object keyed by stable `ParameterID` strings from `VHSCore/SourceRegistry.swift`. It contains all source settings, including inactive sources; switching sources does not throw away edits.
+
+Each parameter is tagged: `{"type":"number","value":0.24}`, `{"type":"choice","value":"radial"}`, `{"type":"toggle","value":true}`, or `{"type":"color","value":{"red":0.24,"green":0.08,"blue":0.62}}`. Colors are opaque, linear-light RGB in 0…1. The native color picker converts to/from linear sRGB. The renderer encodes to sRGB at the output attachment.
+
+All parameter keys are required. Unknown or missing keys, wrong value types, invalid choices, nonfinite/out-of-bounds numbers and nonintegral integer parameters are rejected. The source registry is the authority for type, default, range and choices; data loaded from disk is never silently clamped. Runtime UI actions clamp numeric values and ignore incompatible typed values.
+
+## Migration
+
+Schema 1 held `scene.color` (linear RGB) and `scene.seed`. Its decoder validates the original values, then creates a schema 2 Solid scene, retaining identity, name, seed and color and filling new source defaults. Loading is clean and resets history normally; the next Save writes schema 2. No migration is invented for version 0. Unsupported older/future versions are rejected; a future version explains that a newer VHS is needed.
+
+Migration and dispatch occur only in `ProjectCodec`. New schema changes must add an explicit migration and tests. A later app must not interpret new parameter semantics as schema 2 without a migration.
 
 ## Titles and rename
 
-The filename without `.vhsproject` is authoritative for saved-project titles, including external Finder renames. The JSON name records the title at the last save and is synchronized on subsequent saves. Unsaved projects retain the chosen title in memory until saved. Names are trimmed and must contain 1–120 characters without path separators, colons, control characters, or dot-only directory names.
+The filename without extension is authoritative when opening, including externally renamed files. The serialized `name` is validated but normalized to that filename in memory. A saved Rename moves the file in its current folder, refuses collisions and preserves dirty scene values/history; the JSON name is synchronized on the next Save. Renaming an unsaved project changes its suggested save name. Save As retains the old file and changes the active URL only after success.
 
-Rename moves an existing file within its directory without overwriting another file. It preserves unsaved scene edits and scene undo history. Case-only rename is tested. Rename does not create a scene undo entry. Save As writes a new file before changing the active URL and keeps the original file.
+## Atomic writes and document transitions
 
-## Atomic saves
+`ProjectIO` keeps file work off the main actor. A Save encodes and validates an immutable snapshot, writes a unique temporary sibling, synchronizes/closes its handle, and uses same-directory POSIX rename to atomically replace the target. Failure before successful replacement leaves the previous file intact; temporary siblings are cleaned up. The saved snapshot establishes the baseline; scene edits made during standalone Save remain dirty.
 
-1. Capture an immutable project snapshot.
-2. Encode and validate it on the file-I/O actor.
-3. Write a unique temporary sibling file and synchronize it.
-4. Atomically rename that sibling over the target.
-5. Update the saved baseline only after success, retaining any scene edits made during the write as dirty.
+New/Open/close/quit block scene editing while resolving Save/Don't Save/Cancel. Open validates before prompting and re-reads the committed candidate after the decision: saving can have replaced the very file selected for Open. Replacing a project resets undo; switching sources is an ordinary undoable scene edit. Runtime clock time, output lifecycle, and UI state are never serialized.
 
-A write or replacement failure leaves the target untouched. Temporary files are cleaned up after the operation. Tests inject a failure after writing and before replacement, and exercise actual write/rename failures. This is an atomic-save guarantee; it does not claim a complete power-loss recovery journal.
-
-New/Open reset document history after the transition succeeds. Candidate files are decoded before current edits are discarded. Save, Don't Save, and Cancel protect New/Open, editor close, and Quit. A cancelled or failed save prevents departure. Closing the separate output never prompts or discards project edits.
+These guarantees cover ordinary write/replace errors, not power-loss durability, concurrent external writers, or network/cloud filesystem coordination. Those environments have not been validated.

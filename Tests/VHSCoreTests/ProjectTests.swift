@@ -30,7 +30,9 @@ func invalidProjectNames(_ name: String) {
     let data = try ProjectCodec.encode(.init())
     var json = try #require(JSONSerialization.jsonObject(with: data) as? [String: Any])
     var scene = try #require(json["scene"] as? [String: Any])
-    scene["color"] = ["red": 2, "green": 0, "blue": 0]
+    var parameters = try #require(scene["parameters"] as? [String: Any])
+    parameters["source.solid.red"] = ["type": "number", "value": 2]
+    scene["parameters"] = parameters
     json["scene"] = scene
     #expect(throws: ProjectError.invalidValues) { try ProjectCodec.decode(JSONSerialization.data(withJSONObject: json)) }
 }

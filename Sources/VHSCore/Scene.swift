@@ -1,14 +1,5 @@
 import Foundation
 
-public enum ParameterID: String, Codable, Sendable, CaseIterable {
-    case solidRed = "source.solid.red"
-    case solidGreen = "source.solid.green"
-    case solidBlue = "source.solid.blue"
-    public var title: String {
-        switch self { case .solidRed: "Red"; case .solidGreen: "Green"; case .solidBlue: "Blue" }
-    }
-}
-
 /// Linear-light RGB in the working space; the renderer encodes sRGB on output.
 public struct SceneColor: Equatable, Codable, Sendable {
     public let red: Double
@@ -19,34 +10,75 @@ public struct SceneColor: Equatable, Codable, Sendable {
     }
     private static func clamp(_ value: Double) -> Double { value.isFinite ? min(1, max(0, value)) : 0 }
     public subscript(id: ParameterID) -> Double {
-        switch id { case .solidRed: red; case .solidGreen: green; case .solidBlue: blue }
+        switch id { case .solidRed: red; case .solidGreen: green; case .solidBlue: blue; default: 0 }
     }
     public func replacing(_ id: ParameterID, with value: Double) -> Self {
         Self(red: id == .solidRed ? value : red, green: id == .solidGreen ? value : green,
              blue: id == .solidBlue ? value : blue)
     }
+    public var isValid: Bool { [red, green, blue].allSatisfy { $0.isFinite && (0...1).contains($0) } }
     public static let initial = Self(red: 0.24, green: 0.08, blue: 0.62)
 }
 
 public struct SceneSnapshot: Equatable, Codable, Sendable {
-    public let color: SceneColor
+    public let source: SourceKind
+    public let parameters: [String: ParameterValue]
     public let seed: UInt32
-    public init(color: SceneColor = .initial, seed: UInt32 = 1) { self.color = color; self.seed = seed }
+    public var color: SceneColor { .init(red: number(.solidRed), green: number(.solidGreen), blue: number(.solidBlue)) }
+    public init(color: SceneColor = .initial, seed: UInt32 = 1) {
+        self.init(source: .solid, values: [.solidRed: .number(color.red), .solidGreen: .number(color.green), .solidBlue: .number(color.blue)], seed: seed)
+    }
+    public init(source: SourceKind, values: [ParameterID: ParameterValue] = [:], seed: UInt32 = 1) {
+        self.source = source; self.seed = seed
+        var parameters = SourceRegistry.defaults
+        for (id, value) in values where id != .seed {
+            if let value = SourceRegistry.parameter(id).normalized(value) { parameters[id.rawValue] = value }
+        }
+        self.parameters = parameters
+    }
+    private init(source: SourceKind, parameters: [String: ParameterValue], seed: UInt32) {
+        self.source = source; self.parameters = parameters; self.seed = seed
+    }
+    public func value(_ id: ParameterID) -> ParameterValue {
+        id == .seed ? .number(Double(seed)) : parameters[id.rawValue] ?? SourceRegistry.parameter(id).defaultValue
+    }
+    public func number(_ id: ParameterID) -> Double { if case let .number(v) = value(id) { v } else { 0 } }
+    public func tint(_ id: ParameterID) -> SceneColor { if case let .color(v) = value(id) { v } else { .initial } }
+    public func choice(_ id: ParameterID) -> String { if case let .choice(v) = value(id) { v } else { "" } }
+    public func enabled(_ id: ParameterID) -> Bool { if case let .toggle(v) = value(id) { v } else { false } }
+    public func validate() throws {
+        guard Set(parameters.keys) == Set(SourceRegistry.defaults.keys), parameters.allSatisfy({ key, value in
+            guard let id = ParameterID(rawValue: key) else { return false }
+            return SourceRegistry.parameter(id).allows(value)
+        }) else { throw ProjectError.invalidValues }
+    }
+    func selecting(_ source: SourceKind) -> Self { Self(source: source, parameters: parameters, seed: seed) }
+    func replacing(_ id: ParameterID, with value: ParameterValue) -> Self {
+        guard source.definition.parameters.contains(where: { $0.id == id }),
+              let value = SourceRegistry.parameter(id).normalized(value) else { return self }
+        if id == .seed, case let .number(v) = value { return Self(source: source, parameters: parameters, seed: UInt32(v)) }
+        var parameters = parameters; parameters[id.rawValue] = value
+        return Self(source: source, parameters: parameters, seed: seed)
+    }
 }
 
 public enum SceneAction: Sendable {
     case setParameter(ParameterID, Double)
     case setColor(SceneColor)
+    case selectSource(SourceKind)
+    case setValue(ParameterID, ParameterValue)
 }
 
 public enum SceneReducer {
     public static func reduce(_ scene: SceneSnapshot, _ action: SceneAction) -> SceneSnapshot {
-        let color: SceneColor
         switch action {
-        case let .setParameter(id, value): color = scene.color.replacing(id, with: value)
-        case let .setColor(value): color = value
+        case let .setParameter(id, value): scene.replacing(id, with: .number(value))
+        case let .setValue(id, value): scene.replacing(id, with: value)
+        case let .selectSource(source): scene.selecting(source)
+        case let .setColor(value):
+            scene.replacing(.solidRed, with: .number(value.red)).replacing(.solidGreen, with: .number(value.green))
+                .replacing(.solidBlue, with: .number(value.blue))
         }
-        return SceneSnapshot(color: color, seed: scene.seed)
     }
 }
 
@@ -61,6 +93,7 @@ public struct SceneHistory: Sendable {
     public init(scene: SceneSnapshot = .init()) { self.scene = scene }
     public mutating func beginEdit() { if editStart == nil { editStart = scene } }
     public mutating func send(_ action: SceneAction) {
+        if case .selectSource = action { endEdit() }
         let next = SceneReducer.reduce(scene, action)
         guard next != scene else { return }
         if editStart == nil { appendPast(scene); future.removeAll() }

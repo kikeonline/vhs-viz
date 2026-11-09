@@ -5,7 +5,7 @@ Native Swift 6/macOS 26+ app. Follow docs/BRIEF.md, docs/STORIES.md, and docs/PL
 - `./build.sh --debug` builds a local signed app at build/VHS.app; `--install --open` installs to ~/Applications and opens it.
 - `tools/test.sh` runs state and actual Metal GPU fixture tests with full Xcode selected locally.
 - `tools/selftest.sh` runs app actions and output-window lifecycle checks on ephemeral state.
-- `tools/snap.sh` captures control default/minimum sizes in light/dark and the output. Needs GUI and Screen Recording access.
+- `tools/snap.sh` captures control default/minimum sizes in light/dark and the output. Needs GUI, Screen Recording, and System Events Accessibility access; activates the exact snapshot process.
 - `tools/grid-lint.sh` and `swift tools/check-layout.swift /tmp/VHS-shots/*-layout.json` check layout.
 - `tools/icon_review.sh` renders all icon appearances and small sizes.
 

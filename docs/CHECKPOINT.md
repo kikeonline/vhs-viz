@@ -1,9 +1,13 @@
 # VHS checkpoint
 
-Phases 1–2 are implemented and functionally verified. See PHASE-1-VERIFICATION.md and PHASE-2-VERIFICATION.md for evidence and manual verification limits. The release app is installed at ~/Applications/VHS.app. Phase 3 has not started; wait for user direction.
+Phases 1–3 are implemented and functionally verified. The release app is installed at ~/Applications/VHS.app. Phase 4 has not started; wait for user direction.
 
-Phase 2 adds versioned .vhsproject JSON, an off-main-actor file store with atomic sibling replacement, document dirty baselines, native file dialogs, Rename, and save/discard/cancel for New/Open/close/quit. Finder-style cold launch is verified, including rendered preview pixels. Both Metal surfaces are explicitly drawn from the common frame timer; the self-test checks increasing drawable counts. Filename is authoritative on open; saved Rename moves the file without overwriting another project. Sources remain Solid only.
+Phase 3 provides Solid, Gradient, Noise, Oscillator and Shape, generated typed controls, retained inactive settings, deterministic Metal fixtures, and schema 1 → 2 project migration. See SOURCES.md, PROJECT-FORMAT.md and PHASE-3-VERIFICATION.md for contracts and evidence. Registry metadata owns parameter types, bounds, choices, defaults, decimal precision and conditional control availability.
 
-Use AGENTS.md and README.md for commands. Commands remain in SwiftUI's menu tree with observed availability. GitHub #10 remains open for actual VoiceOver announcement/navigation verification and macOS 26 runtime verification. Keyboard-only slider navigation/undo, Increase Contrast, and actual external Edit-menu enablement passed; see ACCESSIBILITY-VERIFICATION.md. Current verification ran on macOS 27.2.
+Commands use SwiftUI's menu tree and observed availability. Undo/Redo are now Scene Change. Both Metal surfaces are explicitly drawn from the common frame timer, with weak surface ownership; the self-test checks drawable progress and matching restored snapshots. Rendering never waits for GPU completion. Test readback is synchronous.
 
-No Orca workers were launched for the integrated core or persistence lifecycle. Existing untracked .agents/, .claude/, and skills-lock.json predate implementation and remain excluded from commits. Source and detailed reports remain local; GitHub contains the README and phase issues.
+GitHub #10 remains open for actual VoiceOver announcement/navigation and macOS 26 runtime verification. Keyboard-only sliders, Increase Contrast and external Edit-menu enablement passed in that follow-up; keyboard/menu checks also passed again after Phase 3. Current runtime is macOS 27.2.
+
+Snapshot mode now includes each source at default/minimum sizes, scrolled inspector bottoms, all output sources and native color panels. tools/snap.sh activates its exact process through System Events, so multiple installed/test app instances do not select the wrong process. It requires an unlocked GUI, Screen Recording and System Events Accessibility.
+
+No Orca workers were launched. Pre-existing untracked .agents/, .claude/ and skills-lock.json remain excluded. App source and detailed evidence are local; GitHub contains the README and self-contained phase issues.
