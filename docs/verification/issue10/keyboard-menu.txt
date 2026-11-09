@@ -1,0 +1,24 @@
+PASS clean: Undo=false, Redo=false
+PASS keyboard focus/value: red 0.24
+PASS keyboard focus/value: red 0.29
+PASS keyboard focus/value: red 0.34
+PASS two keyboard edits: Undo=true, Redo=false
+PASS keyboard focus/value: red 0.29
+PASS one undo: Undo=true, Redo=true
+PASS keyboard focus/value: red 0.24
+PASS all undone: Undo=false, Redo=true
+PASS keyboard focus/value: red 0.34
+PASS all redone: Undo=true, Redo=false
+PASS keyboard focus/value: green 0.08
+PASS keyboard focus/value: green 0.13
+PASS keyboard focus/value: green 0.08
+PASS keyboard focus/value: green 0.13
+PASS keyboard focus/value: blue 0.62
+PASS keyboard focus/value: blue 0.67
+PASS keyboard focus/value: blue 0.62
+PASS keyboard focus/value: blue 0.67
+PASS keyboard focus/value: green 0.13
+PASS keyboard focus/value: red 0.34
+PASS keyboard focus/value: red 0.24
+PASS restored baseline: Undo=false, Redo=true
+PASS all RGB sliders: Tab/Shift-Tab, arrow adjustment, discrete key undo and redo
