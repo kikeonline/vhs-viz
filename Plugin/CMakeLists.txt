@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.25)
+project(VHSPrototype VERSION 0.3.1 LANGUAGES C CXX OBJCXX)
+set(CMAKE_CXX_STANDARD 17)
+set(SMTG_BUILD_UNIVERSAL_BINARY OFF CACHE BOOL "" FORCE)
+set(SMTG_ENABLE_VSTGUI_SUPPORT OFF CACHE BOOL "" FORCE)
+set(SMTG_ENABLE_VST3_PLUGIN_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(SMTG_ENABLE_VST3_HOSTING_EXAMPLES ON CACHE BOOL "" FORCE)
+set(SMTG_CREATE_PLUGIN_LINK OFF CACHE BOOL "" FORCE)
+set(SMTG_RUN_VST_VALIDATOR OFF CACHE BOOL "" FORCE)
+add_subdirectory(${VST3_SDK_ROOT} sdk)
+smtg_enable_vst3_sdk()
+smtg_add_vst3plugin(VHSPrototype Prototype.mm Prototype.h
+    ${VST3_SDK_ROOT}/public.sdk/source/vst/vstsinglecomponenteffect.cpp)
+target_include_directories(VHSPrototype PRIVATE ../Sources/VHSRealtime/include)
+target_link_libraries(VHSPrototype PRIVATE sdk ${VHS_SWIFT_LIB} "-framework AppKit")
+set_target_properties(VHSPrototype PROPERTIES BUILD_RPATH "@loader_path/../Frameworks" INSTALL_RPATH "@loader_path/../Frameworks")
+smtg_target_set_bundle(VHSPrototype BUNDLE_IDENTIFIER "com.vhs.phase3a" COMPANY_NAME "VHS")
+add_executable(VHSPrototypeTests PrototypeTests.mm Prototype.mm
+    ${VST3_SDK_ROOT}/public.sdk/source/common/memorystream.cpp
+    ${VST3_SDK_ROOT}/public.sdk/source/vst/vstsinglecomponenteffect.cpp)
+target_include_directories(VHSPrototypeTests PRIVATE ../Sources/VHSRealtime/include)
+target_link_libraries(VHSPrototypeTests PRIVATE sdk sdk_hosting ${VHS_SWIFT_LIB} "-framework AppKit")

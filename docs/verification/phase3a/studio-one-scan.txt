@@ -1,0 +1,7 @@
+1:2026/11/09 12:37:14.941 [Info]: Adding file 1: "file:///Users/kike/Library/Audio/Plug-Ins/VST3/VHS Phase 3A.vst3/"
+2-2026/11/09 12:37:14.943 [Info]: Adding file 2: "file:///Library/Audio/Plug-Ins/VST3/Archetype Gojira X.vst3/"
+--
+11-2026/11/09 12:37:14.971 [Info]: UI Status: Waiting for plug-in scan process...
+12:2026/11/09 12:37:15.348 [Info]: UI Status: Scanning 1 of 9: VHS Phase 3A
+13:2026/11/09 12:37:15.349 [Info]: Class data already cached for: VHS Phase 3A
+14-2026/11/09 12:37:15.349 [Info]: UI Status: Scanning 2 of 9: Archetype Gojira X

@@ -1,0 +1,48 @@
+6471 VHS Prototype Output {
+    Height = 344;
+    Width = 560;
+    X = 476;
+    Y = 185;
+} 1
+6456 VHS Prototype Output {
+    Height = 344;
+    Width = 560;
+    X = 476;
+    Y = 185;
+} 1
+6390 Studio One - VHS Phase 3A Probe {
+    Height = 909;
+    Width = 1412;
+    X = 50;
+    Y = 33;
+} 1
+6389  {
+    Height = 33;
+    Width = 1512;
+    X = 0;
+    Y = 0;
+}
+6387  {
+    Height = 33;
+    Width = 1512;
+    X = 0;
+    Y = 0;
+}
+6386  {
+    Height = 33;
+    Width = 1512;
+    X = 0;
+    Y = 0;
+}
+6466 VHS-phase3a-probe · Inserts · 2 - VHS Phase 3A 2 {
+    Height = 682;
+    Width = 1002;
+    X = 100;
+    Y = 100;
+} 1
+6388  {
+    Height = 33;
+    Width = 1512;
+    X = 0;
+    Y = 0;
+}

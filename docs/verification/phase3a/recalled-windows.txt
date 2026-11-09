@@ -1,0 +1,36 @@
+6485 VHS-phase3a-probe · Inserts · 2 - VHS Phase 3A 2 {
+    Height = 682;
+    Width = 1002;
+    X = 100;
+    Y = 100;
+} 1
+6482 Studio One - VHS Phase 3A Probe {
+    Height = 909;
+    Width = 1412;
+    X = 50;
+    Y = 33;
+} 1
+6481  {
+    Height = 33;
+    Width = 1512;
+    X = 0;
+    Y = 0;
+}
+6479  {
+    Height = 33;
+    Width = 1512;
+    X = 0;
+    Y = 0;
+}
+6478  {
+    Height = 33;
+    Width = 1512;
+    X = 0;
+    Y = 0;
+}
+6480  {
+    Height = 33;
+    Width = 1512;
+    X = 0;
+    Y = 0;
+}

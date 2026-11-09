@@ -27,19 +27,16 @@ final class MenuState: ObservableObject {
     var isDirty: Bool { session.isDirty }
     @ObservationIgnored lazy var files = ProjectFileController(model: self)
     var errorMessage: String?
-    @ObservationIgnored let renderer: MetalRenderer?
-    @ObservationIgnored private let clock: RenderClock
-    @ObservationIgnored private(set) var frame: RenderFrame
+    @ObservationIgnored private let renderSession: RenderSession?
+    var renderer: MetalRenderer? { renderSession?.renderer }
+    var frame: RenderFrame { renderSession?.frame ?? RenderFrame(scene: scene, time: 0) }
     @ObservationIgnored private var timer: Timer?
-    @ObservationIgnored private let surfaces = NSHashTable<MTKView>.weakObjects()
     @ObservationIgnored lazy var output = OutputWindowController(model: self)
     var scene: SceneSnapshot { history.scene }
 
     init() {
-        clock = RenderClock(fixedTime: ProcessInfo.processInfo.environment["APP_SNAPSHOT"] != nil ? 2 : nil)
-        frame = RenderFrame(scene: .init(), time: 0)
-        do { renderer = try MetalRenderer() }
-        catch { renderer = nil; errorMessage = error.localizedDescription }
+        do { renderSession = try RenderSession(fixedTime: ProcessInfo.processInfo.environment["APP_SNAPSHOT"] != nil ? 2 : nil) }
+        catch { renderSession = nil; errorMessage = error.localizedDescription }
     }
     func start() {
         guard timer == nil else { return }
@@ -49,15 +46,10 @@ final class MenuState: ObservableObject {
         }
         RunLoop.main.add(timer!, forMode: .common)
     }
-    func registerSurface(_ view: MTKView) { surfaces.add(view) }
-    func unregisterSurface(_ view: MTKView) { surfaces.remove(view) }
+    func registerSurface(_ view: MTKView) { renderSession?.register(view) }
+    func unregisterSurface(_ view: MTKView) { renderSession?.unregister(view) }
     func tick() {
-        frame = RenderFrame(scene: scene, time: clock.time)
-        // One common frame drives both surfaces. MTKView's automatic display
-        // link can remain unstarted for a SwiftUI window opened by a file event.
-        for view in surfaces.allObjects where view.window?.isVisible == true && !view.isHiddenOrHasHiddenAncestor {
-            view.draw()
-        }
+        renderSession?.update(scene)
     }
     func beginEdit() {
         guard !files.blocksSceneEditing else { return }

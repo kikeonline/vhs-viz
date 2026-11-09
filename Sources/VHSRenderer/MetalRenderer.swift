@@ -22,12 +22,12 @@ public final class MetalRenderer {
     private let pipeline: any MTLRenderPipelineState
     public static let pixelFormat = MTLPixelFormat.bgra8Unorm_srgb
     private let inFlight = DispatchSemaphore(value: 3)
-    public init() throws {
+    public init(shaderURL: URL? = nil) throws {
         guard let device = MTLCreateSystemDefaultDevice(), let queue = device.makeCommandQueue() else {
             throw RendererError.unavailable
         }
         self.device = device; self.queue = queue
-        guard let url = Bundle.module.url(forResource: "Scene", withExtension: "metal", subdirectory: "Shaders") else {
+        guard let url = shaderURL ?? Bundle.module.url(forResource: "Scene", withExtension: "metal", subdirectory: "Shaders") else {
             throw RendererError.shaderMissing
         }
         let library = try device.makeLibrary(source: String(contentsOf: url, encoding: .utf8), options: nil)

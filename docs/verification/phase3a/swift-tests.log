@@ -1,0 +1,120 @@
+Building for debugging...
+[Computing dependencies]
+[1 / 31]
+[3 / 9] VHSRealtimeTests-product
+[5 / 11] VHSRealtimeTests-product
+[9 / 13] VHSRealtimeTests-product
+[11 / 13] VHSRealtimeTests-product
+Build complete! (1.60 secs.)
+Test Suite 'All tests' started at 2026-11-09 12:29:03.940.
+Test Suite 'All tests' passed at 2026-11-09 12:29:03.942.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
+Test Suite 'All tests' started at 2026-11-09 12:29:04.110.
+Test Suite 'All tests' passed at 2026-11-09 12:29:04.112.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
+Test Suite 'All tests' started at 2026-11-09 12:29:04.277.
+Test Suite 'All tests' passed at 2026-11-09 12:29:04.279.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Test allParameterExtremesRenderOpaquePixels() started.
+◇ Test blackWhiteAndResize() started.
+◇ Test gradientAnalyticSamplesAndVariants() started.
+◇ Test oscillatorWaveformsClockAndFreeze() started.
+◇ Test solidFixtureUsesSRGBEncodingAndEveryPixel() started.
+◇ Test sourceFixturesRepeatAtFixedSeedAndTime(_:) started.
+◇ Test seededNoiseAndAnimation() started.
+◇ Test shapesAspectOutlineAndVariants() started.
+◇ Test sourceUniformLayoutMatchesMetal() started.
+◇ Test case passing 1 argument source → .gradient to sourceFixturesRepeatAtFixedSeedAndTime(_:) started.
+◇ Test case passing 1 argument source → .oscillator to sourceFixturesRepeatAtFixedSeedAndTime(_:) started.
+◇ Test case passing 1 argument source → .noise to sourceFixturesRepeatAtFixedSeedAndTime(_:) started.
+◇ Test case passing 1 argument source → .shape to sourceFixturesRepeatAtFixedSeedAndTime(_:) started.
+◇ Test case passing 1 argument source → .solid to sourceFixturesRepeatAtFixedSeedAndTime(_:) started.
+✔ Test sourceUniformLayoutMatchesMetal() passed after 0.071 seconds.
+✔ Test solidFixtureUsesSRGBEncodingAndEveryPixel() passed after 0.072 seconds.
+✔ Test gradientAnalyticSamplesAndVariants() passed after 0.073 seconds.
+✔ Test shapesAspectOutlineAndVariants() passed after 0.073 seconds.
+✔ Test sourceFixturesRepeatAtFixedSeedAndTime(_:) with 5 test cases passed after 0.074 seconds.
+✔ Test seededNoiseAndAnimation() passed after 0.074 seconds.
+✔ Test oscillatorWaveformsClockAndFreeze() passed after 0.075 seconds.
+✔ Test blackWhiteAndResize() passed after 0.081 seconds.
+✔ Test allParameterExtremesRenderOpaquePixels() passed after 0.105 seconds.
+✔ Test run with 9 tests in 0 suites passed after 0.106 seconds.
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Test bridgeValuesAndInstanceIsolation() started.
+◇ Test boundedQueuePreservesOrderAndRejectsOverflow() started.
+◇ Test concurrentProducerConsumerKeepsEventPayloads() started.
+✔ Test bridgeValuesAndInstanceIsolation() passed after 0.001 seconds.
+✔ Test boundedQueuePreservesOrderAndRejectsOverflow() passed after 0.002 seconds.
+✔ Test concurrentProducerConsumerKeepsEventPayloads() passed after 0.043 seconds.
+✔ Test run with 3 tests in 0 suites passed after 0.043 seconds.
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Test malformedTypedSourceFilesAreRejected() started.
+◇ Test everySourcePersistsAndEveryValueUndoes(_:) started.
+◇ Test fixedClockIsRepeatable() started.
+◇ Test failingWriteAndCommitLeaveExistingDataIntact() started.
+◇ Test reducerPreservesOriginalAndSeed() started.
+◇ Test parameterValidation(input:expected:) started.
+◇ Test renamePreservesDataAndRefusesCollision() started.
+◇ Test gestureIsOneUndoAndRedo() started.
+◇ Test parameterBoundsAndTypeValidation() started.
+◇ Test versionOneMigrationPreservesIdentityColorAndSeed() started.
+◇ Test branchingInvalidatesRedoAndNoOpDoesNot() started.
+◇ Test sourceSwitchKeepsSettingsAndEndsGesture() started.
+◇ Test dirtyTrackingAndConcurrentSaveSnapshot() started.
+◇ Test invalidProjectNames(_:) started.
+◇ Test parameterAvailabilityAndPrecisionFollowMetadata() started.
+◇ Test noOpGestureAndUndoDuringDrag() started.
+◇ Test caseOnlyRenameAndUnsavedRenameValidation() started.
+◇ Test atomicSavePreservesValidFileOnFailure() started.
+◇ Test historyIsBounded() started.
+◇ Test projectRoundTrip() started.
+◇ Test corruptAndUnsupportedDocuments() started.
+◇ Test sourceRegistryIsCompleteAndTyped() started.
+◇ Test case passing 2 arguments input → 2.0, expected → 1.0 to parameterValidation(input:expected:) started.
+◇ Test case passing 2 arguments input → -1.0, expected → 0.0 to parameterValidation(input:expected:) started.
+◇ Test case passing 1 argument source → .gradient to everySourcePersistsAndEveryValueUndoes(_:) started.
+◇ Test case passing 1 argument source → .noise to everySourcePersistsAndEveryValueUndoes(_:) started.
+◇ Test case passing 1 argument source → .solid to everySourcePersistsAndEveryValueUndoes(_:) started.
+◇ Test case passing 1 argument source → .oscillator to everySourcePersistsAndEveryValueUndoes(_:) started.
+◇ Test case passing 1 argument source → .shape to everySourcePersistsAndEveryValueUndoes(_:) started.
+◇ Test case passing 1 argument name → "" to invalidProjectNames(_:) started.
+◇ Test case passing 1 argument name → " " to invalidProjectNames(_:) started.
+◇ Test case passing 1 argument name → "." to invalidProjectNames(_:) started.
+◇ Test case passing 2 arguments input → inf, expected → 0.0 to parameterValidation(input:expected:) started.
+◇ Test case passing 1 argument name → ".." to invalidProjectNames(_:) started.
+◇ Test case passing 2 arguments input → nan, expected → 0.0 to parameterValidation(input:expected:) started.
+◇ Test case passing 1 argument name → "a/b" to invalidProjectNames(_:) started.
+◇ Test case passing 2 arguments input → 0.5, expected → 0.5 to parameterValidation(input:expected:) started.
+◇ Test case passing 1 argument name → "a:b" to invalidProjectNames(_:) started.
+◇ Test case passing 1 argument name → "a\b" to invalidProjectNames(_:) started.
+◇ Test case passing 1 argument name → "a◇ Test case passing 1 argument name → "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" to invalidProjectNames(_:) started.
+✔ Test reducerPreservesOriginalAndSeed() passed after 0.003 seconds.
+✔ Test parameterValidation(input:expected:) with 5 test cases passed after 0.003 seconds.
+✔ Test fixedClockIsRepeatable() passed after 0.003 seconds.
+✔ Test dirtyTrackingAndConcurrentSaveSnapshot() passed after 0.003 seconds.
+✔ Test sourceSwitchKeepsSettingsAndEndsGesture() passed after 0.003 seconds.
+✔ Test branchingInvalidatesRedoAndNoOpDoesNot() passed after 0.003 seconds.
+✔ Test parameterAvailabilityAndPrecisionFollowMetadata() passed after 0.003 seconds.
+✔ Test gestureIsOneUndoAndRedo() passed after 0.003 seconds.
+✔ Test noOpGestureAndUndoDuringDrag() passed after 0.003 seconds.
+✔ Test versionOneMigrationPreservesIdentityColorAndSeed() passed after 0.003 seconds.
+✔ Test everySourcePersistsAndEveryValueUndoes(_:) with 5 test cases passed after 0.003 seconds.
+✔ Test invalidProjectNames(_:) with 9 test cases passed after 0.003 seconds.
+✔ Test parameterBoundsAndTypeValidation() passed after 0.003 seconds.
+✔ Test projectRoundTrip() passed after 0.003 seconds.
+✔ Test sourceRegistryIsCompleteAndTyped() passed after 0.003 seconds.
+✔ Test malformedTypedSourceFilesAreRejected() passed after 0.005 seconds.
+✔ Test corruptAndUnsupportedDocuments() passed after 0.006 seconds.
+✔ Test historyIsBounded() passed after 0.006 seconds.
+✔ Test renamePreservesDataAndRefusesCollision() passed after 0.007 seconds.
+✔ Test atomicSavePreservesValidFileOnFailure() passed after 0.007 seconds.
+✔ Test caseOnlyRenameAndUnsavedRenameValidation() passed after 0.009 seconds.
+✔ Test failingWriteAndCommitLeaveExistingDataIntact() passed after 0.011 seconds.
+✔ Test run with 22 tests in 0 suites passed after 0.012 seconds.

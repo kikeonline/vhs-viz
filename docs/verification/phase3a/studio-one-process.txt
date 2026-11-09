@@ -1,0 +1,20 @@
+Analysis of sampling studioapp (pid 95468) every 1 millisecond
+Process:         studioapp [95468]
+Path:            /Applications/Studio One 5.app/Contents/MacOS/studioapp
+Load Address:    0x102474000
+Identifier:      com.presonus.studioone2
+Version:         5.5.2 Build 86528 (5.5.2)
+Code Type:       ARM64
+Platform:        macOS
+Parent Process:  launchd [1]
+Target Type:     live task
+
+Date/Time:       2026-11-09 12:11:08.348 -0500
+Launch Time:     2026-11-09 12:10:11.123 -0500
+OS Version:      macOS 27.2 (26B7124)
+Report Version:  7
+Analysis Tool:   /usr/bin/sample
+
+Physical footprint:         980.2M
+Physical footprint (peak):  984.9M
+Idle exit:                  untracked

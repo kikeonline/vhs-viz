@@ -1,0 +1,23 @@
+Building for debugging...
+[Using on-disk description]
+[3 / 9] VHSPluginUI
+[5 / 11] VHSPluginUI
+[8 / 11] VHSPluginUI
+[11 / 12] VHSPluginProbe-product
+Build complete! (2.43 secs.)
+PASS base values stay independent
+PASS learn detects channel/controller/offset
+PASS learned CC and host context reach display timer
+PASS held notes stay independent
+PASS overflow clears queued held notes
+PASS two independent output windows
+PASS closing one output preserves the other
+PASS detaching editor preserves output
+PASS light capture window is key
+PASS light native window capture
+PASS dark capture window is key
+PASS dark native window capture
+PASS instance teardown closes output and stops timer
+PLUGIN SELFTEST done
+PASS plugin-editor-dark-layout.json: 6 probes in 2 areas, 0 lined up across areas
+PASS plugin-editor-light-layout.json: 6 probes in 2 areas, 0 lined up across areas
