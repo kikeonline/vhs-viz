@@ -26,7 +26,7 @@ class Editor final : public CPluginView {
     void* runtime;
     void* view = nullptr;
 public:
-    Editor(Prototype* owner, void* runtime): owner(owner), runtime(runtime) { rect = {0,0,1000,600}; }
+    Editor(Prototype* owner, void* runtime): owner(owner), runtime(runtime) { rect = {0,0,1000,720}; }
     ~Editor() override { if (view) vhs_ui_detach(view); }
     tresult PLUGIN_API isPlatformTypeSupported(FIDString type) override {
         return type && std::strcmp(type, kPlatformTypeNSView) == 0 ? kResultTrue : kResultFalse;

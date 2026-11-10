@@ -1,3 +1,4 @@
+import VHSSignal
 import AppKit
 import MetalKit
 import VHSCore
@@ -143,6 +144,10 @@ enum Verification {
         guard let control = NSApp.windows.first(where: { $0.identifier?.rawValue == "vhs-control" }) else {
             throw Failure(description: "control window missing")
         }
+        if ProcessInfo.processInfo.environment["APP_SNAPSHOT_PAGES"] == "signal" {
+            try await SignalSnapshots.run(model, control: control, directory: directory)
+            log("SNAPSHOT done \(directory)"); return
+        }
         if ProcessInfo.processInfo.environment["APP_SNAPSHOT_PAGES"] == "nodes" {
             try await GraphSnapshots.run(model,control:control,directory:directory)
             log("SNAPSHOT done \(directory)")
@@ -181,6 +186,7 @@ enum Verification {
         try await SourceSnapshots.run(model, control: control, directory: directory)
         try await EffectSnapshots.run(model, control: control, directory: directory)
         try await GraphSnapshots.run(model,control:control,directory:directory)
+        try await SignalSnapshots.run(model, control: control, directory: directory)
         log("SNAPSHOT done \(directory)")
     }
     static func capture(_ window: NSWindow, to path: String) throws {

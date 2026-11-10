@@ -1,3 +1,4 @@
+import VHSSignal
 import AppKit
 import VHSCore
 import VHSGraphUI
@@ -9,8 +10,8 @@ enum GraphSnapshots {
             if let scroll = view as? NSScrollView { return scroll }
             return view.subviews.lazy.compactMap { scroll($0) }.first
         }
-        for mode in ["light","dark"] {
-            NSApp.appearance = NSAppearance(named:mode == "light" ? .aqua : .darkAqua)
+        for (mode, appearance) in SignalSnapshots.appearances {
+            NSApp.appearance = NSAppearance(named: appearance)
             for name in ["migrated","branch","error"] {
                 let scene: SceneSnapshot
                 if name == "migrated" { scene = .init(source:.shape,effects:[.init(kind:.transform)]) }

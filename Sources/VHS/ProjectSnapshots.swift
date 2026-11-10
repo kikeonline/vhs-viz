@@ -1,3 +1,4 @@
+import VHSSignal
 import AppKit
 import VHSCore
 

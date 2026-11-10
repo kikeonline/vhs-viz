@@ -1,6 +1,7 @@
 import AppKit
 import VHSCore
 import SwiftUI
+import VHSSignal
 
 enum SourceSnapshots {
     static func run(_ model: AppModel, control: NSWindow, directory: String) async throws {
@@ -9,8 +10,8 @@ enum SourceSnapshots {
             return view.subviews.lazy.compactMap { scrollView($0) }.first
         }
         model.output.window?.performClose(nil)
-        for mode in ["light", "dark"] {
-            NSApp.appearance = NSAppearance(named:mode == "light" ? .aqua : .darkAqua)
+        for (mode, appearance) in SignalSnapshots.appearances {
+            NSApp.appearance = NSAppearance(named: appearance)
             for source in SourceKind.allCases {
                 model.replaceProject(.init(scene:.init(source:source)))
                 for (suffix,size) in [("",NSSize(width:Layout.defaultWidth,height:Layout.defaultHeight)),

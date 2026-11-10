@@ -1,4 +1,5 @@
 import SwiftUI
+import VHSSignal
 import VHSCore
 
 struct EffectChain: View {
@@ -6,40 +7,44 @@ struct EffectChain: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Space.sm) {
             HStack {
-                Text("Effects").font(.headline)
-                Text("\(model.scene.effects.count)/\(EffectRegistry.maximumEffects)").font(.caption).foregroundStyle(.secondary)
+                Text("Effects").font(KitType.section)
+                Text("\(model.scene.effects.count)/\(EffectRegistry.maximumEffects)").font(KitType.meta).foregroundStyle(Ink.secondary)
                 Spacer()
                 Button("Source") { model.selectEffect(nil) }
                     .help("Show source controls")
-                Menu("Add Effect", systemImage: "plus") {
+                Menu("Add Effect", systemImage: KitIcon.add.rawValue) {
                     ForEach(EffectRegistry.definitions) { definition in
                         Button(definition.title) { model.addEffect(definition.id) }
                     }
                 }
                 .disabled(model.scene.effects.count >= EffectRegistry.maximumEffects)
-                .help("Add a visual effect to the end of the chain")
+                .help(model.scene.effects.count >= EffectRegistry.maximumEffects ? "The chain supports up to 16 effects" : "Add a visual effect to the end of the chain")
             }
             .gridProbe("effect-chain-header", area: "effect-chain")
             if model.scene.effects.isEmpty {
-                Text("Add an effect to change the source.")
-                    .font(.subheadline).foregroundStyle(.secondary)
+                Text("No effects yet")
+                    .font(KitType.body).foregroundStyle(Ink.secondary)
                     .gridProbe("effect-chain-empty", area: "effect-chain")
             } else {
                 List(selection: Binding(get: { model.selectedEffectID }, set: { model.selectEffect($0) })) {
                     ForEach(Array(model.scene.effects.enumerated()), id: \.element.id) { index, effect in
                         HStack(spacing: Space.sm) {
-                            Text("\(index+1). \(effect.kind.definition.title)")
+                            Text("\(index+1)").font(KitType.value).strikethrough(effect.bypassed).frame(width: Space.xxl)
+                            Text(effect.kind.definition.title)
                                 .lineLimit(1).help(effect.kind.definition.title)
                                 .frame(maxWidth: .infinity, alignment: .leading)
+                            if effect.bypassed { Text("Bypassed").font(KitType.meta).foregroundStyle(Ink.secondary) }
                             Toggle("Bypass", isOn: Binding(get: { effect.bypassed }, set: { model.send(.bypassEffect(effect.id, $0)) }))
                                 .labelsHidden().toggleStyle(.checkbox)
                                 .accessibilityLabel("Bypass \(effect.kind.definition.title) \(index+1)")
                                 .help("Skip this effect and keep its settings")
-                            Button("Move Up", systemImage: "chevron.up") { model.moveEffect(effect.id, by: -1) }
+                            Button("Move Up", systemImage: KitIcon.up.rawValue) { model.moveEffect(effect.id, by: -1) }
                                 .disabled(index == 0).help("Apply this effect earlier in the chain")
-                            Button("Move Down", systemImage: "chevron.down") { model.moveEffect(effect.id, by: 1) }
+                            Button("Move Down", systemImage: KitIcon.down.rawValue) { model.moveEffect(effect.id, by: 1) }
                                 .disabled(index == model.scene.effects.count-1).help("Apply this effect later in the chain")
                         }
+                        .signalRow(selected: model.selectedEffectID == effect.id)
+                        .listRowBackground(model.selectedEffectID == effect.id ? Ink.selection : Ink.surface)
                         .labelStyle(.iconOnly)
                         .tag(effect.id)
                         .contextMenu {
@@ -51,7 +56,7 @@ struct EffectChain: View {
                         }
                     }
                 }
-                .listStyle(.inset)
+                .listStyle(.inset).scrollContentBackground(.hidden).background(Ink.surface)
                 .frame(minHeight: Layout.effectListMinHeight)
                 .accessibilityLabel("Ordered effects")
                 .gridProbe("effect-chain-list", area: "effect-chain")
@@ -68,15 +73,12 @@ struct EffectControls: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Space.xl) {
             HStack {
-                Text(effect.kind.definition.title).font(.headline)
+                Text(effect.kind.definition.title).font(KitType.section).help(effect.kind.definition.summary)
                 Spacer()
                 Button("Source") { model.selectEffect(nil) }.help("Return to source controls")
             }.gridProbe("effect-inspector-title", area: "effect-inspector")
             ScrollView {
                 VStack(alignment: .leading, spacing: Space.xl) {
-                    Text(effect.kind.definition.summary).font(.subheadline).foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .gridProbe("effect-description", area: "effect-parameters")
                     Toggle("Bypass", isOn: Binding(get: { effect.bypassed }, set: { model.send(.bypassEffect(effect.id, $0)) }))
                         .help("Skip this effect and keep its settings")
                         .gridProbe("effect-bypass", area: "effect-parameters")
@@ -104,26 +106,12 @@ private struct EffectParameterControl: View {
     let effect: EffectInstance
     let parameter: EffectParameter
     private func send(_ value: ParameterValue) { model.send(.setEffectValue(effect.id, parameter.id, value)) }
+    private var defaultNumber: Double { if case let .number(v) = parameter.defaultValue { v } else { 0 } }
     var body: some View {
         switch parameter.kind {
         case let .number(range):
-            VStack(alignment: .leading, spacing: Space.sm) {
-                HStack(alignment: .firstTextBaseline) {
-                    Text(parameter.title)
-                    Spacer()
-                    Text(effect.number(parameter.id), format: .number.precision(.fractionLength(2)))
-                        .monospacedDigit().foregroundStyle(.secondary)
-                    if !parameter.unit.isEmpty { Text(parameter.unit).foregroundStyle(.secondary) }
-                }
-                .gridProbe("effect-\(parameter.id)-label", area: "effect-\(parameter.id)-control")
-                Slider(value: Binding(get: { effect.number(parameter.id) }, set: { send(.number($0)) }), in: range,
-                       onEditingChanged: { if $0 { model.beginEdit() } else { model.endEdit() } })
-                    .accessibilityLabel(parameter.title)
-                    .accessibilityValue(effect.number(parameter.id).formatted(.number.precision(.fractionLength(2))))
-                    .help("Adjust \(parameter.title.lowercased())\(parameter.unit.isEmpty ? "" : " in " + parameter.unit)")
-                    .gridProbe("effect-\(parameter.id)-slider", area: "effect-\(parameter.id)-control")
-            }
-            .gridArea("effect-\(parameter.id)-control", inset: 0)
+            NumericParameter(parameter.title, unit: parameter.unit, value: effect.number(parameter.id), range: range,
+                             defaultValue: defaultNumber, change: { send(.number($0)) }, beginEdit: model.beginEdit, endEdit: model.endEdit)
         case .color:
             ColorPicker(parameter.title, selection: Binding(get: { SceneColorBridge.native(effect.color(parameter.id)) }, set: {
                 if let color = SceneColorBridge.scene($0) { send(.color(color)) }

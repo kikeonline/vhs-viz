@@ -1,0 +1,284 @@
+{
+  "probes" : [
+    {
+      "area" : "9341E04A-B574-48BC-8D4E-FE821416A73A-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "9341E04A-B574-48BC-8D4E-FE821416A73A-label",
+      "width" : 248,
+      "x" : 712,
+      "y" : 379
+    },
+    {
+      "area" : "9341E04A-B574-48BC-8D4E-FE821416A73A-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "9341E04A-B574-48BC-8D4E-FE821416A73A-parameter",
+      "width" : 248,
+      "x" : 712,
+      "y" : 379
+    },
+    {
+      "area" : "9341E04A-B574-48BC-8D4E-FE821416A73A-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "9341E04A-B574-48BC-8D4E-FE821416A73A-slider",
+      "width" : 248,
+      "x" : 712,
+      "y" : 419
+    },
+    {
+      "area" : "graph-page",
+      "height" : 449,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-main",
+      "width" : 639,
+      "x" : 20,
+      "y" : 223
+    },
+    {
+      "area" : "graph-page",
+      "height" : 449,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "graph-page",
+      "width" : 960,
+      "x" : 20,
+      "y" : 223
+    },
+    {
+      "area" : "graph-page",
+      "height" : 449,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-inspector",
+      "width" : 280,
+      "x" : 700,
+      "y" : 223
+    },
+    {
+      "area" : "graph-window",
+      "edge" : "lead",
+      "height" : 135,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-preview-status",
+      "width" : 698,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "graph-window",
+      "height" : 600,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "graph-window",
+      "width" : 960,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "graph-window",
+      "edge" : "lead",
+      "height" : 449,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-editor",
+      "width" : 960,
+      "x" : 20,
+      "y" : 223
+    },
+    {
+      "area" : "graph-workspace",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-toolbar",
+      "width" : 639,
+      "x" : 20,
+      "y" : 223
+    },
+    {
+      "area" : "graph-workspace",
+      "height" : 449,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "graph-workspace",
+      "width" : 639,
+      "x" : 20,
+      "y" : 223
+    },
+    {
+      "area" : "graph-workspace",
+      "edge" : "lead",
+      "height" : 409,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-canvas",
+      "width" : 639,
+      "x" : 20,
+      "y" : 263
+    },
+    {
+      "area" : "node-details",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-title",
+      "width" : 51,
+      "x" : 712,
+      "y" : 275
+    },
+    {
+      "area" : "node-details",
+      "height" : 308,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "node-details",
+      "width" : 248,
+      "x" : 712,
+      "y" : 275
+    },
+    {
+      "area" : "node-details",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-connections-title",
+      "width" : 79.5,
+      "x" : 712,
+      "y" : 307
+    },
+    {
+      "area" : "node-details",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-input-value",
+      "width" : 154.5,
+      "x" : 712,
+      "y" : 339
+    },
+    {
+      "area" : "node-details",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-value-value",
+      "width" : 248,
+      "x" : 712,
+      "y" : 379
+    },
+    {
+      "area" : "node-details",
+      "edge" : "lead",
+      "height" : 80,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-position",
+      "width" : 248,
+      "x" : 712,
+      "y" : 459
+    },
+    {
+      "area" : "node-details",
+      "edge" : "lead",
+      "height" : 28,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-identity",
+      "width" : 214.5,
+      "x" : 712,
+      "y" : 555
+    },
+    {
+      "area" : "node-inspector",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-node-picker",
+      "width" : 236,
+      "x" : 712,
+      "y" : 235
+    },
+    {
+      "area" : "node-inspector",
+      "height" : 425,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "node-inspector",
+      "width" : 256,
+      "x" : 712,
+      "y" : 235
+    },
+    {
+      "area" : "node-inspector",
+      "edge" : "lead",
+      "height" : 385,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-details-scroll",
+      "width" : 256,
+      "x" : 712,
+      "y" : 275
+    },
+    {
+      "area" : "node-library",
+      "height" : 360,
+      "inset" : 16,
+      "kind" : "area",
+      "name" : "node-library",
+      "width" : 320,
+      "x" : 13,
+      "y" : 13
+    },
+    {
+      "area" : "node-library",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "library-search",
+      "width" : 288,
+      "x" : 29,
+      "y" : 29
+    },
+    {
+      "area" : "node-library",
+      "edge" : "lead",
+      "height" : 296,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "library-list",
+      "width" : 288,
+      "x" : 29,
+      "y" : 61
+    },
+    {
+      "area" : "page",
+      "height" : 640,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "page",
+      "width" : 1000,
+      "x" : 0,
+      "y" : 52
+    }
+  ],
+  "window" : {
+    "height" : 640,
+    "width" : 1000
+  }
+}

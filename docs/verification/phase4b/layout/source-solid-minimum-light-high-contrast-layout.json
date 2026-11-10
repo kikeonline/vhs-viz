@@ -1,0 +1,284 @@
+{
+  "probes" : [
+    {
+      "area" : "7F7555B7-4D0C-4673-96E1-41F404348409-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "7F7555B7-4D0C-4673-96E1-41F404348409-parameter",
+      "width" : 240,
+      "x" : 596,
+      "y" : 248
+    },
+    {
+      "area" : "7F7555B7-4D0C-4673-96E1-41F404348409-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "7F7555B7-4D0C-4673-96E1-41F404348409-label",
+      "width" : 240,
+      "x" : 596,
+      "y" : 248
+    },
+    {
+      "area" : "7F7555B7-4D0C-4673-96E1-41F404348409-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "7F7555B7-4D0C-4673-96E1-41F404348409-slider",
+      "width" : 240,
+      "x" : 596,
+      "y" : 288
+    },
+    {
+      "area" : "D437D3BB-107F-48A0-A3AF-DB77FE540E8F-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "D437D3BB-107F-48A0-A3AF-DB77FE540E8F-parameter",
+      "width" : 240,
+      "x" : 596,
+      "y" : 332
+    },
+    {
+      "area" : "D437D3BB-107F-48A0-A3AF-DB77FE540E8F-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "D437D3BB-107F-48A0-A3AF-DB77FE540E8F-label",
+      "width" : 240,
+      "x" : 596,
+      "y" : 332
+    },
+    {
+      "area" : "D437D3BB-107F-48A0-A3AF-DB77FE540E8F-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "D437D3BB-107F-48A0-A3AF-DB77FE540E8F-slider",
+      "width" : 240,
+      "x" : 596,
+      "y" : 372
+    },
+    {
+      "area" : "ED1FD4F2-1947-4EE1-AF95-CC916B8F501E-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "ED1FD4F2-1947-4EE1-AF95-CC916B8F501E-parameter",
+      "width" : 240,
+      "x" : 596,
+      "y" : 164
+    },
+    {
+      "area" : "ED1FD4F2-1947-4EE1-AF95-CC916B8F501E-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "ED1FD4F2-1947-4EE1-AF95-CC916B8F501E-label",
+      "width" : 240,
+      "x" : 596,
+      "y" : 164
+    },
+    {
+      "area" : "ED1FD4F2-1947-4EE1-AF95-CC916B8F501E-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "ED1FD4F2-1947-4EE1-AF95-CC916B8F501E-slider",
+      "width" : 240,
+      "x" : 596,
+      "y" : 204
+    },
+    {
+      "area" : "effect-chain",
+      "height" : 56,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "effect-chain",
+      "width" : 519,
+      "x" : 20,
+      "y" : 420
+    },
+    {
+      "area" : "effect-chain",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-chain-header",
+      "width" : 519,
+      "x" : 20,
+      "y" : 420
+    },
+    {
+      "area" : "effect-chain",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-chain-empty",
+      "width" : 85.5,
+      "x" : 20,
+      "y" : 460
+    },
+    {
+      "area" : "inspector",
+      "edge" : "lead",
+      "height" : 56,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source-picker",
+      "width" : 105.5,
+      "x" : 596,
+      "y" : 88
+    },
+    {
+      "area" : "inspector",
+      "height" : 428,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "inspector",
+      "width" : 248,
+      "x" : 596,
+      "y" : 88
+    },
+    {
+      "area" : "inspector",
+      "edge" : "lead",
+      "height" : 352,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "parameter-scroll",
+      "width" : 248,
+      "x" : 596,
+      "y" : 164
+    },
+    {
+      "area" : "page",
+      "height" : 500,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "page",
+      "width" : 880,
+      "x" : 0,
+      "y" : 52
+    },
+    {
+      "area" : "page",
+      "height" : 460,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-column",
+      "width" : 519,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "page",
+      "height" : 460,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "parameters-column",
+      "width" : 280,
+      "x" : 580,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-title",
+      "width" : 79,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "height" : 460,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "preview",
+      "width" : 519,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 268,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-surface",
+      "width" : 476.44444444444446,
+      "x" : 20,
+      "y" : 104
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-source",
+      "width" : 519,
+      "x" : 20,
+      "y" : 388
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.red",
+      "width" : 240,
+      "x" : 596,
+      "y" : 164
+    },
+    {
+      "area" : "source-parameters",
+      "height" : 232,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "source-parameters",
+      "width" : 240,
+      "x" : 596,
+      "y" : 164
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.green",
+      "width" : 240,
+      "x" : 596,
+      "y" : 248
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.blue",
+      "width" : 240,
+      "x" : 596,
+      "y" : 332
+    }
+  ],
+  "window" : {
+    "height" : 500,
+    "width" : 880
+  }
+}

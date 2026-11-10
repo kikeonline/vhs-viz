@@ -1,0 +1,349 @@
+{
+  "probes" : [
+    {
+      "area" : "564E4AC3-CE95-4AD9-A0AE-D1C7B9F79C3D-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "564E4AC3-CE95-4AD9-A0AE-D1C7B9F79C3D-parameter",
+      "width" : 240,
+      "x" : 716,
+      "y" : 176.420166015625
+    },
+    {
+      "area" : "564E4AC3-CE95-4AD9-A0AE-D1C7B9F79C3D-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "564E4AC3-CE95-4AD9-A0AE-D1C7B9F79C3D-label",
+      "width" : 240,
+      "x" : 716,
+      "y" : 176.420166015625
+    },
+    {
+      "area" : "564E4AC3-CE95-4AD9-A0AE-D1C7B9F79C3D-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "564E4AC3-CE95-4AD9-A0AE-D1C7B9F79C3D-slider",
+      "width" : 240,
+      "x" : 716,
+      "y" : 216.420166015625
+    },
+    {
+      "area" : "AB008F9A-9245-4540-90B4-64E74E0FD5C6-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "AB008F9A-9245-4540-90B4-64E74E0FD5C6-parameter",
+      "width" : 240,
+      "x" : 716,
+      "y" : 344.420166015625
+    },
+    {
+      "area" : "AB008F9A-9245-4540-90B4-64E74E0FD5C6-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "AB008F9A-9245-4540-90B4-64E74E0FD5C6-label",
+      "width" : 240,
+      "x" : 716,
+      "y" : 344.420166015625
+    },
+    {
+      "area" : "AB008F9A-9245-4540-90B4-64E74E0FD5C6-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "AB008F9A-9245-4540-90B4-64E74E0FD5C6-slider",
+      "width" : 240,
+      "x" : 716,
+      "y" : 384.420166015625
+    },
+    {
+      "area" : "BD517B89-6A8B-4B8D-B114-67D15E727EC4-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "BD517B89-6A8B-4B8D-B114-67D15E727EC4-label",
+      "width" : 240,
+      "x" : 716,
+      "y" : 260.420166015625
+    },
+    {
+      "area" : "BD517B89-6A8B-4B8D-B114-67D15E727EC4-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "BD517B89-6A8B-4B8D-B114-67D15E727EC4-parameter",
+      "width" : 240,
+      "x" : 716,
+      "y" : 260.420166015625
+    },
+    {
+      "area" : "BD517B89-6A8B-4B8D-B114-67D15E727EC4-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "BD517B89-6A8B-4B8D-B114-67D15E727EC4-slider",
+      "width" : 240,
+      "x" : 716,
+      "y" : 300.420166015625
+    },
+    {
+      "area" : "F41EAE2D-CF81-4C4B-88E1-F591A8259CAA-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "F41EAE2D-CF81-4C4B-88E1-F591A8259CAA-parameter",
+      "width" : 240,
+      "x" : 716,
+      "y" : 428.420166015625
+    },
+    {
+      "area" : "F41EAE2D-CF81-4C4B-88E1-F591A8259CAA-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "F41EAE2D-CF81-4C4B-88E1-F591A8259CAA-label",
+      "width" : 240,
+      "x" : 716,
+      "y" : 428.420166015625
+    },
+    {
+      "area" : "F41EAE2D-CF81-4C4B-88E1-F591A8259CAA-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "F41EAE2D-CF81-4C4B-88E1-F591A8259CAA-slider",
+      "width" : 240,
+      "x" : 716,
+      "y" : 468.420166015625
+    },
+    {
+      "area" : "effect-chain",
+      "height" : 188.5625,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "effect-chain",
+      "width" : 639,
+      "x" : 20,
+      "y" : 511.4375
+    },
+    {
+      "area" : "effect-chain",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-chain-header",
+      "width" : 639,
+      "x" : 20,
+      "y" : 511.4375
+    },
+    {
+      "area" : "effect-chain",
+      "edge" : "lead",
+      "height" : 148.5625,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-chain-list",
+      "width" : 639,
+      "x" : 20,
+      "y" : 551.4375
+    },
+    {
+      "area" : "effect-inspector",
+      "height" : 596,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "effect-inspector",
+      "width" : 248,
+      "x" : 716,
+      "y" : 88
+    },
+    {
+      "area" : "effect-inspector",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-inspector-title",
+      "width" : 248,
+      "x" : 716,
+      "y" : 88
+    },
+    {
+      "area" : "effect-inspector",
+      "edge" : "lead",
+      "height" : 544,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-scroll",
+      "width" : 248,
+      "x" : 716,
+      "y" : 140
+    },
+    {
+      "area" : "effect-parameters",
+      "edge" : "lead",
+      "height" : 16.420166015625,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-bypass",
+      "width" : 65,
+      "x" : 716,
+      "y" : 140
+    },
+    {
+      "area" : "effect-parameters",
+      "height" : 404.420166015625,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "effect-parameters",
+      "width" : 240,
+      "x" : 716,
+      "y" : 140
+    },
+    {
+      "area" : "effect-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-x",
+      "width" : 240,
+      "x" : 716,
+      "y" : 176.420166015625
+    },
+    {
+      "area" : "effect-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-y",
+      "width" : 240,
+      "x" : 716,
+      "y" : 260.420166015625
+    },
+    {
+      "area" : "effect-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-rotation",
+      "width" : 240,
+      "x" : 716,
+      "y" : 344.420166015625
+    },
+    {
+      "area" : "effect-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-scale",
+      "width" : 240,
+      "x" : 716,
+      "y" : 428.420166015625
+    },
+    {
+      "area" : "effect-parameters",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-remove",
+      "width" : 108,
+      "x" : 716,
+      "y" : 512.420166015625
+    },
+    {
+      "area" : "page",
+      "height" : 668,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "page",
+      "width" : 1000,
+      "x" : 0,
+      "y" : 52
+    },
+    {
+      "area" : "page",
+      "height" : 628,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-column",
+      "width" : 639,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "page",
+      "height" : 628,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "parameters-column",
+      "width" : 280,
+      "x" : 700,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-title",
+      "width" : 79,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "height" : 628,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "preview",
+      "width" : 639,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 359.4375,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-surface",
+      "width" : 639,
+      "x" : 20,
+      "y" : 104
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-source",
+      "width" : 639,
+      "x" : 20,
+      "y" : 479.4375
+    }
+  ],
+  "window" : {
+    "height" : 720,
+    "width" : 1000
+  }
+}

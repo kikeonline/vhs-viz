@@ -1,4 +1,5 @@
 import SwiftUI
+import VHSSignal
 import VHSCore
 
 struct RenameProjectView: View {
@@ -12,7 +13,7 @@ struct RenameProjectView: View {
     }
     var body: some View {
         VStack(alignment: .leading, spacing: Space.xl) {
-            Text("Rename Project").font(.headline).gridProbe("rename-heading", area: "rename")
+            Text("Rename Project").font(KitType.section).gridProbe("rename-heading", area: "rename")
             VStack(alignment: .leading, spacing: Space.sm) {
                 TextField("Project name", text: $name)
                     .textFieldStyle(.roundedBorder)

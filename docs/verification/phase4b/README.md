@@ -1,0 +1,1 @@
+Phase 4B automated evidence. Logs normalize trailing whitespace and escape NUL for readable diffs; assertions and capture skips are retained. Layout JSON contains native measured frames, not screenshots. Active native visual, keyboard, VoiceOver and Studio One acceptance remains deferred. See ../../PHASE-4B-VERIFICATION.md.

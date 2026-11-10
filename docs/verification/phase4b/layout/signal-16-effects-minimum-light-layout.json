@@ -1,0 +1,295 @@
+{
+  "probes" : [
+    {
+      "area" : "5A84E364-93BC-4474-A7FE-785373618C88-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "5A84E364-93BC-4474-A7FE-785373618C88-parameter",
+      "width" : 240,
+      "x" : 596,
+      "y" : 260.420166015625
+    },
+    {
+      "area" : "5A84E364-93BC-4474-A7FE-785373618C88-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "5A84E364-93BC-4474-A7FE-785373618C88-label",
+      "width" : 240,
+      "x" : 596,
+      "y" : 260.420166015625
+    },
+    {
+      "area" : "5A84E364-93BC-4474-A7FE-785373618C88-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "5A84E364-93BC-4474-A7FE-785373618C88-slider",
+      "width" : 240,
+      "x" : 596,
+      "y" : 300.420166015625
+    },
+    {
+      "area" : "B41B18AF-D64B-4377-892C-866763FC152B-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "B41B18AF-D64B-4377-892C-866763FC152B-label",
+      "width" : 240,
+      "x" : 596,
+      "y" : 176.420166015625
+    },
+    {
+      "area" : "B41B18AF-D64B-4377-892C-866763FC152B-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "B41B18AF-D64B-4377-892C-866763FC152B-parameter",
+      "width" : 240,
+      "x" : 596,
+      "y" : 176.420166015625
+    },
+    {
+      "area" : "B41B18AF-D64B-4377-892C-866763FC152B-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "B41B18AF-D64B-4377-892C-866763FC152B-slider",
+      "width" : 240,
+      "x" : 596,
+      "y" : 216.420166015625
+    },
+    {
+      "area" : "effect-chain",
+      "height" : 120,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "effect-chain",
+      "width" : 519,
+      "x" : 20,
+      "y" : 420
+    },
+    {
+      "area" : "effect-chain",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-chain-header",
+      "width" : 519,
+      "x" : 20,
+      "y" : 420
+    },
+    {
+      "area" : "effect-chain",
+      "edge" : "lead",
+      "height" : 80,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-chain-list",
+      "width" : 519,
+      "x" : 20,
+      "y" : 460
+    },
+    {
+      "area" : "effect-inspector",
+      "height" : 428,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "effect-inspector",
+      "width" : 248,
+      "x" : 596,
+      "y" : 88
+    },
+    {
+      "area" : "effect-inspector",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-inspector-title",
+      "width" : 248,
+      "x" : 596,
+      "y" : 88
+    },
+    {
+      "area" : "effect-inspector",
+      "edge" : "lead",
+      "height" : 376,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-scroll",
+      "width" : 248,
+      "x" : 596,
+      "y" : 140
+    },
+    {
+      "area" : "effect-parameters",
+      "edge" : "lead",
+      "height" : 16.420166015625,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-bypass",
+      "width" : 65,
+      "x" : 596,
+      "y" : 140
+    },
+    {
+      "area" : "effect-parameters",
+      "height" : 236.420166015625,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "effect-parameters",
+      "width" : 240,
+      "x" : 596,
+      "y" : 140
+    },
+    {
+      "area" : "effect-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-level",
+      "width" : 240,
+      "x" : 596,
+      "y" : 176.420166015625
+    },
+    {
+      "area" : "effect-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-softness",
+      "width" : 240,
+      "x" : 596,
+      "y" : 260.420166015625
+    },
+    {
+      "area" : "effect-parameters",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-remove",
+      "width" : 108,
+      "x" : 596,
+      "y" : 344.420166015625
+    },
+    {
+      "area" : "node-library",
+      "height" : 360,
+      "inset" : 16,
+      "kind" : "area",
+      "name" : "node-library",
+      "width" : 320,
+      "x" : 13,
+      "y" : 13
+    },
+    {
+      "area" : "node-library",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "library-search",
+      "width" : 288,
+      "x" : 29,
+      "y" : 29
+    },
+    {
+      "area" : "node-library",
+      "edge" : "lead",
+      "height" : 296,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "library-list",
+      "width" : 288,
+      "x" : 29,
+      "y" : 61
+    },
+    {
+      "area" : "page",
+      "height" : 500,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "page",
+      "width" : 880,
+      "x" : 0,
+      "y" : 52
+    },
+    {
+      "area" : "page",
+      "height" : 460,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-column",
+      "width" : 519,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "page",
+      "height" : 460,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "parameters-column",
+      "width" : 280,
+      "x" : 580,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-title",
+      "width" : 79,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "height" : 460,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "preview",
+      "width" : 519,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 268,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-surface",
+      "width" : 476.44444444444446,
+      "x" : 20,
+      "y" : 104
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-source",
+      "width" : 519,
+      "x" : 20,
+      "y" : 388
+    }
+  ],
+  "window" : {
+    "height" : 500,
+    "width" : 880
+  }
+}

@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import VHSSignal
 import VHSCore
 import VHSRealtime
 import VHSGraphUI
@@ -72,7 +73,7 @@ public func runPluginProbe(folder: String) async throws {
     try check(second.render.frame.scene.graph == graph,"native plug-in renders a compiled branching/value graph")
     window.contentView = NSHostingView(rootView:PluginEditor(runtime:second))
     second.showsGraph = true; second.graphEditor.selection = aColor.id
-    for (name, appearance) in [("light", NSAppearance.Name.aqua), ("dark", .darkAqua)] {
+    for (name, appearance) in [("light", NSAppearance.Name.aqua), ("dark", .darkAqua), ("light-high-contrast", .accessibilityHighContrastAqua), ("dark-high-contrast", .accessibilityHighContrastDarkAqua)] {
         window.appearance = NSAppearance(named:appearance)
         for mode in ["editor","graph"] {
             second.showsGraph = mode == "graph"

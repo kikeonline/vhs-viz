@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import VHSSignal
 import VHSCore
 
 struct GraphInspector: View {
@@ -22,14 +23,14 @@ struct GraphInspector: View {
             ScrollView {
                 VStack(alignment:.leading,spacing:Space.lg) {
                     if let id = state.selection, let node = graph.node(id) {
-                        Text(node.kind.title).font(.headline).gridProbe("node-title",area:"node-details")
+                        Text(node.kind.title).font(KitType.section).gridProbe("node-title",area:"node-details")
                         if case .effect = node.kind {
                             Toggle("Bypass",isOn:Binding(get:{node.bypassed},set:{ value in
                                 _ = state.apply(graph.replacing(.init(id:node.id,kind:node.kind,values:node.values,bypassed:value)),send:send)
                             })).gridProbe("node-bypass",area:"node-details")
                         }
                         if !node.kind.inputs.isEmpty {
-                            Text("Connections").font(.headline).gridProbe("node-connections-title",area:"node-details")
+                            Text("Connections").font(KitType.section).gridProbe("node-connections-title",area:"node-details")
                             ForEach(node.kind.inputs) { port in
                                 let options = graph.nodes.filter { $0.id != node.id && $0.kind != .output && $0.kind.outputType == port.type }
                                 Picker(port.title,selection:Binding(get:{graph.input(node.id,port.id)?.node},set:{ value in
@@ -49,14 +50,14 @@ struct GraphInspector: View {
                                 .gridProbe("node-value-"+parameter.id,area:"node-details")
                         }
                         positionControls(node).gridProbe("node-position",area:"node-details")
-                        Text("Node ID: \(node.id.uuidString)").font(.caption).foregroundStyle(.secondary).textSelection(.enabled)
+                        Text("Node ID: \(node.id.uuidString)").font(KitType.meta).foregroundStyle(Ink.secondary).textSelection(.enabled)
                             .fixedSize(horizontal:false,vertical:true).gridProbe("node-identity",area:"node-details")
                     } else {
-                        Text("Select a node to edit its values and connections.").foregroundStyle(.secondary).fixedSize(horizontal:false,vertical:true)
+                        Text("Select a node to edit its values and connections.").foregroundStyle(Ink.secondary).fixedSize(horizontal:false,vertical:true)
                             .gridProbe("node-empty",area:"node-details")
                     }
                     ForEach(state.unavailableTargets(in:graph),id:\.self) { target in
-                        Label(target.unavailableMessage,systemImage:"exclamationmark.triangle").font(.caption).foregroundStyle(.secondary)
+                        Label(target.unavailableMessage,systemImage: KitIcon.warning.rawValue).font(KitType.meta).foregroundStyle(Ink.secondary)
                             .fixedSize(horizontal:false,vertical:true)
                     }
                 }
@@ -73,7 +74,7 @@ struct GraphInspector: View {
     }
     private func positionControls(_ node: GraphNode) -> some View {
         VStack(alignment:.leading,spacing:Space.sm) {
-            Text("Canvas position").font(.headline)
+            Text("Canvas position").font(KitType.section)
             ForEach(["X","Y"],id:\.self) { axis in
                 LabeledContent("Position \(axis)") {
                     TextField("Position \(axis)",value:Binding(get:{
@@ -99,21 +100,16 @@ private struct NodeParameterControl: View {
     let endEdit: () -> Void
     private var value: ParameterValue { node.values[parameter.id] ?? parameter.defaultValue }
     private var number: Double { if case let .number(v) = value { v } else { 0 } }
+    private var defaultNumber: Double { if case let .number(v) = parameter.defaultValue { v } else { 0 } }
+    private var isInteger: Bool { if case .integer = parameter.kind { true } else { false } }
     private func change(_ value: ParameterValue) { send(.setNodeValue(node.id,parameter.id,value)) }
     var body: some View {
         Group {
             switch parameter.kind {
             case let .number(range), let .integer(range):
-                VStack(alignment:.leading,spacing:Space.sm) {
-                    HStack(alignment:.firstTextBaseline) {
-                        Text(parameter.title); Spacer()
-                        Text(number,format:.number.precision(.fractionLength(2))).monospacedDigit().foregroundStyle(.secondary)
-                        if !parameter.unit.isEmpty { Text(parameter.unit).foregroundStyle(.secondary) }
-                    }.gridProbe("node-\(parameter.id)-label",area:"node-\(parameter.id)-control")
-                    Slider(value:Binding(get:{number},set:{change(.number($0))}),in:range,onEditingChanged:{ if $0 { beginEdit() } else { endEdit() } })
-                        .accessibilityLabel(parameter.title).help("Adjust \(parameter.title.lowercased())")
-                        .gridProbe("node-\(parameter.id)-slider",area:"node-\(parameter.id)-control")
-                }.gridArea("node-\(parameter.id)-control",inset:0)
+                NumericParameter(parameter.title, unit: parameter.unit, value: number, range: range,
+                                 defaultValue: defaultNumber, digits: isInteger ? 0 : (range.upperBound <= 0.1 ? 3 : 2), integer: isInteger,
+                                 change: { change(.number($0)) }, beginEdit: beginEdit, endEdit: endEdit)
             case .color:
                 ColorPicker(parameter.title,selection:Binding(get:{
                     if case let .color(c) = value { return Color(.sRGBLinear,red:c.red,green:c.green,blue:c.blue) }

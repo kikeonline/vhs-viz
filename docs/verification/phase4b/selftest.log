@@ -1,0 +1,174 @@
+PASS Metal renderer initialized
+PASS history starts with undo and redo unavailable
+PASS history changes publish command availability
+PASS slider gesture creates one history entry
+PASS Command-Z restores initial scene and enables redo
+PASS undo publishes redo availability
+PASS Shift-Command-Z restores edited scene
+PASS output opens with live view
+PASS closing output releases view and preserves scene
+PASS reopening output uses existing scene
+PASS Command-1 shows control window from output
+PASS GPU draws edited scene
+PASS preview and output acquire and render live drawables
+PASS live rendering and shared clock run without errors
+PASS New creates a pristine Untitled project
+PASS Cancel prevents New from losing edits
+PASS cancelled Save panel prevents replacement
+PASS failed Save prevents replacement and retains dirty state
+PASS Don't Save permits New and resets history
+PASS Shift-Command-R opens Rename Project
+PASS rename Untitled project
+PASS unsaved name becomes save suggestion
+PASS Command-S saves first .vhsproject
+PASS Save establishes URL and clean baseline
+PASS scene edit marks project dirty
+PASS undo to saved state clears dirty state
+PASS rename saved file
+PASS saved rename changes filename and preserves scene edits
+PASS rename refuses existing project
+PASS failed rename preserves document identity and path
+PASS Shift-Command-S writes another project file
+PASS Save As preserves original and switches active URL
+PASS corrupt Open preserves current document and history
+PASS future-version Open is rejected without replacing current project
+PASS Cancel protects dirty project during Open
+PASS Open restores saved scene, filename title, and fresh history
+PASS Open reads the committed file if Save replaces the selected candidate
+PASS closing output does not discard project edits
+PASS Cancel prevents close or quit
+PASS Save permits close or quit only after successful save
+PASS Save before departure marks the captured state clean
+PASS native editor close honors Cancel
+PASS Don't Save closes editor and discards scene edits
+PASS Command-1 reopens the current project after editor close
+PASS self-test ends with an ephemeral clean project
+PASS project lifecycle self-test
+PASS Native sRGB color picker converts to linear RGB
+PASS Linear scene color survives native color picker round trip
+PASS Solid Red undo/redo
+PASS Solid Green undo/redo
+PASS Solid Blue undo/redo
+PASS Solid typed edits mark project dirty
+PASS Solid saves
+PASS Solid Open restores source, all values and seed with fresh history
+PASS Solid preview/output draw the same restored snapshot
+PASS Solid stays live without dirty or undo entries
+PASS Gradient Style undo/redo
+PASS Gradient Start color undo/redo
+PASS Gradient End color undo/redo
+PASS Gradient Angle undo/redo
+PASS Gradient Center X undo/redo
+PASS Gradient Center Y undo/redo
+PASS Gradient Reverse undo/redo
+PASS Gradient typed edits mark project dirty
+PASS Gradient saves
+PASS Gradient Open restores source, all values and seed with fresh history
+PASS Gradient preview/output draw the same restored snapshot
+PASS Gradient stays live without dirty or undo entries
+PASS Noise Style undo/redo
+PASS Noise Scale undo/redo
+PASS Noise Contrast undo/redo
+PASS Noise Low color undo/redo
+PASS Noise High color undo/redo
+PASS Noise Seed undo/redo
+PASS Noise Animate undo/redo
+PASS Noise Speed undo/redo
+PASS Noise typed edits mark project dirty
+PASS Noise saves
+PASS Noise Open restores source, all values and seed with fresh history
+PASS Noise preview/output draw the same restored snapshot
+PASS Noise stays live without dirty or undo entries
+PASS Oscillator Waveform undo/redo
+PASS Oscillator Cycles undo/redo
+PASS Oscillator Speed undo/redo
+PASS Oscillator Angle undo/redo
+PASS Oscillator Phase undo/redo
+PASS Oscillator Foreground undo/redo
+PASS Oscillator Background undo/redo
+PASS Oscillator Animate undo/redo
+PASS Oscillator typed edits mark project dirty
+PASS Oscillator saves
+PASS Oscillator Open restores source, all values and seed with fresh history
+PASS Oscillator preview/output draw the same restored snapshot
+PASS Oscillator stays live without dirty or undo entries
+PASS Shape Shape undo/redo
+PASS Shape Fill color undo/redo
+PASS Shape Background undo/redo
+PASS Shape Size undo/redo
+PASS Shape Position X undo/redo
+PASS Shape Position Y undo/redo
+PASS Shape Rotation undo/redo
+PASS Shape Softness undo/redo
+PASS Shape Outline undo/redo
+PASS Shape Outline width undo/redo
+PASS Shape typed edits mark project dirty
+PASS Shape saves
+PASS Shape Open restores source, all values and seed with fresh history
+PASS Shape preview/output draw the same restored snapshot
+PASS Shape stays live without dirty or undo entries
+PASS all procedural sources self-test
+PASS Transform Position X grouped undo/redo
+PASS Transform Position Y grouped undo/redo
+PASS Transform Rotation grouped undo/redo
+PASS Transform Scale grouped undo/redo
+PASS Transform edits update scene
+PASS Transform bypass undo preserves selection
+PASS Blur Radius grouped undo/redo
+PASS Blur edits update scene
+PASS Blur bypass undo preserves selection
+PASS Pixelate Block size grouped undo/redo
+PASS Pixelate edits update scene
+PASS Pixelate bypass undo preserves selection
+PASS Threshold Level grouped undo/redo
+PASS Threshold Softness grouped undo/redo
+PASS Threshold edits update scene
+PASS Threshold bypass undo preserves selection
+PASS Colorize Dark color grouped undo/redo
+PASS Colorize Light color grouped undo/redo
+PASS Colorize Amount grouped undo/redo
+PASS Colorize edits update scene
+PASS Colorize bypass undo preserves selection
+PASS RGB Split Offset X grouped undo/redo
+PASS RGB Split Offset Y grouped undo/redo
+PASS RGB Split edits update scene
+PASS RGB Split bypass undo preserves selection
+PASS Repeated effects have independent identities
+PASS Move Up preserves effect selection and identity
+PASS Removing selected effect returns to source inspector
+PASS Undo restores removed effect and original identity
+PASS Inspector selection stays outside scene history
+PASS Effect chain saves
+PASS Open restores ordered effects, settings, bypass and UUIDs
+PASS Malformed effect file preserves current scene
+PASS Resize/chain edit 1 retains at most six intermediate textures
+PASS Resize/chain edit 2 retains at most six intermediate textures
+PASS Resize/chain edit 3 retains at most six intermediate textures
+PASS Resize/chain edit 4 retains at most six intermediate textures
+PASS Resize/chain edit 5 retains at most six intermediate textures
+PASS Resize/chain edit 6 retains at most six intermediate textures
+PASS Resize/chain edit 7 retains at most six intermediate textures
+PASS Resize/chain edit 8 retains at most six intermediate textures
+PASS Resize/chain edit 9 retains at most six intermediate textures
+PASS Resize/chain edit 10 retains at most six intermediate textures
+PASS Resize/chain edit 11 retains at most six intermediate textures
+PASS Resize/chain edit 12 retains at most six intermediate textures
+PASS Effect preview/output share the same live snapshot after resize and chain edits
+PASS ordered effects self-test
+PASS Graph library searches node names
+PASS Add Node selects an independent node
+PASS Node numeric gesture undoes/redoes as one scene edit
+PASS Duplicate preserves values with a new node identity
+PASS Deleted parameter targets remain explicitly unavailable
+PASS Undo restores the exact parameter target
+PASS Node placement, pan/zoom and selection do not enter musical undo
+PASS Branching graph cannot be silently flattened into Chain
+PASS Background graph compilation swaps a matching executable at a frame boundary
+PASS Incomplete graph names the input and retains the last valid preview/output frame
+PASS Last valid graph keeps identical actual GPU output after a failed build
+PASS Invalid cyclic wiring is rejected with a node-specific error
+PASS Graph project saves topology, values and layout
+PASS Open restores branching topology/UUIDs, layout, seed and node mode
+PASS Branching render resources stay within three eight-texture slots
+PASS shader graph self-test
+SELFTEST done

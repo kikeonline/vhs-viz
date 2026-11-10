@@ -1,11 +1,12 @@
+import VHSSignal
 import AppKit
 import VHSCore
 
 enum EffectSnapshots {
     static func run(_ model: AppModel, control: NSWindow, directory: String) async throws {
         model.output.window?.performClose(nil)
-        for mode in ["light", "dark"] {
-            NSApp.appearance = NSAppearance(named: mode == "light" ? .aqua : .darkAqua)
+        for (mode, appearance) in SignalSnapshots.appearances {
+            NSApp.appearance = NSAppearance(named: appearance)
             for kind in EffectKind.allCases {
                 model.replaceProject(.init(scene: .init(source: .shape)))
                 model.addEffect(kind)

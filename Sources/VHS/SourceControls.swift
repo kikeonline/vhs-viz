@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import VHSSignal
 import VHSCore
 
 enum SceneColorBridge {
@@ -17,19 +18,16 @@ struct SourceControls: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Space.xl) {
             VStack(alignment: .leading, spacing: Space.sm) {
-                Text("Source").font(.headline)
+                Text("Source").font(KitType.section)
                 Picker("Source", selection: Binding(get: { model.scene.source }, set: { model.send(.selectSource($0)) })) {
                     ForEach(SourceRegistry.sources) { source in
                         Text(source.title).tag(source.id)
                     }
-                }.labelsHidden().accessibilityLabel("Source")
+                }.labelsHidden().accessibilityLabel("Source").help(model.scene.source.definition.summary).frame(minHeight: Metric.control)
             }
             .gridProbe("source-picker", area: "inspector")
             ScrollView {
                 VStack(alignment: .leading, spacing: Space.xl) {
-                    Text(model.scene.source.definition.summary).font(.subheadline).foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .gridProbe("source-description", area: "source-parameters")
                     ForEach(model.scene.source.definition.parameters) { parameter in
                         GeneratedParameter(model: model, parameter: parameter)
                             .disabled(parameter.enabledWhen?.matches(model.scene) == false)
@@ -55,30 +53,10 @@ private struct GeneratedParameter: View {
     private func send(_ value: ParameterValue) { model.send(.setValue(parameter.id, value)) }
     var body: some View {
         switch parameter.kind {
-        case let .number(range):
-            VStack(alignment: .leading, spacing: Space.sm) {
-                HStack(alignment: .firstTextBaseline) {
-                    Text(parameter.title)
-                    Spacer()
-                    Text(model.scene.number(parameter.id), format: .number.precision(.fractionLength(parameter.fractionDigits)))
-                        .monospacedDigit().foregroundStyle(.secondary)
-                    if !parameter.unit.isEmpty { Text(parameter.unit).foregroundStyle(.secondary) }
-                }
-                .gridProbe(parameter.id.rawValue + "-label", area: parameter.id.rawValue + "-control")
-                Slider(value: Binding(get: { model.scene.number(parameter.id) }, set: { send(.number($0)) }), in: range,
-                       onEditingChanged: { if $0 { model.beginEdit() } else { model.endEdit() } })
-                    .accessibilityLabel(parameter.title)
-                    .accessibilityValue(model.scene.number(parameter.id).formatted(.number.precision(.fractionLength(parameter.fractionDigits))))
-                    .help(numberHelp)
-                    .gridProbe(parameter.id.rawValue + "-slider", area: parameter.id.rawValue + "-control")
-            }.gridArea(parameter.id.rawValue + "-control", inset: 0)
-        case .integer:
-            LabeledContent(parameter.title) {
-                TextField(parameter.title, value: Binding(get: { Int(model.scene.number(parameter.id)) }, set: { send(.number(Double($0))) }),
-                          format: .number.grouping(.never))
-                    .textFieldStyle(.roundedBorder).multilineTextAlignment(.trailing)
-                    .accessibilityLabel(parameter.title)
-            }
+        case let .number(range), let .integer(range):
+            NumericParameter(parameter.title, unit: parameter.unit, value: model.scene.number(parameter.id), range: range,
+                             defaultValue: defaultNumber, digits: parameter.fractionDigits, integer: isInteger,
+                             change: { send(.number($0)) }, beginEdit: model.beginEdit, endEdit: model.endEdit)
         case .color:
             ColorPicker(parameter.title, selection: Binding(get: {
                 SceneColorBridge.native(model.scene.tint(parameter.id))
@@ -95,12 +73,6 @@ private struct GeneratedParameter: View {
                 .accessibilityLabel(parameter.title)
         }
     }
-    private var numberHelp: String {
-        switch parameter.id {
-        case .solidRed: "Set the linear red component from 0 to 1"
-        case .solidGreen: "Set the linear green component from 0 to 1"
-        case .solidBlue: "Set the linear blue component from 0 to 1"
-        default: "Adjust \(parameter.title.lowercased())\(parameter.unit.isEmpty ? "" : " in " + parameter.unit)"
-        }
-    }
+    private var defaultNumber: Double { if case let .number(v) = parameter.defaultValue { v } else { 0 } }
+    private var isInteger: Bool { if case .integer = parameter.kind { true } else { false } }
 }

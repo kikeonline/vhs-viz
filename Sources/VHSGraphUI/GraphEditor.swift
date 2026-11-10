@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import VHSSignal
 import VHSCore
 
 /// The same document editor is embedded by standalone and the native VST3 probe.
@@ -24,12 +25,12 @@ public struct GraphEditor: View {
                 toolbar.gridProbe("graph-toolbar",area:"graph-workspace")
                 if let output = state.pendingOutput, let node = graph.node(output.node) {
                     HStack {
-                        Text("Connect \(node.kind.title)’s \(node.kind.outputType.rawValue) output to an input.").font(.caption).foregroundStyle(.secondary)
+                        Text("Connect \(node.kind.title)’s \(node.kind.outputType.rawValue) output to an input.").font(KitType.meta).foregroundStyle(Ink.secondary)
                         Spacer()
                         Button("Cancel Connection") { state.pendingOutput = nil }.controlSize(.small)
                     }.gridProbe("graph-pending-connection",area:"graph-workspace")
                 }
-                if let error = state.error { Text(error).font(.caption).foregroundStyle(.secondary).fixedSize(horizontal:false,vertical:true).gridProbe("graph-error",area:"graph-workspace") }
+                if let error = state.error { Text(error).font(KitType.meta).foregroundStyle(Ink.secondary).fixedSize(horizontal:false,vertical:true).gridProbe("graph-error",area:"graph-workspace") }
                 NodeCanvas(graph:graph,layout:layout,state:state,send:send,setLayout:setLayout)
                     .gridProbe("graph-canvas",area:"graph-workspace")
             }
@@ -38,15 +39,17 @@ public struct GraphEditor: View {
             .gridProbe("graph-main",area:"graph-page",edge:nil)
             Divider()
             GraphInspector(graph:graph,layout:layout,state:state,setLayout:setLayout,send:send,beginEdit:beginEdit,endEdit:endEdit)
+                .padding(Space.md).background(Ink.surface, in: RoundedRectangle(cornerRadius: Radius.panel))
                 .frame(width:Layout.graphInspectorWidth)
                 .gridProbe("graph-inspector",area:"graph-page",edge:nil)
         }
+        .font(KitType.body).foregroundStyle(Ink.text).tint(Ink.accent).buttonStyle(SignalButtonStyle())
         .gridArea("graph-page",inset:0)
         .onExitCommand { state.pendingOutput = nil; state.showingLibrary = false }
     }
     private var toolbar: some View {
         HStack(spacing:Space.sm) {
-            Button("Add Node",systemImage:"plus") { state.showingLibrary.toggle() }
+            Button("Add Node",systemImage: KitIcon.add.rawValue) { state.showingLibrary.toggle() }
                 .help("Search the node library and add a node")
                 .popover(isPresented:$state.showingLibrary) {
                     VStack(alignment:.leading,spacing:Space.sm) {
@@ -54,10 +57,10 @@ public struct GraphEditor: View {
                         List(state.library,id:\.self) { kind in Button(kind.title) { state.add(kind,to:graph,send:send) }.buttonStyle(.plain) }.gridProbe("library-list",area:"node-library")
                     }.padding(Space.lg).frame(width:Layout.graphLibraryWidth,height:Layout.graphLibraryHeight).gridArea("node-library",inset:Space.lg)
                 }
-            Button("Duplicate",systemImage:"plus.square.on.square") { endEdit(); state.duplicate(in:graph,send:send) }
+            Button("Duplicate",systemImage: KitIcon.duplicate.rawValue) { endEdit(); state.duplicate(in:graph,send:send) }
                 .labelStyle(.iconOnly).help("Duplicate the selected node and its input connections")
                 .disabled(state.selection == nil || graph.node(state.selection!)?.kind == .output)
-            Button("Remove",systemImage:"trash") { endEdit(); state.remove(in:graph,send:send) }
+            Button("Remove",systemImage: KitIcon.remove.rawValue) { endEdit(); state.remove(in:graph,send:send) }
                 .labelStyle(.iconOnly).help("Remove the selected node; Undo restores it")
                 .disabled(state.selection == nil || graph.node(state.selection!)?.kind == .output)
             LabeledContent("Seed") {
@@ -65,9 +68,9 @@ public struct GraphEditor: View {
                     .textFieldStyle(.roundedBorder).frame(width:Layout.graphSeedWidth).accessibilityLabel("Graph seed")
             }
             Spacer(minLength:Space.sm)
-            Button("Zoom Out",systemImage:"minus.magnifyingglass") { zoom(layout.zoom-0.25) }.labelStyle(.iconOnly).help("Zoom out by 25 percent").disabled(layout.zoom <= 0.25)
-            Text(layout.zoom,format:.percent.precision(.fractionLength(0))).font(.caption).monospacedDigit()
-            Button("Zoom In",systemImage:"plus.magnifyingglass") { zoom(layout.zoom+0.25) }.labelStyle(.iconOnly).help("Zoom in by 25 percent").disabled(layout.zoom >= 2)
+            Button("Zoom Out",systemImage: KitIcon.zoomOut.rawValue) { zoom(layout.zoom-0.25) }.labelStyle(.iconOnly).help("Zoom out by 25 percent").disabled(layout.zoom <= 0.25)
+            Text(layout.zoom,format:.percent.precision(.fractionLength(0))).font(KitType.meta).monospacedDigit()
+            Button("Zoom In",systemImage: KitIcon.zoomIn.rawValue) { zoom(layout.zoom+0.25) }.labelStyle(.iconOnly).help("Zoom in by 25 percent").disabled(layout.zoom >= 2)
             Menu("Pan") {
                 Button("Left") { pan(x:Layout.graphPanStep,y:0) }; Button("Right") { pan(x:-Layout.graphPanStep,y:0) }
                 Button("Up") { pan(x:0,y:Layout.graphPanStep) }; Button("Down") { pan(x:0,y:-Layout.graphPanStep) }

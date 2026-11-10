@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import VHSSignal
 import MetalKit
 import Observation
 import VHSCore
@@ -166,31 +167,31 @@ struct PluginEditor: View {
                     Button("Undo Graph Edit") { runtime.undoGraph() }.disabled(!runtime.session.history.canUndo)
                     Button("Redo Graph Edit") { runtime.redoGraph() }.disabled(!runtime.session.history.canRedo)
                     Button("Show Output") { runtime.showOutput() }
-                    Text(runtime.render.builds.status.message).font(.caption).foregroundStyle(.secondary).lineLimit(2)
+                    Text(runtime.render.builds.status.message).font(KitType.meta).foregroundStyle(Ink.secondary).lineLimit(2)
                 }
             }
             if runtime.showsGraph {
-                if let error = runtime.error { Text(error).font(.caption).foregroundStyle(.secondary).fixedSize(horizontal:false,vertical:true) }
+                if let error = runtime.error { Text(error).font(KitType.meta).foregroundStyle(Ink.secondary).fixedSize(horizontal:false,vertical:true) }
                 HStack(alignment:.top,spacing:Space.lg) {
                     PluginSurface(runtime:runtime).frame(width:Layout.graphPreviewWidth,height:Layout.graphPreviewWidth*9/16)
-                    Text("Host graph state is embedded. Production mapping/automation follows in later phases.").font(.caption).foregroundStyle(.secondary)
+                    Text("Host graph state is embedded. Production mapping/automation follows in later phases.").font(KitType.meta).foregroundStyle(Ink.secondary)
                 }
                 GraphEditor(graph:runtime.session.history.scene.graph,layout:runtime.session.graphLayout,seed:runtime.session.history.scene.seed,state:runtime.graphEditor,
                             send:runtime.sendGraph,setLayout:runtime.setGraphLayout,beginEdit:runtime.beginGraphEdit,endEdit:runtime.endGraphEdit)
             } else { probeControls }
-        }.padding(Space.margin)
+        }.padding(Space.margin).signalTheme()
     }
     private var probeControls: some View {
         HStack(alignment: .top, spacing: Space.xl) {
             VStack(alignment: .leading, spacing: Space.xl) {
-                Text("Solid").font(.headline).gridProbe("plugin-source", area: "plugin-controls")
+                Text("Solid").font(KitType.section).gridProbe("plugin-source", area: "plugin-controls")
                 slider("Red", id: 0, value: runtime.red)
                 slider("Green", id: 1, value: runtime.green)
                 slider("Blue", id: 2, value: runtime.blue)
-                Button("Show Output", systemImage: "rectangle.on.rectangle") { runtime.showOutput() }
+                Button("Show Output", systemImage: KitIcon.output.rawValue) { runtime.showOutput() }
                     .help("Open this instance’s visual output")
                     .accessibilityLabel("Show Output")
-                Text("Audio → Red · Velocity → Green · CC1 → Blue").font(.caption).foregroundStyle(.secondary)
+                Text("Audio → Red · Velocity → Green · CC1 → Blue").font(KitType.meta).foregroundStyle(Ink.secondary)
                 Button(runtime.learning ? "Cancel Learn" : "Learn Blue") {
                     runtime.candidate = nil; runtime.learning.toggle()
                 }.accessibilityLabel(runtime.learning ? "Cancel Learn" : "Learn Blue")
@@ -204,19 +205,19 @@ struct PluginEditor: View {
                         Button("Cancel") { runtime.candidate = nil }
                     }
                 } else if runtime.learning {
-                    Text("Move a MIDI controller…").foregroundStyle(.secondary)
+                    Text("Move a MIDI controller…").foregroundStyle(Ink.secondary)
                 } else if let cc = runtime.learnedController, let channel = runtime.learnedChannel {
-                    Text("Blue: Channel \(channel + 1) · CC\(cc)").foregroundStyle(.secondary)
+                    Text("Blue: Channel \(channel + 1) · CC\(cc)").foregroundStyle(Ink.secondary)
                     Button("Clear Learn") {
                         runtime.learnedChannel = nil; runtime.learnedController = nil; runtime.learnedValue = 0
                     }
                 }
                 Text("Peak \(runtime.peak, specifier: "%.3f") · Velocity \(runtime.velocity, specifier: "%.3f") · CC1 \(runtime.cc, specifier: "%.3f")")
-                    .monospacedDigit().font(.caption)
+                    .monospacedDigit().font(KitType.meta)
                 Text(runtime.tempo > 0 ? "\(runtime.tempo.formatted()) BPM · \(runtime.playing ? "Playing" : "Stopped")" : "No host tempo")
-                    .foregroundStyle(.secondary)
-                if runtime.dropped > 0 { Text("Input overflow: \(runtime.dropped)").foregroundStyle(.secondary) }
-                if let error = runtime.error { Text(error).foregroundStyle(.secondary) }
+                    .foregroundStyle(Ink.secondary)
+                if runtime.dropped > 0 { Text("Input overflow: \(runtime.dropped)").foregroundStyle(Ink.secondary) }
+                if let error = runtime.error { Text(error).foregroundStyle(Ink.secondary) }
             }.frame(width: Layout.controlWidth)
                 .gridArea("plugin-controls", inset: 0)
                 .gridProbe("plugin-controls", area: "plugin-editor", edge: nil)
@@ -228,12 +229,12 @@ struct PluginEditor: View {
             .gridArea("plugin-editor")
     }
     private func slider(_ title: String, id: UInt32, value: Double) -> some View {
-        VStack(alignment: .leading, spacing: Space.sm) {
-            LabeledContent(title, value: value.formatted(.number.precision(.fractionLength(2))))
-            Slider(value: Binding(get: { vhs_bridge_get(runtime.bridge, id) }, set: { runtime.edit(id, $0, 1) }), in: 0...1,
-                   onEditingChanged: { runtime.edit(id, vhs_bridge_get(runtime.bridge, id), $0 ? 0 : 2) })
-                .accessibilityLabel(title)
-        }.gridProbe("plugin-\(id)", area: "plugin-controls")
+        NumericParameter(title, value: value, range: 0...1, defaultValue: id == 0 ? 0.24 : id == 1 ? 0.08 : 0.62,
+                         change: { runtime.edit(id, $0, 1) },
+                         exactChange: { runtime.edit(id, $0, 0); runtime.edit(id, $0, 1); runtime.edit(id, $0, 2) },
+                         beginEdit: { runtime.edit(id, vhs_bridge_get(runtime.bridge, id), 0) },
+                         endEdit: { runtime.edit(id, vhs_bridge_get(runtime.bridge, id), 2) })
+            .gridProbe("plugin-\(id)", area: "plugin-controls")
     }
 }
 struct PluginSurface: NSViewRepresentable {

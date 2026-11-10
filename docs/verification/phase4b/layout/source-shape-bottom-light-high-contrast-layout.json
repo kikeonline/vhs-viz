@@ -1,0 +1,457 @@
+{
+  "probes" : [
+    {
+      "area" : "1F7AA5C5-C772-46C3-8B6A-30E8AD675AF4-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "1F7AA5C5-C772-46C3-8B6A-30E8AD675AF4-label",
+      "width" : 240,
+      "x" : 596,
+      "y" : -12.5
+    },
+    {
+      "area" : "1F7AA5C5-C772-46C3-8B6A-30E8AD675AF4-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "1F7AA5C5-C772-46C3-8B6A-30E8AD675AF4-parameter",
+      "width" : 240,
+      "x" : 596,
+      "y" : -12.5
+    },
+    {
+      "area" : "1F7AA5C5-C772-46C3-8B6A-30E8AD675AF4-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "1F7AA5C5-C772-46C3-8B6A-30E8AD675AF4-slider",
+      "width" : 240,
+      "x" : 596,
+      "y" : 27.5
+    },
+    {
+      "area" : "68FC5D30-B132-4B63-A857-25B834ADFBD6-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "68FC5D30-B132-4B63-A857-25B834ADFBD6-label",
+      "width" : 240,
+      "x" : 596,
+      "y" : 155.5
+    },
+    {
+      "area" : "68FC5D30-B132-4B63-A857-25B834ADFBD6-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "68FC5D30-B132-4B63-A857-25B834ADFBD6-parameter",
+      "width" : 240,
+      "x" : 596,
+      "y" : 155.5
+    },
+    {
+      "area" : "68FC5D30-B132-4B63-A857-25B834ADFBD6-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "68FC5D30-B132-4B63-A857-25B834ADFBD6-slider",
+      "width" : 240,
+      "x" : 596,
+      "y" : 195.5
+    },
+    {
+      "area" : "806759C5-C39F-4027-97D6-179F073CD1D8-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "806759C5-C39F-4027-97D6-179F073CD1D8-label",
+      "width" : 240,
+      "x" : 596,
+      "y" : 323.5
+    },
+    {
+      "area" : "806759C5-C39F-4027-97D6-179F073CD1D8-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "806759C5-C39F-4027-97D6-179F073CD1D8-parameter",
+      "width" : 240,
+      "x" : 596,
+      "y" : 323.5
+    },
+    {
+      "area" : "806759C5-C39F-4027-97D6-179F073CD1D8-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "806759C5-C39F-4027-97D6-179F073CD1D8-slider",
+      "width" : 240,
+      "x" : 596,
+      "y" : 363.5
+    },
+    {
+      "area" : "A839C2E7-E2EE-427A-B3E2-371CA473BDC5-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "A839C2E7-E2EE-427A-B3E2-371CA473BDC5-parameter",
+      "width" : 240,
+      "x" : 596,
+      "y" : 443.920166015625
+    },
+    {
+      "area" : "A839C2E7-E2EE-427A-B3E2-371CA473BDC5-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "A839C2E7-E2EE-427A-B3E2-371CA473BDC5-label",
+      "width" : 240,
+      "x" : 596,
+      "y" : 443.920166015625
+    },
+    {
+      "area" : "A839C2E7-E2EE-427A-B3E2-371CA473BDC5-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "A839C2E7-E2EE-427A-B3E2-371CA473BDC5-slider",
+      "width" : 240,
+      "x" : 596,
+      "y" : 483.920166015625
+    },
+    {
+      "area" : "C113284F-4080-447E-AFC2-65012D84C882-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "C113284F-4080-447E-AFC2-65012D84C882-label",
+      "width" : 240,
+      "x" : 596,
+      "y" : 239.5
+    },
+    {
+      "area" : "C113284F-4080-447E-AFC2-65012D84C882-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "C113284F-4080-447E-AFC2-65012D84C882-parameter",
+      "width" : 240,
+      "x" : 596,
+      "y" : 239.5
+    },
+    {
+      "area" : "C113284F-4080-447E-AFC2-65012D84C882-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "C113284F-4080-447E-AFC2-65012D84C882-slider",
+      "width" : 240,
+      "x" : 596,
+      "y" : 279.5
+    },
+    {
+      "area" : "E73A86A5-67AB-47B6-AB6F-3C761606E9DC-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "E73A86A5-67AB-47B6-AB6F-3C761606E9DC-parameter",
+      "width" : 240,
+      "x" : 596,
+      "y" : 71.5
+    },
+    {
+      "area" : "E73A86A5-67AB-47B6-AB6F-3C761606E9DC-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "E73A86A5-67AB-47B6-AB6F-3C761606E9DC-label",
+      "width" : 240,
+      "x" : 596,
+      "y" : 71.5
+    },
+    {
+      "area" : "E73A86A5-67AB-47B6-AB6F-3C761606E9DC-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "E73A86A5-67AB-47B6-AB6F-3C761606E9DC-slider",
+      "width" : 240,
+      "x" : 596,
+      "y" : 111.5
+    },
+    {
+      "area" : "effect-chain",
+      "height" : 56,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "effect-chain",
+      "width" : 519,
+      "x" : 20,
+      "y" : 420
+    },
+    {
+      "area" : "effect-chain",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-chain-header",
+      "width" : 519,
+      "x" : 20,
+      "y" : 420
+    },
+    {
+      "area" : "effect-chain",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-chain-empty",
+      "width" : 85.5,
+      "x" : 20,
+      "y" : 460
+    },
+    {
+      "area" : "inspector",
+      "edge" : "lead",
+      "height" : 56,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source-picker",
+      "width" : 105.5,
+      "x" : 596,
+      "y" : 88
+    },
+    {
+      "area" : "inspector",
+      "height" : 428,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "inspector",
+      "width" : 248,
+      "x" : 596,
+      "y" : 88
+    },
+    {
+      "area" : "inspector",
+      "edge" : "lead",
+      "height" : 352,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "parameter-scroll",
+      "width" : 248,
+      "x" : 596,
+      "y" : 164
+    },
+    {
+      "area" : "page",
+      "height" : 500,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "page",
+      "width" : 880,
+      "x" : 0,
+      "y" : 52
+    },
+    {
+      "area" : "page",
+      "height" : 460,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-column",
+      "width" : 519,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "page",
+      "height" : 460,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "parameters-column",
+      "width" : 280,
+      "x" : 580,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-title",
+      "width" : 79,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "height" : 460,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "preview",
+      "width" : 519,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 268,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-surface",
+      "width" : 476.44444444444446,
+      "x" : 20,
+      "y" : 104
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-source",
+      "width" : 519,
+      "x" : 20,
+      "y" : 388
+    },
+    {
+      "area" : "source-parameters",
+      "height" : 652.420166015625,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "source-parameters",
+      "width" : 240,
+      "x" : 596,
+      "y" : -144.5
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.shape.kind",
+      "width" : 155,
+      "x" : 596,
+      "y" : -144.5
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.shape.fill",
+      "width" : 107,
+      "x" : 596,
+      "y" : -100.5
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.shape.background",
+      "width" : 128.5,
+      "x" : 596,
+      "y" : -56.5
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.shape.size",
+      "width" : 240,
+      "x" : 596,
+      "y" : -12.5
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.shape.x",
+      "width" : 240,
+      "x" : 596,
+      "y" : 71.5
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.shape.y",
+      "width" : 240,
+      "x" : 596,
+      "y" : 155.5
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.shape.rotation",
+      "width" : 240,
+      "x" : 596,
+      "y" : 239.5
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.shape.softness",
+      "width" : 240,
+      "x" : 596,
+      "y" : 323.5
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 16.420166015625,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.shape.outline",
+      "width" : 64.5,
+      "x" : 596,
+      "y" : 407.5
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.shape.width",
+      "width" : 240,
+      "x" : 596,
+      "y" : 443.920166015625
+    }
+  ],
+  "window" : {
+    "height" : 552,
+    "width" : 880
+  }
+}

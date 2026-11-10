@@ -1,4 +1,5 @@
 import SwiftUI
+import VHSSignal
 import VHSCore
 
 struct NodeCanvas: View {
@@ -16,7 +17,7 @@ struct NodeCanvas: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment:.topLeading) {
-                Rectangle().fill(.background)
+                Rectangle().fill(Ink.canvas)
                     .gesture(DragGesture().onChanged { panOffset = $0.translation }.onEnded { value in
                         var next = layout; next.pan.x += value.translation.width; next.pan.y += value.translation.height
                         setLayout(next); panOffset = .zero
@@ -31,7 +32,7 @@ struct NodeCanvas: View {
                             let end = CGPoint(x:b.x,y:b.y+Layout.graphNodeHeader+CGFloat(port)*Layout.graphPortHeight+Layout.graphPortHeight/2)
                             var path = Path(); path.move(to:start)
                             path.addCurve(to:end,control1:.init(x:start.x+Space.section,y:start.y),control2:.init(x:end.x-Space.section,y:end.y))
-                            context.stroke(path,with:.color(.accentColor),lineWidth:2)
+                            context.stroke(path,with:.color(Ink.color(source.kind.outputType.signalRole)),lineWidth:2)
                         }
                     }.allowsHitTesting(false)
                     ForEach(graph.nodes) { node in
@@ -51,7 +52,7 @@ struct NodeCanvas: View {
             .clipped()
             .accessibilityLabel("Shader graph canvas; use the inspector for keyboard wiring")
         }
-        .overlay(RoundedRectangle(cornerRadius:Layout.previewRadius).stroke(.separator))
+        .overlay(RoundedRectangle(cornerRadius:Radius.panel).stroke(Ink.border))
     }
 }
 private struct NodeCard: View {
@@ -61,17 +62,19 @@ private struct NodeCard: View {
     @Bindable var state: GraphEditorState
     let send: (SceneAction) -> Void
     let onMove: (CGSize) -> Void
+    @Environment(\.appearsActive) private var active
     @State private var drag = CGSize.zero
     static func height(_ node: GraphNode) -> CGFloat { Layout.graphNodeHeader+CGFloat(node.kind.inputs.count)*Layout.graphPortHeight+Layout.graphNodeFooter }
     var body: some View {
         VStack(alignment:.leading,spacing:0) {
             Button { state.selection = node.id } label: {
                 HStack(spacing:Space.xs) {
-                    Text(node.kind.title).font(.headline)
+                    Text(node.kind.title).font(KitType.section)
                     Spacer(minLength:0)
-                    if node.bypassed { Text("Bypassed").font(.caption).foregroundStyle(.secondary) }
+                    if node.bypassed { Text("Bypassed").font(KitType.meta).foregroundStyle(Ink.secondary) }
                 }.padding(.horizontal,Space.sm)
-            }.buttonStyle(.plain).frame(height:Layout.graphNodeHeader)
+            }.buttonStyle(SignalCanvasButtonStyle()).frame(height:Layout.graphNodeHeader)
+                .accessibilityAddTraits(state.selection == node.id ? .isSelected : [])
                 .help("Select \(node.kind.title); drag its title to move the node")
                 .gesture(DragGesture(minimumDistance:Space.xs,coordinateSpace:.global).onChanged { state.selection = node.id; drag = $0.translation }.onEnded { onMove($0.translation); drag = .zero })
             ForEach(node.kind.inputs) { port in
@@ -80,12 +83,12 @@ private struct NodeCard: View {
                     if let output = state.pendingOutput { state.connect(output,to:.init(node.id,port.id),in:graph,send:send) }
                 } label: {
                     HStack(spacing:Space.xs) {
-                        Image(systemName:graph.input(node.id,port.id) == nil ? "circle" : "circle.fill")
+                        Image(systemName:port.type.signalSymbol).foregroundStyle(Ink.color(port.type.signalRole))
                         Text(port.title).lineLimit(1)
                         Spacer(minLength:0)
-                        Text(port.type.rawValue).foregroundStyle(.secondary)
-                    }.font(.caption).padding(.horizontal,Space.sm)
-                }.buttonStyle(.plain).frame(height:Layout.graphPortHeight)
+                        Text(port.type.rawValue).foregroundStyle(Ink.secondary)
+                    }.font(KitType.meta).padding(.horizontal,Space.sm)
+                }.buttonStyle(SignalCanvasButtonStyle()).frame(height:Layout.graphPortHeight)
                     .accessibilityLabel("\(node.kind.title) input \(port.title), \(port.type.rawValue)")
                     .help("Drop a matching output here, or choose a connection in the inspector")
                     .dropDestination(for:String.self) { items,_ in
@@ -95,17 +98,17 @@ private struct NodeCard: View {
             }
             if node.kind != .output {
                 Button { state.selection = node.id; state.pendingOutput = .init(node.id) } label: {
-                    HStack(spacing:Space.xs) { Text(node.kind.outputType.rawValue); Spacer(); Image(systemName:"circle.fill") }
-                        .font(.caption).padding(.horizontal,Space.sm)
-                }.buttonStyle(.plain).frame(height:Layout.graphNodeFooter)
+                    HStack(spacing:Space.xs) { Text(node.kind.outputType.rawValue); Spacer(); Image(systemName:node.kind.outputType.signalSymbol).foregroundStyle(Ink.color(node.kind.outputType.signalRole)) }
+                        .font(KitType.meta).padding(.horizontal,Space.sm)
+                }.buttonStyle(SignalCanvasButtonStyle()).frame(height:Layout.graphNodeFooter)
                     .draggable(node.id.uuidString)
                     .accessibilityLabel("\(node.kind.title) output, \(node.kind.outputType.rawValue)")
                     .help("Drag to a matching input, or click then choose an input")
-            } else { Text("Final image").font(.caption).foregroundStyle(.secondary).padding(.horizontal,Space.sm).frame(height:Layout.graphNodeFooter) }
+            } else { Text("Final image").font(KitType.meta).foregroundStyle(Ink.secondary).padding(.horizontal,Space.sm).frame(height:Layout.graphNodeFooter) }
         }
         .frame(width:Layout.graphNodeWidth)
-        .background(.background,in:RoundedRectangle(cornerRadius:Layout.previewRadius))
-        .overlay(RoundedRectangle(cornerRadius:Layout.previewRadius).stroke(state.selection == node.id ? Color.accentColor : Color(nsColor:.separatorColor),lineWidth:state.selection == node.id ? 2 : 1))
+        .background(state.selection == node.id ? Ink.selection : Ink.surface,in:RoundedRectangle(cornerRadius:Radius.control))
+        .overlay(RoundedRectangle(cornerRadius:Radius.control).stroke(state.selection == node.id ? (active ? Ink.accent : Ink.border) : Ink.border,lineWidth:state.selection == node.id ? 2 : 1))
         .offset(x:drag.width/zoom,y:drag.height/zoom) // grid: ok transient node drag preview is document-space content
         .contextMenu {
             Button("Select Node") { state.selection = node.id }
@@ -115,4 +118,9 @@ private struct NodeCard: View {
             }
         }
     }
+}
+
+private extension PortType {
+    var signalRole: String { switch self { case .image: "image"; case .scalar: "scalar"; case .vector, .color: "vector" } }
+    var signalSymbol: String { switch self { case .image: KitIcon.imagePort.rawValue; case .scalar: KitIcon.scalarPort.rawValue; case .vector, .color: KitIcon.vectorPort.rawValue } }
 }

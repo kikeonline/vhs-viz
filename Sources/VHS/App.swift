@@ -1,4 +1,5 @@
 import SwiftUI
+import VHSSignal
 
 @main struct VHSApp: App {
     @Environment(\.openWindow) private var openWindow

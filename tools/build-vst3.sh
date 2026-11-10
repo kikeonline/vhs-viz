@@ -24,6 +24,7 @@ install_name_tool -id @rpath/libVHSPluginUI.dylib "$plugin/Contents/Frameworks/l
 install_name_tool -change "$bin_dir/libVHSPluginUI.dylib" @rpath/libVHSPluginUI.dylib "$plugin/Contents/MacOS/VHSPrototype"
 install_name_tool -delete_rpath "$bin_dir" "$plugin/Contents/MacOS/VHSPrototype"
 ditto "$bin_dir/VHS_VHSRenderer.bundle" "$plugin/Contents/Resources/VHS_VHSRenderer.bundle"
+ditto "$bin_dir/VHS_VHSSignal.bundle" "$plugin/Contents/Resources/VHS_VHSSignal.bundle"
 cp "$sdk/LICENSE.txt" "$plugin/Contents/Resources/VST3-SDK-LICENSE.txt"
 codesign --force --sign - "$plugin/Contents/Frameworks/libVHSPluginUI.dylib"
 codesign --force --sign - "$plugin"
