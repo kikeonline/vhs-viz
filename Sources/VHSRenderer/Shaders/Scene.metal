@@ -36,8 +36,8 @@ float triangleDistance(float2 p, float radius) {
     }
     return inside ? -d : d;
 }
-fragment float4 sceneFragment(VertexOut in [[stage_in]], constant SourceUniforms &u [[buffer(0)]]) {
-    float2 uv = in.position.xy / u.resolution;
+float4 sourceImage(float2 pixel, SourceUniforms u) {
+    float2 uv = pixel / u.resolution;
     float shortSide = min(u.resolution.x, u.resolution.y);
     if (u.kind == 0) return u.colorA;
     if (u.kind == 1) {
@@ -78,15 +78,18 @@ fragment float4 sceneFragment(VertexOut in [[stage_in]], constant SourceUniforms
     return float4(mix(u.colorB.rgb,u.colorA.rgb,mask),1);
 }
 
+fragment float4 sceneFragment(VertexOut in [[stage_in]], constant SourceUniforms &u [[buffer(0)]]) {
+    return sourceImage(in.position.xy,u);
+}
+
 struct EffectUniforms {
     float4 p0, colorA, colorB;
     float2 resolution;
     uint kind, padding;
 };
-fragment float4 effectFragment(VertexOut in [[stage_in]], constant EffectUniforms &u [[buffer(0)]],
-                               texture2d<float> image [[texture(0)]]) {
+float4 effectImage(float2 pixel, EffectUniforms u, texture2d<float> image) {
     constexpr sampler sampleImage(coord::normalized, address::clamp_to_edge, filter::linear);
-    float2 uv = in.position.xy / u.resolution;
+    float2 uv = pixel / u.resolution;
     float3 original = image.sample(sampleImage, uv).rgb;
     if (u.kind == 0) {
         float shortSide = min(u.resolution.x, u.resolution.y);
@@ -109,7 +112,7 @@ fragment float4 effectFragment(VertexOut in [[stage_in]], constant EffectUniform
         return float4(sum/total,1);
     }
     if (u.kind == 2) {
-        float2 center = (floor(in.position.xy/u.p0.x)+0.5)*u.p0.x;
+        float2 center = (floor(pixel/u.p0.x)+0.5)*u.p0.x;
         return float4(image.sample(sampleImage, center/u.resolution).rgb,1);
     }
     float luminance = dot(original,float3(0.2126,0.7152,0.0722));
@@ -120,4 +123,8 @@ fragment float4 effectFragment(VertexOut in [[stage_in]], constant EffectUniform
     if (u.kind == 4) return float4(mix(original,mix(u.colorA.rgb,u.colorB.rgb,luminance),u.p0.x),1);
     float2 offset = u.p0.xy/u.resolution;
     return float4(image.sample(sampleImage,uv+offset).r, original.g, image.sample(sampleImage,uv-offset).b,1);
+}
+
+fragment float4 effectFragment(VertexOut in [[stage_in]], constant EffectUniforms &u [[buffer(0)]], texture2d<float> image [[texture(0)]]) {
+    return effectImage(in.position.xy,u,image);
 }

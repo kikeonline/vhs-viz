@@ -11,9 +11,11 @@
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <array>
 
 @interface VHSBundleMarker : NSObject @end
 @implementation VHSBundleMarker @end
+extern "C" int vhs_document_validate(const uint8_t*, uint32_t);
 extern "C" void* vhs_ui_create(VHSBridge*, const char*);
 extern "C" void* vhs_ui_attach(void*, void*);
 extern "C" void vhs_ui_detach(void*);
@@ -167,16 +169,30 @@ tresult PLUGIN_API Prototype::process(ProcessData& data) {
 }
 tresult PLUGIN_API Prototype::getState(IBStream* stream) {
     if(!stream) return kInvalidArgument;
+    std::array<uint8_t,VHS_STATE_CAPACITY> bytes{};
+    const int count=vhs_bridge_copy_document(bridge,bytes.data(),VHS_STATE_CAPACITY,nullptr,nullptr);
+    if(count<0) return kResultFalse;
     IBStreamer s(stream,kLittleEndian);
-    if(!s.writeInt32(0x56485331)) return kResultFalse;
+    // Legacy RGB-only states remain readable. Extended states embed a bounded,
+    // versioned project; no external path or live input/window state is stored.
+    if(!s.writeInt32(count ? 0x56485332 : 0x56485331)) return kResultFalse;
     for(uint32 i=0;i<3;++i) if(!s.writeDouble(vhs_bridge_get(bridge,i))) return kResultFalse;
+    if(count && (!s.writeInt32(count) || s.writeRaw(bytes.data(),count)!=count)) return kResultFalse;
     return kResultOk;
 }
 tresult PLUGIN_API Prototype::setState(IBStream* stream) {
     if(!stream) return kInvalidArgument;
     IBStreamer s(stream,kLittleEndian); int32 magic=0; double values[3];
-    if(!s.readInt32(magic) || magic!=0x56485331) return kResultFalse;
+    if(!s.readInt32(magic) || (magic!=0x56485331 && magic!=0x56485332)) return kResultFalse;
     for(auto& v:values) if(!s.readDouble(v) || !std::isfinite(v) || v<0 || v>1) return kResultFalse;
+    std::array<uint8_t,VHS_STATE_CAPACITY> bytes{}; int32 count=0;
+    if(magic==0x56485332) {
+        if(!s.readInt32(count) || count<=0 || count>VHS_STATE_CAPACITY || s.readRaw(bytes.data(),count)!=count) return kResultFalse;
+        // Pure bounded decoding/validation only; no view, disk, render or compiler.
+        // process() never calls this function or enters Swift.
+        if(!vhs_document_validate(bytes.data(),count)) return kResultFalse;
+    }
+    if(vhs_bridge_store_document(bridge,bytes.data(),count,1)<0) return kResultFalse;
     for(uint32 i=0;i<3;++i) vhs_bridge_set(bridge,i,values[i]);
     return kResultOk;
 }
@@ -191,7 +207,8 @@ IPlugView* PLUGIN_API Prototype::createView(FIDString name) {
         if(!runtime) return nullptr;
         vhs_bridge_callback(bridge,this,[](void* context,uint32 id,double value,uint32 phase) {
             auto* self=static_cast<Prototype*>(context);
-            if(phase==0) self->beginEdit(id);
+            if(phase==3) self->setDirty(true);
+            else if(phase==0) self->beginEdit(id);
             else if(phase==1) { self->setParamNormalized(id,value); self->performEdit(id,value); }
             else self->endEdit(id);
         });
@@ -203,5 +220,5 @@ using namespace Steinberg;
 using namespace Steinberg::Vst;
 BEGIN_FACTORY_DEF("VHS", "", "")
 DEF_CLASS2(INLINE_UID_FROM_FUID(VHS::prototypeID), PClassInfo::kManyInstances, kVstAudioEffectClass,
-           "VHS Phase 3A", 0, "Fx|Analyzer", "0.3.1", kVstVersionString, VHS::Prototype::create)
+           "VHS Phase 3A", 0, "Fx|Analyzer", "0.4.1", kVstVersionString, VHS::Prototype::create)
 END_FACTORY

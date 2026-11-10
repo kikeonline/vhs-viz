@@ -25,6 +25,8 @@ public final class MetalRenderer {
     private let effectIntermediate: any MTLRenderPipelineState
     private let effectOutput: any MTLRenderPipelineState
     private let resources = FrameResources()
+    private var executableGraph: CompiledGraph?
+    public func installGraph(_ graph: CompiledGraph?) { executableGraph = graph }
     public var resourceMetrics: (textures: Int, allocations: Int) { resources.metrics }
     public init(shaderURL: URL? = nil) throws {
         guard let device = MTLCreateSystemDefaultDevice(), let queue = device.makeCommandQueue() else {
@@ -49,8 +51,14 @@ public final class MetalRenderer {
     }
 
     private func encode(_ frame: RenderFrame, to texture: any MTLTexture,
-                        command: any MTLCommandBuffer, slot: Int) throws {
+                        command: any MTLCommandBuffer, slot: Int, graph: CompiledGraph? = nil) throws {
         guard texture.width <= 4096, texture.height <= 4096, frame.scene.effects.count <= EffectRegistry.maximumEffects else { throw RendererError.resourceCreation }
+        if !frame.scene.canEditChain || graph != nil {
+            guard let program = graph ?? executableGraph, program.graph == frame.scene.graph else { throw GraphDiagnostic("Graph has no matching executable yet.") }
+            let scratch = program.schedule.textureCount == 0 ? [] : try resources.textures(slot,device:device,width:texture.width,height:texture.height,count:program.schedule.textureCount)
+            try program.encode(frame,to:texture,command:command,textures:scratch)
+            return
+        }
         let effects = frame.scene.effects.filter { !$0.bypassed }
         guard !effects.isEmpty else { try encodeSource(frame, to: texture, command: command, state: pipeline); return }
         let scratch = try resources.textures(slot, device: device, width: texture.width, height: texture.height)
@@ -103,7 +111,7 @@ public final class MetalRenderer {
     }
 
     /// Synchronous GPU readback for fixtures only; never called by live drawing.
-    public func readPixels(_ frame: RenderFrame, width: Int, height: Int) throws -> [UInt8] {
+    public func readPixels(_ frame: RenderFrame, width: Int, height: Int, graph: CompiledGraph? = nil) throws -> [UInt8] {
         guard width > 0, height > 0, width <= 4096, height <= 4096 else { throw RendererError.resourceCreation }
         let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: Self.pixelFormat,
                             width: width, height: height, mipmapped: false)
@@ -113,7 +121,7 @@ public final class MetalRenderer {
         }
         guard let slot = resources.checkout(width: width, height: height) else { throw RendererError.resourceCreation }
         defer { resources.release(slot) }
-        try encode(frame, to: texture, command: command, slot: slot)
+        try encode(frame, to: texture, command: command, slot: slot, graph: graph)
         command.commit(); command.waitUntilCompleted()
         if let error = command.error { throw RendererError.gpu(error.localizedDescription) }
         var bytes = [UInt8](repeating: 0, count: width * height * 4)

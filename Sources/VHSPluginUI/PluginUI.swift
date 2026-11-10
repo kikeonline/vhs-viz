@@ -5,10 +5,17 @@ import Observation
 import VHSCore
 import VHSRenderer
 import VHSRealtime
+import VHSGraphUI
 
 @Observable final class PluginRuntime: NSObject, NSWindowDelegate {
     let bridge: OpaquePointer
     let render: RenderSession
+    var session = ProjectSession(document:.init(name:"Plug-in Scene"))
+    let graphEditor = GraphEditorState()
+    var showsGraph = false
+    @ObservationIgnored private var documentRevision: UInt32 = 0
+    @ObservationIgnored private var documentBytes = [UInt8](repeating:0,count:Int(VHS_STATE_CAPACITY))
+    @ObservationIgnored private var pendingDocument: Data?
     var red = 0.24
     var green = 0.08
     var blue = 0.62
@@ -40,13 +47,20 @@ import VHSRealtime
         tick()
     }
     func stop() {
+        render.builds.cancel()
         timer?.invalidate(); timer = nil
         output?.contentView = nil; output?.close(); output = nil
     }
     isolated deinit { vhs_bridge_release(bridge) }
     func tick() {
+        receiveDocument()
         red = vhs_bridge_get(bridge, 0); green = vhs_bridge_get(bridge, 1); blue = vhs_bridge_get(bridge, 2)
         cc = vhs_bridge_get(bridge, 3)
+        let base = SceneColor(red:red,green:green,blue:blue)
+        if session.history.scene.canEditChain && session.history.scene.source == .solid && session.history.scene.color != base {
+            session = ProjectSession(document:.init(id:session.id,name:session.name,scene:SceneReducer.reduce(session.history.scene,.setColor(base)),graphLayout:session.graphLayout))
+            queueDocument(notify:false)
+        }
         var event = VHSInput()
         let before = vhs_bridge_dropped(bridge)
         for _ in 0..<256 {
@@ -75,8 +89,57 @@ import VHSRealtime
         velocity = notes.max() ?? 0
         // Prototype bindings: audio peak -> red; held velocity -> green; host CC1 -> blue.
         // Persisted base values remain separate from transient input.
-        let scene = SceneSnapshot(color: .init(red: min(1, red + peak), green: min(1, green + velocity), blue: min(1, blue + (learnedController == nil ? cc : learnedValue))))
+        var scene = session.history.scene
+        if scene.canEditChain && scene.source == .solid {
+            scene = SceneReducer.reduce(scene,.setColor(.init(red:min(1,red+peak),green:min(1,green+velocity),blue:min(1,blue+(learnedController == nil ? cc : learnedValue)))))
+        }
         render.update(scene)
+        publishDocument()
+    }
+    func sendGraph(_ action: SceneAction) {
+        session.send(action)
+        syncGraphBase(); queueDocument(); tick()
+    }
+    func setGraphLayout(_ layout: GraphLayout) { session.setGraphLayout(layout); queueDocument() }
+    func beginGraphEdit() { session.beginEdit() }
+    func endGraphEdit() { session.endEdit(); queueDocument() }
+    func undoGraph() { session.undo(); syncGraphBase(); queueDocument(); tick() }
+    func redoGraph() { session.redo(); syncGraphBase(); queueDocument(); tick() }
+    private func syncGraphBase() {
+        if session.history.scene.canEditChain && session.history.scene.source == .solid {
+            let color = session.history.scene.color
+            for (index,value) in [color.red,color.green,color.blue].enumerated() { vhs_bridge_set(bridge,UInt32(index),value) }
+        }
+    }
+    private func queueDocument(notify: Bool = true) {
+        do {
+            let data = try ProjectCodec.encode(session.document)
+            guard data.count <= VHS_STATE_CAPACITY else { throw GraphDiagnostic("Plug-in state exceeds 128 KiB. Remove nodes or simplify layout before saving the song; the last valid state is retained.") }
+            pendingDocument = data; error = nil
+            if publishDocument() && notify { vhs_bridge_edit(bridge,UInt32.max,0,3) }
+        }
+        catch { self.error = error.localizedDescription }
+    }
+    @discardableResult private func publishDocument() -> Bool {
+        guard let data = pendingDocument else { return false }
+        var published: UInt32 = 0
+        let result = data.withUnsafeBytes { vhs_bridge_publish_document(bridge,$0.bindMemory(to:UInt8.self).baseAddress,UInt32(data.count),documentRevision,&published) }
+        if result >= 0 { documentRevision = published; pendingDocument = nil; return true }
+        return false
+    }
+    private func receiveDocument() {
+        guard vhs_bridge_document_revision(bridge) != documentRevision else { return }
+        var origin: UInt32 = 0, revision: UInt32 = 0
+        let count = vhs_bridge_copy_document(bridge,&documentBytes,UInt32(documentBytes.count),&origin,&revision)
+        guard count >= 0 else { return }
+        documentRevision = revision
+        guard origin != 0 else { return }
+        do {
+            let document = count == 0 ? ProjectDocument(name:"Plug-in Scene") : try ProjectCodec.decode(Data(documentBytes.prefix(Int(count))))
+            session = ProjectSession(document:document); graphEditor.selection = nil; graphEditor.pendingOutput = nil
+            pendingDocument = nil; showsGraph = !document.scene.canEditChain
+            error = nil
+        } catch { self.error = error.localizedDescription }
     }
     @ObservationIgnored private var lastDropped: UInt32 = 0
     func edit(_ id: UInt32, _ value: Double, _ phase: UInt32) { vhs_bridge_edit(bridge, id, value, phase) }
@@ -96,6 +159,28 @@ import VHSRealtime
 struct PluginEditor: View {
     let runtime: PluginRuntime
     var body: some View {
+        VStack(alignment:.leading,spacing:Space.sm) {
+            HStack(spacing:Space.sm) {
+                Button(runtime.showsGraph ? "Probe Controls" : "Nodes") { runtime.showsGraph.toggle() }
+                if runtime.showsGraph {
+                    Button("Undo Graph Edit") { runtime.undoGraph() }.disabled(!runtime.session.history.canUndo)
+                    Button("Redo Graph Edit") { runtime.redoGraph() }.disabled(!runtime.session.history.canRedo)
+                    Button("Show Output") { runtime.showOutput() }
+                    Text(runtime.render.builds.status.message).font(.caption).foregroundStyle(.secondary).lineLimit(2)
+                }
+            }
+            if runtime.showsGraph {
+                if let error = runtime.error { Text(error).font(.caption).foregroundStyle(.secondary).fixedSize(horizontal:false,vertical:true) }
+                HStack(alignment:.top,spacing:Space.lg) {
+                    PluginSurface(runtime:runtime).frame(width:Layout.graphPreviewWidth,height:Layout.graphPreviewWidth*9/16)
+                    Text("Host graph state is embedded. Production mapping/automation follows in later phases.").font(.caption).foregroundStyle(.secondary)
+                }
+                GraphEditor(graph:runtime.session.history.scene.graph,layout:runtime.session.graphLayout,seed:runtime.session.history.scene.seed,state:runtime.graphEditor,
+                            send:runtime.sendGraph,setLayout:runtime.setGraphLayout,beginEdit:runtime.beginGraphEdit,endEdit:runtime.endGraphEdit)
+            } else { probeControls }
+        }.padding(Space.margin)
+    }
+    private var probeControls: some View {
         HStack(alignment: .top, spacing: Space.xl) {
             VStack(alignment: .leading, spacing: Space.xl) {
                 Text("Solid").font(.headline).gridProbe("plugin-source", area: "plugin-controls")
@@ -206,4 +291,9 @@ struct PluginSurface: NSViewRepresentable {
     }
     if Thread.isMainThread { MainActor.assumeIsolated { teardown() } }
     else { DispatchQueue.main.async { teardown() } }
+}
+
+@_cdecl("vhs_document_validate") public nonisolated func validateHostDocument(_ data: UnsafePointer<UInt8>?, _ count: UInt32) -> Int32 {
+    guard let data, count > 0, count <= VHS_STATE_CAPACITY else { return 0 }
+    return (try? ProjectCodec.decode(Data(bytes:data,count:Int(count)))) == nil ? 0 : 1
 }

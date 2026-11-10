@@ -3,6 +3,7 @@ import Observation
 import MetalKit
 import VHSCore
 import VHSRenderer
+import VHSGraphUI
 
 final class MenuState: ObservableObject {
     static let shared = MenuState()
@@ -33,6 +34,11 @@ final class MenuState: ObservableObject {
     @ObservationIgnored private var timer: Timer?
     @ObservationIgnored lazy var output = OutputWindowController(model: self)
     var scene: SceneSnapshot { history.scene }
+    var showsGraph = false
+    let graphEditor = GraphEditorState()
+    var graphBuildMessage: String { renderSession?.builds.status.message ?? "Renderer unavailable" }
+    var graphLayout: GraphLayout { session.graphLayout }
+    func setGraphLayout(_ layout: GraphLayout) { guard !files.blocksSceneEditing else { return }; session.setGraphLayout(layout); refreshMenu() }
     private(set) var selectedEffectID: UUID?
     var selectedEffect: EffectInstance? { scene.effects.first { $0.id == selectedEffectID } }
     func selectEffect(_ id: UUID?) {
@@ -87,6 +93,8 @@ final class MenuState: ObservableObject {
     }
     func replaceProject(_ document: ProjectDocument, fileURL: URL? = nil) {
         selectedEffectID = nil
+        graphEditor.selection = nil; graphEditor.pendingOutput = nil
+        showsGraph = !document.scene.canEditChain
         session = ProjectSession(document: document, fileURL: fileURL); sync()
     }
     func recordSave(_ document: ProjectDocument, to url: URL) { session.recordSave(document, to: url); sync() }

@@ -27,15 +27,20 @@ final class FrameResources: @unchecked Sendable {
         lock.lock(); defer { lock.unlock() }
         slots[index].busy = false
     }
-    func textures(_ index: Int, device: any MTLDevice, width: Int, height: Int) throws -> [any MTLTexture] {
+    func textures(_ index: Int, device: any MTLDevice, width: Int, height: Int, count: Int = 2) throws -> [any MTLTexture] {
         lock.lock(); defer { lock.unlock() }
-        if let first = slots[index].textures.first, first.width == width, first.height == height { return slots[index].textures }
+        if let first = slots[index].textures.first, first.width == width, first.height == height, slots[index].textures.count >= count { return slots[index].textures }
         // Drop obsolete sizes, never accumulate a cache during resize.
         slots[index].textures = []
         let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba16Float, width: width, height: height, mipmapped: false)
         descriptor.usage = [.renderTarget, .shaderRead]; descriptor.storageMode = .private
-        guard let a = device.makeTexture(descriptor: descriptor), let b = device.makeTexture(descriptor: descriptor) else { throw RendererError.resourceCreation }
-        slots[index].textures = [a,b]; allocations += 2
+        guard (1...8).contains(count) else { throw RendererError.resourceCreation }
+        var textures: [any MTLTexture] = []
+        for _ in 0..<count {
+            guard let texture = device.makeTexture(descriptor:descriptor) else { throw RendererError.resourceCreation }
+            textures.append(texture)
+        }
+        slots[index].textures = textures; allocations += count
         return slots[index].textures
     }
 }

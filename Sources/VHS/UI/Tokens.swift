@@ -1,6 +1,19 @@
 import SwiftUI
 
 enum Layout {
+    static let graphSeedWidth: CGFloat = 72
+    static let graphMinWidth: CGFloat = 1000
+    static let graphMinHeight: CGFloat = 640
+    static let graphPreviewWidth: CGFloat = 240
+    static let graphNodeWidth: CGFloat = 200
+    static let graphNodeHeader: CGFloat = 32
+    static let graphPortHeight: CGFloat = 24
+    static let graphNodeFooter: CGFloat = 32
+    static let graphLibraryWidth: CGFloat = 320
+    static let graphLibraryHeight: CGFloat = 360
+    static let graphInspectorWidth: CGFloat = 280
+    static let graphPanStep: Double = 128
+
     /// Title, source status, section gaps and the minimum effect section.
     static let previewReservedHeight: CGFloat = 192
     static let effectListMinHeight: CGFloat = 80

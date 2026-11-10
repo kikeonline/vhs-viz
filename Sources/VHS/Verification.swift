@@ -24,6 +24,7 @@ enum Verification {
                 try await ProjectVerification.run(model)
                 try await SourceVerification.run(model)
                 try await EffectVerification.run(model)
+                try await GraphVerification.run(model)
                 log("SELFTEST done")
             }
             if let directory = env["APP_SNAPSHOT"] {
@@ -142,8 +143,14 @@ enum Verification {
         guard let control = NSApp.windows.first(where: { $0.identifier?.rawValue == "vhs-control" }) else {
             throw Failure(description: "control window missing")
         }
+        if ProcessInfo.processInfo.environment["APP_SNAPSHOT_PAGES"] == "nodes" {
+            try await GraphSnapshots.run(model,control:control,directory:directory)
+            log("SNAPSHOT done \(directory)")
+            return
+        }
         if ProcessInfo.processInfo.environment["APP_SNAPSHOT_PAGES"] == "effects" {
             try await EffectSnapshots.run(model, control: control, directory: directory)
+        try await GraphSnapshots.run(model,control:control,directory:directory)
             log("SNAPSHOT done \(directory)")
             return
         }
@@ -173,6 +180,7 @@ enum Verification {
         try await ProjectSnapshots.run(model, control: control, directory: directory)
         try await SourceSnapshots.run(model, control: control, directory: directory)
         try await EffectSnapshots.run(model, control: control, directory: directory)
+        try await GraphSnapshots.run(model,control:control,directory:directory)
         log("SNAPSHOT done \(directory)")
     }
     static func capture(_ window: NSWindow, to path: String) throws {

@@ -8,8 +8,11 @@
 #include <cstring>
 #include <cstdio>
 #include <limits>
+#include <fstream>
+#include <vector>
+#include "base/source/fstreamer.h"
 using namespace VHS;
-int main() {
+int main(int argc,char** argv) {
     HostApplication host;
     auto* p=new Prototype;
     assert(p->initialize(&host)==kResultOk);
@@ -51,6 +54,23 @@ int main() {
     MemoryStream saved; assert(p->getState(&saved)==kResultOk); saved.seek(0,IBStream::kIBSeekSet,nullptr);
     assert(second->setState(&saved)==kResultOk); assert(vhs_bridge_get(second->bridge,0)==.83);
     MemoryStream broken(saved.getData(),saved.getSize()-1); assert(second->setState(&broken)!=kResultOk); assert(vhs_bridge_get(second->bridge,0)==.83);
+    assert(argc==2);
+    std::ifstream file(argv[1],std::ios::binary);
+    std::vector<uint8_t> graph((std::istreambuf_iterator<char>(file)),std::istreambuf_iterator<char>());
+    assert(!graph.empty() && graph.size()<VHS_STATE_CAPACITY);
+    assert(vhs_bridge_store_document(p->bridge,graph.data(),uint32_t(graph.size()),0)==int(graph.size()));
+    MemoryStream extended; assert(p->getState(&extended)==kResultOk); extended.seek(0,IBStream::kIBSeekSet,nullptr);
+    assert(second->setState(&extended)==kResultOk);
+    std::vector<uint8_t> restored(VHS_STATE_CAPACITY); uint32_t origin=0,revision=0;
+    assert(vhs_bridge_copy_document(second->bridge,restored.data(),VHS_STATE_CAPACITY,&origin,&revision)==int(graph.size()));
+    assert(origin==1 && !std::memcmp(restored.data(),graph.data(),graph.size()));
+    MemoryStream cut(extended.getData(),extended.getSize()-1);
+    assert(second->setState(&cut)!=kResultOk && vhs_bridge_document_revision(second->bridge)==revision);
+    MemoryStream malformed; IBStreamer bad(&malformed,kLittleEndian);
+    bad.writeInt32(0x56485332); for(int i=0;i<3;++i) bad.writeDouble(.5); bad.writeInt32(2); bad.writeRaw("{}",2);
+    malformed.seek(0,IBStream::kIBSeekSet,nullptr);
+    assert(second->setState(&malformed)!=kResultOk && vhs_bridge_document_revision(second->bridge)==revision);
+    puts("PASS graph state: embedded topology/parameters/seed/layout, before-editor restore, truncated/malformed rejection preserves prior state");
     assert(p->terminate()==kResultOk); assert(second->terminate()==kResultOk); p->release(); second->release();
     puts("PASS real processor: stereo float/double, byte equality/NaN, in-place, silence, zero block, note offsets, transport, CC1, instance isolation, transactional state");
 }

@@ -27,3 +27,24 @@ void vhs_bridge_edit(VHSBridge*, uint32_t, double, uint32_t);
 #ifdef __cplusplus
 }
 #endif
+
+// Bounded document mailbox for host state/control operations, never process().
+// Calls try once and return -1 on contention/capacity failure; no spinning.
+#ifdef __cplusplus
+extern "C" {
+#endif
+#define VHS_STATE_CAPACITY 131072
+int vhs_bridge_store_document(VHSBridge*, const uint8_t*, uint32_t, uint32_t restored);
+int vhs_bridge_copy_document(VHSBridge*, uint8_t*, uint32_t, uint32_t* restored, uint32_t* revision);
+uint32_t vhs_bridge_document_revision(VHSBridge*);
+#ifdef __cplusplus
+}
+#endif
+#ifdef __cplusplus
+extern "C" {
+#endif
+// UI publication cannot overwrite a host restore it has not consumed.
+int vhs_bridge_publish_document(VHSBridge*, const uint8_t*, uint32_t, uint32_t expectedRevision, uint32_t* publishedRevision);
+#ifdef __cplusplus
+}
+#endif

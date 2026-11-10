@@ -1,0 +1,50 @@
+{
+  "probes" : [
+    {
+      "area" : "graph-window",
+      "edge" : "lead",
+      "height" : 135,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-preview-status",
+      "width" : 577.5,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "graph-window",
+      "height" : 628,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "graph-window",
+      "width" : 992,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "graph-window",
+      "edge" : "lead",
+      "height" : 477,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-editor",
+      "width" : 992,
+      "x" : 20,
+      "y" : 223
+    },
+    {
+      "area" : "page",
+      "height" : 668,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "page",
+      "width" : 1032,
+      "x" : 0,
+      "y" : 52
+    }
+  ],
+  "window" : {
+    "height" : 720,
+    "width" : 1032
+  }
+}

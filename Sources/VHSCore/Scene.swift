@@ -25,6 +25,7 @@ public struct SceneSnapshot: Equatable, Codable, Sendable {
     public let parameters: [String: ParameterValue]
     public let seed: UInt32
     public let effects: [EffectInstance]
+    public let graph: ShaderGraph
     public var color: SceneColor { .init(red: number(.solidRed), green: number(.solidGreen), blue: number(.solidBlue)) }
     public init(color: SceneColor = .initial, seed: UInt32 = 1) {
         self.init(source: .solid, values: [.solidRed: .number(color.red), .solidGreen: .number(color.green), .solidBlue: .number(color.blue)], seed: seed)
@@ -37,9 +38,11 @@ public struct SceneSnapshot: Equatable, Codable, Sendable {
             if let value = SourceRegistry.parameter(id).normalized(value) { parameters[id.rawValue] = value }
         }
         self.parameters = parameters
+        graph = .chain(source: source, parameters: parameters, effects: effects)
     }
-    private init(source: SourceKind, parameters: [String: ParameterValue], seed: UInt32, effects: [EffectInstance]) {
+    private init(source: SourceKind, parameters: [String: ParameterValue], seed: UInt32, effects: [EffectInstance], graph: ShaderGraph? = nil) {
         self.source = source; self.parameters = parameters; self.seed = seed; self.effects = effects
+        self.graph = graph ?? .chain(source:source,parameters:parameters,effects:effects)
     }
     public func value(_ id: ParameterID) -> ParameterValue {
         id == .seed ? .number(Double(seed)) : parameters[id.rawValue] ?? SourceRegistry.parameter(id).defaultValue
@@ -55,21 +58,44 @@ public struct SceneSnapshot: Equatable, Codable, Sendable {
             guard let id = ParameterID(rawValue: key) else { return false }
             return SourceRegistry.parameter(id).allows(value)
         }) else { throw ProjectError.invalidValues }
+        try GraphValidator.validate(graph)
+        if let chain = graph.chain {
+            guard chain.source.kind == .source(source), chain.effects == effects, chain.source.values.allSatisfy({ parameters[$0.key] == $0.value }) else {
+                throw GraphDiagnostic("Source/effect cache does not match the graph. Reopen a valid project.",node:chain.source.id)
+            }
+        }
     }
-    func selecting(_ source: SourceKind) -> Self { Self(source: source, parameters: parameters, seed: seed, effects: effects) }
+    private func rebuiltGraph(source: SourceKind, parameters: [String:ParameterValue], effects: [EffectInstance]) -> ShaderGraph {
+        .chain(source:source,parameters:parameters,effects:effects,sourceID:graph.chain?.source.id ?? ShaderGraph.sourceID,
+               outputID:graph.nodes.first(where: { $0.kind == .output })?.id ?? ShaderGraph.outputID)
+    }
+    func selecting(_ source: SourceKind) -> Self { Self(source: source, parameters: parameters, seed: seed, effects: effects, graph:rebuiltGraph(source:source,parameters:parameters,effects:effects)) }
     func replacing(_ id: ParameterID, with value: ParameterValue) -> Self {
         guard source.definition.parameters.contains(where: { $0.id == id }),
               let value = SourceRegistry.parameter(id).normalized(value) else { return self }
-        if id == .seed, case let .number(v) = value { return Self(source: source, parameters: parameters, seed: UInt32(v), effects: effects) }
+        if id == .seed, case let .number(v) = value { return Self(source: source, parameters: parameters, seed: UInt32(v), effects: effects, graph:graph) }
         var parameters = parameters; parameters[id.rawValue] = value
-        return Self(source: source, parameters: parameters, seed: seed, effects: effects)
+        return Self(source: source, parameters: parameters, seed: seed, effects: effects, graph:rebuiltGraph(source:source,parameters:parameters,effects:effects))
+    }
+    public func withSeed(_ seed: UInt32) -> Self { Self(source:source,parameters:parameters,seed:seed,effects:effects,graph:graph) }
+    public var canEditChain: Bool { graph.chain != nil }
+    public func withGraph(_ graph: ShaderGraph) -> Self {
+        if let chain = graph.chain, case let .source(source) = chain.source.kind {
+            var parameters = parameters
+            for (key,value) in chain.source.values { parameters[key] = value }
+            return Self(source:source,parameters:parameters,seed:seed,effects:chain.effects,graph:graph)
+        }
+        return Self(source:source,parameters:parameters,seed:seed,effects:effects,graph:graph)
     }
     func withEffects(_ effects: [EffectInstance]) -> Self {
-        Self(source: source, parameters: parameters, seed: seed, effects: effects)
+        Self(source: source, parameters: parameters, seed: seed, effects: effects, graph:rebuiltGraph(source:source,parameters:parameters,effects:effects))
     }
 }
 
 public enum SceneAction: Sendable {
+    case setSeed(UInt32)
+    case setGraph(ShaderGraph)
+    case setNodeValue(UUID, String, ParameterValue)
     case addEffect(EffectInstance)
     case removeEffect(UUID)
     case moveEffect(UUID, Int)
@@ -83,9 +109,14 @@ public enum SceneAction: Sendable {
 
 public enum SceneReducer {
     public static func reduce(_ scene: SceneSnapshot, _ action: SceneAction) -> SceneSnapshot {
+        if case let .setSeed(seed) = action { return scene.withSeed(seed) }
+        if case let .setGraph(graph) = action { return scene.withGraph(graph) }
+        if case let .setNodeValue(id,key,value) = action, let node = scene.graph.node(id) { return scene.withGraph(scene.graph.replacing(node.replacing(key,with:value))) }
+        guard scene.canEditChain else { return scene }
         switch action {
+        case .setSeed, .setGraph, .setNodeValue: return scene
         case let .addEffect(effect):
-            if scene.effects.count < EffectRegistry.maximumEffects, !scene.effects.contains(where: { $0.id == effect.id }), (try? effect.validate()) != nil {
+            if scene.effects.count < EffectRegistry.maximumEffects, !scene.graph.nodes.contains(where: { $0.id == effect.id }), (try? effect.validate()) != nil {
                 return scene.withEffects(scene.effects + [effect])
             } else { return scene }
         case let .removeEffect(id): return scene.withEffects(scene.effects.filter { $0.id != id })
@@ -118,7 +149,7 @@ public struct SceneHistory: Sendable {
     public mutating func beginEdit() { if editStart == nil { editStart = scene } }
     public mutating func send(_ action: SceneAction) {
         switch action {
-        case .selectSource, .addEffect, .removeEffect, .moveEffect, .bypassEffect: endEdit()
+        case .selectSource, .addEffect, .removeEffect, .moveEffect, .bypassEffect, .setGraph: endEdit()
         default: break
         }
         let next = SceneReducer.reduce(scene, action)

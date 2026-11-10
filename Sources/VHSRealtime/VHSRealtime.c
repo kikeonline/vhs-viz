@@ -8,6 +8,10 @@ struct VHSBridge {
     atomic_uint refs, read, write, dropped;
     _Atomic(uint64_t) values[4];
     VHSInput slots[256];
+    atomic_flag documentBusy;
+    atomic_uint documentRevision;
+    uint32_t documentCount, documentRestored;
+    uint8_t document[VHS_STATE_CAPACITY];
     void* context;
     VHSEdit edit;
 };
@@ -16,6 +20,7 @@ VHSBridge* vhs_bridge_create(void) {
     if (!b) return NULL;
     atomic_init(&b->refs, 1); atomic_init(&b->read, 0);
     atomic_init(&b->write, 0); atomic_init(&b->dropped, 0);
+    atomic_flag_clear(&b->documentBusy); atomic_init(&b->documentRevision,0);
     for (unsigned i=0; i<4; ++i) atomic_init(&b->values[i], 0);
     vhs_bridge_set(b, 0, .24); vhs_bridge_set(b, 1, .08); vhs_bridge_set(b, 2, .62);
     return b;
@@ -51,4 +56,40 @@ double vhs_bridge_get(VHSBridge* b, uint32_t id) {
 void vhs_bridge_callback(VHSBridge* b, void* context, VHSEdit edit) { b->context=context; b->edit=edit; }
 void vhs_bridge_edit(VHSBridge* b, uint32_t id, double value, uint32_t phase) {
     if (b->edit) b->edit(b->context, id, value, phase);
+}
+
+int vhs_bridge_store_document(VHSBridge* b, const uint8_t* data, uint32_t count, uint32_t restored) {
+    if (count > VHS_STATE_CAPACITY || (count && !data)) return -1;
+    if (atomic_flag_test_and_set_explicit(&b->documentBusy,memory_order_acquire)) return -1;
+    if (count) memcpy(b->document,data,count);
+    b->documentCount=count; b->documentRestored=restored;
+    atomic_fetch_add_explicit(&b->documentRevision,1,memory_order_release);
+    atomic_flag_clear_explicit(&b->documentBusy,memory_order_release);
+    return (int)count;
+}
+int vhs_bridge_copy_document(VHSBridge* b, uint8_t* data, uint32_t capacity, uint32_t* restored, uint32_t* revision) {
+    if (atomic_flag_test_and_set_explicit(&b->documentBusy,memory_order_acquire)) return -1;
+    int count = (int)b->documentCount;
+    if ((uint32_t)count > capacity || (count && !data)) count=-1;
+    else {
+        if (count) memcpy(data,b->document,(size_t)count);
+        if (restored) *restored=b->documentRestored;
+        if (revision) *revision=atomic_load_explicit(&b->documentRevision,memory_order_relaxed);
+    }
+    atomic_flag_clear_explicit(&b->documentBusy,memory_order_release);
+    return count;
+}
+uint32_t vhs_bridge_document_revision(VHSBridge* b) { return atomic_load_explicit(&b->documentRevision,memory_order_acquire); }
+int vhs_bridge_publish_document(VHSBridge* b, const uint8_t* data, uint32_t count, uint32_t expected, uint32_t* published) {
+    if (count > VHS_STATE_CAPACITY || (count && !data)) return -1;
+    if (atomic_flag_test_and_set_explicit(&b->documentBusy,memory_order_acquire)) return -1;
+    if (atomic_load_explicit(&b->documentRevision,memory_order_relaxed) != expected) {
+        atomic_flag_clear_explicit(&b->documentBusy,memory_order_release); return -1;
+    }
+    if (count) memcpy(b->document,data,count);
+    b->documentCount=count; b->documentRestored=0;
+    uint32_t revision=atomic_fetch_add_explicit(&b->documentRevision,1,memory_order_release)+1;
+    if (published) *published=revision;
+    atomic_flag_clear_explicit(&b->documentBusy,memory_order_release);
+    return (int)count;
 }

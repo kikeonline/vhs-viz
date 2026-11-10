@@ -2,6 +2,7 @@ import AppKit
 import SwiftUI
 import VHSCore
 import VHSRealtime
+import VHSGraphUI
 
 private enum ProbeFailure: Error { case check(String) }
 /// A native embedding harness, separate from Studio One acceptance. Uses the real
@@ -51,21 +52,61 @@ public func runPluginProbe(folder: String) async throws {
     first.learning = false; first.candidate = nil; first.learnedController = nil; first.learnedChannel = nil
     vhs_bridge_set(a, 0, 0.24); first.tick()
     first.output?.close(); second.output?.close()
+    let aColor = GraphNode(kind:.color), aImage = GraphNode(kind:.imageFromColor), final = GraphNode(kind:.output)
+    let graph = ShaderGraph(nodes:[aColor,aImage,final],edges:[.init(from:.init(aColor.id),to:.init(aImage.id,"color")),.init(from:.init(aImage.id),to:.init(final.id,"image"))])
+    first.sendGraph(.setGraph(graph)); first.showsGraph = true
+    first.setGraphLayout(.init(positions:[aImage.id.uuidString:.init(x:280,y:48)],zoom:0.75))
+    first.tick()
+    var bytes = [UInt8](repeating:0,count:Int(VHS_STATE_CAPACITY)), origin: UInt32 = 0, revision: UInt32 = 0
+    let count = vhs_bridge_copy_document(a,&bytes,UInt32(bytes.count),&origin,&revision)
+    try check(count > 0 && bytes.withUnsafeBufferPointer { validateHostDocument($0.baseAddress,UInt32(count)) } == 1,"graph host state validates without an editor or external file")
+    let stored = bytes.withUnsafeBufferPointer { vhs_bridge_store_document(b,$0.baseAddress,UInt32(count),1) }
+    second.tick()
+    try check(stored == count && second.session.document == first.session.document && second.output == nil,"graph document/layout restore independently without auto-opening output")
+    first.sendGraph(.setNodeValue(aColor.id,"value",.color(.init(red:0.8,green:0.1,blue:0.2))))
+    try check(second.session.history.scene.graph == graph && first.session.history.scene.graph != graph,"graph edits do not leak between instances")
+    for _ in 0..<150 {
+        try await Task.sleep(for:.milliseconds(20)); second.tick()
+        if second.render.frame.scene.graph == graph { break }
+    }
+    try check(second.render.frame.scene.graph == graph,"native plug-in renders a compiled branching/value graph")
+    window.contentView = NSHostingView(rootView:PluginEditor(runtime:second))
+    second.showsGraph = true; second.graphEditor.selection = aColor.id
     for (name, appearance) in [("light", NSAppearance.Name.aqua), ("dark", .darkAqua)] {
-        window.appearance = NSAppearance(named: appearance)
-        window.makeKeyAndOrderFront(nil); window.makeMain(); NSApp.activate()
-        let activate = Process(); activate.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
-        activate.arguments = ["-e", "tell application \"System Events\" to set frontmost of (first process whose unix id is \(ProcessInfo.processInfo.processIdentifier)) to true"]
-        try activate.run(); activate.waitUntilExit()
-        try await Task.sleep(for: .milliseconds(400))
-        try check(window.isKeyWindow, "\(name) capture window is key")
-        let path = directory.appendingPathComponent("plugin-editor-\(name).png").path
-        let process = Process(); process.executableURL = URL(fileURLWithPath: "/usr/sbin/screencapture")
-        process.arguments = ["-x", "-o", "-l", String(window.windowNumber), path]
-        try process.run(); process.waitUntilExit()
-        try check(process.terminationStatus == 0, "\(name) native window capture")
-        GridProbes.shared.write(to: directory.appendingPathComponent("plugin-editor-\(name)-layout.json").path, window: window.contentLayoutRect.size)
+        window.appearance = NSAppearance(named:appearance)
+        for mode in ["editor","graph"] {
+            second.showsGraph = mode == "graph"
+            window.makeKeyAndOrderFront(nil); window.makeMain(); NSApp.activate()
+            try await Task.sleep(for:.milliseconds(250))
+            if ProcessInfo.processInfo.environment["APP_LAYOUT_ONLY"] != "1" {
+                let activate = Process(); activate.executableURL = URL(fileURLWithPath:"/usr/bin/osascript")
+                activate.arguments = ["-e","tell application \"System Events\" to set frontmost of (first process whose unix id is \(ProcessInfo.processInfo.processIdentifier)) to true"]
+                try activate.run(); activate.waitUntilExit()
+                try await Task.sleep(for:.milliseconds(250))
+                try check(window.isKeyWindow,"\(name) \(mode) capture window is key")
+                let path = directory.appendingPathComponent("plugin-\(mode)-\(name).png").path
+                let capture = Process(); capture.executableURL = URL(fileURLWithPath:"/usr/sbin/screencapture")
+                capture.arguments = ["-x","-o","-l",String(window.windowNumber),path]
+                try capture.run(); capture.waitUntilExit()
+                try check(capture.terminationStatus == 0,"\(name) \(mode) native window capture")
+            } else { print("SKIP image capture (layout-only): plugin-\(mode)-\(name)") }
+            let path = directory.appendingPathComponent("plugin-\(mode)-\(name)-layout.json").path
+            if mode == "graph" { GraphEditorDiagnostics.writeLayout(to:path,width:window.contentLayoutRect.width,height:window.contentLayoutRect.height) }
+            else { GridProbes.shared.write(to:path,window:window.contentLayoutRect.size) }
+        }
     }
     first.showOutput(); first.stop()
     try check(first.output == nil && first.timer == nil, "instance teardown closes output and stops timer")
+}
+
+/// Pure fixture generation for the actual processor state tests, without AppKit windows.
+public func writePluginGraphFixture(to path: String) throws {
+    let a = GraphNode(kind:.source(.gradient)), b = GraphNode(kind:.source(.noise)), amount = GraphNode(kind:.scalar)
+    let mix = GraphNode(kind:.imageMix), output = GraphNode(kind:.output)
+    let graph = ShaderGraph(nodes:[a,b,amount,mix,output],edges:[
+        .init(from:.init(a.id),to:.init(mix.id,"a")),.init(from:.init(b.id),to:.init(mix.id,"b")),
+        .init(from:.init(amount.id),to:.init(mix.id,"amount")),.init(from:.init(mix.id),to:.init(output.id,"image"))])
+    let document = ProjectDocument(name:"Graph Host Fixture",scene:SceneSnapshot(source:.noise,seed:678).withGraph(graph),
+                                 graphLayout:.init(positions:[mix.id.uuidString:.init(x:480,y:240)],pan:.init(x:24,y:48),zoom:0.75))
+    try ProjectCodec.encode(document).write(to:URL(fileURLWithPath:path),options:.atomic)
 }

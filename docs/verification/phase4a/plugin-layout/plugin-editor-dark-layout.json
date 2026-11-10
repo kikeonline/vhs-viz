@@ -1,0 +1,92 @@
+{
+  "probes" : [
+    {
+      "area" : "plugin-controls",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "plugin-source",
+      "width" : 32.5,
+      "x" : 40,
+      "y" : 104
+    },
+    {
+      "area" : "plugin-controls",
+      "height" : 386,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "plugin-controls",
+      "width" : 280,
+      "x" : 40,
+      "y" : 104
+    },
+    {
+      "area" : "plugin-controls",
+      "edge" : "lead",
+      "height" : 40,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "plugin-0",
+      "width" : 280,
+      "x" : 40,
+      "y" : 140
+    },
+    {
+      "area" : "plugin-controls",
+      "edge" : "lead",
+      "height" : 40,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "plugin-1",
+      "width" : 280,
+      "x" : 40,
+      "y" : 200
+    },
+    {
+      "area" : "plugin-controls",
+      "edge" : "lead",
+      "height" : 40,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "plugin-2",
+      "width" : 280,
+      "x" : 40,
+      "y" : 260
+    },
+    {
+      "area" : "plugin-editor",
+      "height" : 648,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "plugin-editor",
+      "width" : 960,
+      "x" : 20,
+      "y" : 84
+    },
+    {
+      "area" : "plugin-editor",
+      "height" : 386,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "plugin-controls",
+      "width" : 280,
+      "x" : 40,
+      "y" : 104
+    },
+    {
+      "area" : "plugin-editor",
+      "height" : 348.75,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "plugin-preview",
+      "width" : 620,
+      "x" : 340,
+      "y" : 104
+    }
+  ],
+  "window" : {
+    "height" : 720,
+    "width" : 1000
+  }
+}

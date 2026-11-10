@@ -1,0 +1,7 @@
+tools/test-vst3.sh exited 0. Full output: /tmp/VHS-phase4a-vst3.log
+Built /Users/kike/Code/vhs/build/VHS Phase 3A.vst3
+PASS generated graph state fixture
+PASS graph state: embedded topology/parameters/seed/layout, before-editor restore, truncated/malformed rejection preserves prior state
+PASS real processor: stereo float/double, byte equality/NaN, in-place, silence, zero block, note offsets, transport, CC1, instance isolation, transactional state
+Result: 47 tests passed, 0 tests failed
+build/VHS Phase 3A.vst3/Contents/MacOS/VHSPrototype: Mach-O 64-bit bundle arm64

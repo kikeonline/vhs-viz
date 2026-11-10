@@ -1,0 +1,210 @@
+{
+  "probes" : [
+    {
+      "area" : "graph-page",
+      "height" : 477,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-main",
+      "width" : 671,
+      "x" : 20,
+      "y" : 223
+    },
+    {
+      "area" : "graph-page",
+      "height" : 477,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "graph-page",
+      "width" : 992,
+      "x" : 20,
+      "y" : 223
+    },
+    {
+      "area" : "graph-page",
+      "height" : 477,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-inspector",
+      "width" : 280,
+      "x" : 732,
+      "y" : 223
+    },
+    {
+      "area" : "graph-workspace",
+      "height" : 477,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "graph-workspace",
+      "width" : 671,
+      "x" : 20,
+      "y" : 223
+    },
+    {
+      "area" : "graph-workspace",
+      "edge" : "lead",
+      "height" : 21,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-toolbar",
+      "width" : 671,
+      "x" : 20,
+      "y" : 223
+    },
+    {
+      "area" : "graph-workspace",
+      "edge" : "lead",
+      "height" : 448,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-canvas",
+      "width" : 671,
+      "x" : 20,
+      "y" : 252
+    },
+    {
+      "area" : "node-details",
+      "height" : 269,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "node-details",
+      "width" : 272,
+      "x" : 732,
+      "y" : 263
+    },
+    {
+      "area" : "node-details",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-title",
+      "width" : 52,
+      "x" : 732,
+      "y" : 263
+    },
+    {
+      "area" : "node-details",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-connections-title",
+      "width" : 81.5,
+      "x" : 732,
+      "y" : 295
+    },
+    {
+      "area" : "node-details",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-input-value",
+      "width" : 154.5,
+      "x" : 732,
+      "y" : 327
+    },
+    {
+      "area" : "node-details",
+      "edge" : "lead",
+      "height" : 40,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-value-value",
+      "width" : 272,
+      "x" : 732,
+      "y" : 367
+    },
+    {
+      "area" : "node-details",
+      "edge" : "lead",
+      "height" : 80,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-position",
+      "width" : 272,
+      "x" : 732,
+      "y" : 423
+    },
+    {
+      "area" : "node-details",
+      "edge" : "lead",
+      "height" : 13,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-identity",
+      "width" : 270,
+      "x" : 732,
+      "y" : 519
+    },
+    {
+      "area" : "node-inspector",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "graph-node-picker",
+      "width" : 236,
+      "x" : 732,
+      "y" : 223
+    },
+    {
+      "area" : "node-inspector",
+      "height" : 477,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "node-inspector",
+      "width" : 280,
+      "x" : 732,
+      "y" : 223
+    },
+    {
+      "area" : "node-inspector",
+      "edge" : "lead",
+      "height" : 437,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-details-scroll",
+      "width" : 280,
+      "x" : 732,
+      "y" : 263
+    },
+    {
+      "area" : "node-value-control",
+      "height" : 40,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "node-value-control",
+      "width" : 272,
+      "x" : 732,
+      "y" : 367
+    },
+    {
+      "area" : "node-value-control",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-value-label",
+      "width" : 272,
+      "x" : 732,
+      "y" : 367
+    },
+    {
+      "area" : "node-value-control",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "node-value-slider",
+      "width" : 272,
+      "x" : 732,
+      "y" : 391
+    }
+  ],
+  "window" : {
+    "height" : 720,
+    "width" : 1032
+  }
+}

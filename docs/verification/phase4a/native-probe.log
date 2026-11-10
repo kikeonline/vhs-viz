@@ -1,0 +1,28 @@
+Building for debugging...
+[2 / 8] VHSPluginUI
+[4 / 10] VHSPluginUI
+[7 / 10] VHSPluginUI
+[10 / 11] VHSPluginProbe-product
+Build complete! (0.78 secs.)
+PASS base values stay independent
+PASS learn detects channel/controller/offset
+PASS learned CC and host context reach display timer
+PASS held notes stay independent
+PASS overflow clears queued held notes
+PASS two independent output windows
+PASS closing one output preserves the other
+PASS detaching editor preserves output
+PASS graph host state validates without an editor or external file
+PASS graph document/layout restore independently without auto-opening output
+PASS graph edits do not leak between instances
+PASS native plug-in renders a compiled branching/value graph
+SKIP image capture (layout-only): plugin-editor-light
+SKIP image capture (layout-only): plugin-graph-light
+SKIP image capture (layout-only): plugin-editor-dark
+SKIP image capture (layout-only): plugin-graph-dark
+PASS instance teardown closes output and stops timer
+PLUGIN SELFTEST done
+PASS plugin-editor-dark-layout.json: 6 probes in 2 areas, 0 lined up across areas
+PASS plugin-editor-light-layout.json: 6 probes in 2 areas, 0 lined up across areas
+PASS plugin-graph-dark-layout.json: 12 probes in 4 areas, 0 lined up across areas
+PASS plugin-graph-light-layout.json: 12 probes in 4 areas, 0 lined up across areas

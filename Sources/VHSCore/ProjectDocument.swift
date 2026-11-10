@@ -17,15 +17,16 @@ public enum ProjectError: Error, LocalizedError, Equatable {
 }
 
 public struct ProjectDocument: Codable, Equatable, Sendable {
-    public static let currentVersion = 3
+    public static let currentVersion = 4
     public let schemaVersion: Int
     public let id: UUID
     public let name: String
     public let scene: SceneSnapshot
-    public init(id: UUID = UUID(), name: String = "Untitled", scene: SceneSnapshot = .init()) {
-        schemaVersion = Self.currentVersion; self.id = id; self.name = name; self.scene = scene
+    public let graphLayout: GraphLayout
+    public init(id: UUID = UUID(), name: String = "Untitled", scene: SceneSnapshot = .init(), graphLayout: GraphLayout = .init()) {
+        schemaVersion = Self.currentVersion; self.id = id; self.name = name; self.scene = scene; self.graphLayout = graphLayout
     }
-    public func named(_ name: String) -> Self { Self(id: id, name: name, scene: scene) }
+    public func named(_ name: String) -> Self { Self(id: id, name: name, scene: scene, graphLayout: graphLayout) }
     public static func validatedName(_ name: String) throws -> String {
         let value = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !value.isEmpty, value.count <= 120, value != ".", value != "..",
@@ -37,6 +38,7 @@ public struct ProjectDocument: Codable, Equatable, Sendable {
         guard schemaVersion == Self.currentVersion else { throw ProjectError.unsupportedVersion(schemaVersion) }
         guard try Self.validatedName(name) == name else { throw ProjectError.invalidName }
         try scene.validate()
+        try graphLayout.validate()
     }
 }
 
@@ -63,8 +65,8 @@ public enum ProjectCodec {
                 try migrated.validate()
                 return migrated
             }
-            if version == 2 {
-                struct LegacyScene: Decodable { let source: SourceKind; let parameters: [String: ParameterValue]; let seed: UInt32 }
+            if version == 2 || version == 3 {
+                struct LegacyScene: Decodable { let source: SourceKind; let parameters: [String: ParameterValue]; let seed: UInt32; let effects: [EffectInstance]? }
                 struct LegacyProject: Decodable { let id: UUID; let name: String; let scene: LegacyScene }
                 let old = try decoder.decode(LegacyProject.self, from: data)
                 guard Set(old.scene.parameters.keys) == Set(SourceRegistry.defaults.keys) else { throw ProjectError.invalidValues }
@@ -73,7 +75,8 @@ public enum ProjectCodec {
                     guard let id = ParameterID(rawValue: key), SourceRegistry.parameter(id).allows(value) else { throw ProjectError.invalidValues }
                     values[id] = value
                 }
-                let migrated = ProjectDocument(id: old.id, name: old.name, scene: .init(source: old.scene.source, values: values, seed: old.scene.seed))
+                guard version != 3 || old.scene.effects != nil else { throw ProjectError.corrupt }
+                let migrated = ProjectDocument(id: old.id, name: old.name, scene: .init(source: old.scene.source, values: values, seed: old.scene.seed, effects: version == 3 ? old.scene.effects! : []))
                 try migrated.validate()
                 return migrated
             }
@@ -81,7 +84,8 @@ public enum ProjectCodec {
             let document = try decoder.decode(ProjectDocument.self, from: data)
             try document.validate()
             return document
-        } catch let error as ProjectError { throw error }
+        } catch let error as GraphDiagnostic { throw error }
+        catch let error as ProjectError { throw error }
         catch { throw ProjectError.corrupt }
     }
 }
