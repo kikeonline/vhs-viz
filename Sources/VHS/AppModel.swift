@@ -33,6 +33,23 @@ final class MenuState: ObservableObject {
     @ObservationIgnored private var timer: Timer?
     @ObservationIgnored lazy var output = OutputWindowController(model: self)
     var scene: SceneSnapshot { history.scene }
+    private(set) var selectedEffectID: UUID?
+    var selectedEffect: EffectInstance? { scene.effects.first { $0.id == selectedEffectID } }
+    func selectEffect(_ id: UUID?) {
+        endEdit()
+        selectedEffectID = scene.effects.first(where: { $0.id == id })?.id
+    }
+    func addEffect(_ kind: EffectKind) {
+        guard !files.blocksSceneEditing, scene.effects.count < EffectRegistry.maximumEffects else { return }
+        let effect = EffectInstance(kind: kind)
+        send(.addEffect(effect)); selectEffect(effect.id)
+    }
+    func moveEffect(_ id: UUID, by offset: Int) {
+        guard let index = scene.effects.firstIndex(where: { $0.id == id }) else { return }
+        send(.moveEffect(id, index + offset))
+    }
+    func removeEffect(_ id: UUID) { send(.removeEffect(id)) }
+
 
     init() {
         do { renderSession = try RenderSession(fixedTime: ProcessInfo.processInfo.environment["APP_SNAPSHOT"] != nil ? 2 : nil) }
@@ -69,6 +86,7 @@ final class MenuState: ObservableObject {
         session.redo(); sync()
     }
     func replaceProject(_ document: ProjectDocument, fileURL: URL? = nil) {
+        selectedEffectID = nil
         session = ProjectSession(document: document, fileURL: fileURL); sync()
     }
     func recordSave(_ document: ProjectDocument, to url: URL) { session.recordSave(document, to: url); sync() }
@@ -81,5 +99,8 @@ final class MenuState: ObservableObject {
                                fileCommandsEnabled: files.commandsEnabled,
                                canSave: files.commandsEnabled && session.needsSave)
     }
-    private func sync() { tick(); refreshMenu() }
+    private func sync() {
+        if selectedEffectID != nil && selectedEffect == nil { selectedEffectID = nil }
+        tick(); refreshMenu()
+    }
 }

@@ -24,11 +24,13 @@ public struct SceneSnapshot: Equatable, Codable, Sendable {
     public let source: SourceKind
     public let parameters: [String: ParameterValue]
     public let seed: UInt32
+    public let effects: [EffectInstance]
     public var color: SceneColor { .init(red: number(.solidRed), green: number(.solidGreen), blue: number(.solidBlue)) }
     public init(color: SceneColor = .initial, seed: UInt32 = 1) {
         self.init(source: .solid, values: [.solidRed: .number(color.red), .solidGreen: .number(color.green), .solidBlue: .number(color.blue)], seed: seed)
     }
-    public init(source: SourceKind, values: [ParameterID: ParameterValue] = [:], seed: UInt32 = 1) {
+    public init(source: SourceKind, values: [ParameterID: ParameterValue] = [:], seed: UInt32 = 1, effects: [EffectInstance] = []) {
+        self.effects = effects
         self.source = source; self.seed = seed
         var parameters = SourceRegistry.defaults
         for (id, value) in values where id != .seed {
@@ -36,8 +38,8 @@ public struct SceneSnapshot: Equatable, Codable, Sendable {
         }
         self.parameters = parameters
     }
-    private init(source: SourceKind, parameters: [String: ParameterValue], seed: UInt32) {
-        self.source = source; self.parameters = parameters; self.seed = seed
+    private init(source: SourceKind, parameters: [String: ParameterValue], seed: UInt32, effects: [EffectInstance]) {
+        self.source = source; self.parameters = parameters; self.seed = seed; self.effects = effects
     }
     public func value(_ id: ParameterID) -> ParameterValue {
         id == .seed ? .number(Double(seed)) : parameters[id.rawValue] ?? SourceRegistry.parameter(id).defaultValue
@@ -47,22 +49,32 @@ public struct SceneSnapshot: Equatable, Codable, Sendable {
     public func choice(_ id: ParameterID) -> String { if case let .choice(v) = value(id) { v } else { "" } }
     public func enabled(_ id: ParameterID) -> Bool { if case let .toggle(v) = value(id) { v } else { false } }
     public func validate() throws {
+        guard effects.count <= EffectRegistry.maximumEffects, Set(effects.map(\.id)).count == effects.count else { throw ProjectError.invalidValues }
+        for effect in effects { try effect.validate() }
         guard Set(parameters.keys) == Set(SourceRegistry.defaults.keys), parameters.allSatisfy({ key, value in
             guard let id = ParameterID(rawValue: key) else { return false }
             return SourceRegistry.parameter(id).allows(value)
         }) else { throw ProjectError.invalidValues }
     }
-    func selecting(_ source: SourceKind) -> Self { Self(source: source, parameters: parameters, seed: seed) }
+    func selecting(_ source: SourceKind) -> Self { Self(source: source, parameters: parameters, seed: seed, effects: effects) }
     func replacing(_ id: ParameterID, with value: ParameterValue) -> Self {
         guard source.definition.parameters.contains(where: { $0.id == id }),
               let value = SourceRegistry.parameter(id).normalized(value) else { return self }
-        if id == .seed, case let .number(v) = value { return Self(source: source, parameters: parameters, seed: UInt32(v)) }
+        if id == .seed, case let .number(v) = value { return Self(source: source, parameters: parameters, seed: UInt32(v), effects: effects) }
         var parameters = parameters; parameters[id.rawValue] = value
-        return Self(source: source, parameters: parameters, seed: seed)
+        return Self(source: source, parameters: parameters, seed: seed, effects: effects)
+    }
+    func withEffects(_ effects: [EffectInstance]) -> Self {
+        Self(source: source, parameters: parameters, seed: seed, effects: effects)
     }
 }
 
 public enum SceneAction: Sendable {
+    case addEffect(EffectInstance)
+    case removeEffect(UUID)
+    case moveEffect(UUID, Int)
+    case bypassEffect(UUID, Bool)
+    case setEffectValue(UUID, String, ParameterValue)
     case setParameter(ParameterID, Double)
     case setColor(SceneColor)
     case selectSource(SourceKind)
@@ -72,11 +84,23 @@ public enum SceneAction: Sendable {
 public enum SceneReducer {
     public static func reduce(_ scene: SceneSnapshot, _ action: SceneAction) -> SceneSnapshot {
         switch action {
-        case let .setParameter(id, value): scene.replacing(id, with: .number(value))
-        case let .setValue(id, value): scene.replacing(id, with: value)
-        case let .selectSource(source): scene.selecting(source)
+        case let .addEffect(effect):
+            if scene.effects.count < EffectRegistry.maximumEffects, !scene.effects.contains(where: { $0.id == effect.id }), (try? effect.validate()) != nil {
+                return scene.withEffects(scene.effects + [effect])
+            } else { return scene }
+        case let .removeEffect(id): return scene.withEffects(scene.effects.filter { $0.id != id })
+        case let .moveEffect(id, destination):
+            if let index = scene.effects.firstIndex(where: { $0.id == id }), scene.effects.indices.contains(destination) {
+                var effects = scene.effects; effects.insert(effects.remove(at: index), at: destination)
+                return scene.withEffects(effects)
+            } else { return scene }
+        case let .bypassEffect(id, bypass): return scene.withEffects(scene.effects.map { $0.id == id ? $0.bypassing(bypass) : $0 })
+        case let .setEffectValue(id, key, value): return scene.withEffects(scene.effects.map { $0.id == id ? $0.replacing(key, value) : $0 })
+        case let .setParameter(id, value): return scene.replacing(id, with: .number(value))
+        case let .setValue(id, value): return scene.replacing(id, with: value)
+        case let .selectSource(source): return scene.selecting(source)
         case let .setColor(value):
-            scene.replacing(.solidRed, with: .number(value.red)).replacing(.solidGreen, with: .number(value.green))
+            return scene.replacing(.solidRed, with: .number(value.red)).replacing(.solidGreen, with: .number(value.green))
                 .replacing(.solidBlue, with: .number(value.blue))
         }
     }
@@ -93,7 +117,10 @@ public struct SceneHistory: Sendable {
     public init(scene: SceneSnapshot = .init()) { self.scene = scene }
     public mutating func beginEdit() { if editStart == nil { editStart = scene } }
     public mutating func send(_ action: SceneAction) {
-        if case .selectSource = action { endEdit() }
+        switch action {
+        case .selectSource, .addEffect, .removeEffect, .moveEffect, .bypassEffect: endEdit()
+        default: break
+        }
         let next = SceneReducer.reduce(scene, action)
         guard next != scene else { return }
         if editStart == nil { appendPast(scene); future.removeAll() }

@@ -23,6 +23,7 @@ enum Verification {
                 try await selftest(model)
                 try await ProjectVerification.run(model)
                 try await SourceVerification.run(model)
+                try await EffectVerification.run(model)
                 log("SELFTEST done")
             }
             if let directory = env["APP_SNAPSHOT"] {
@@ -141,6 +142,11 @@ enum Verification {
         guard let control = NSApp.windows.first(where: { $0.identifier?.rawValue == "vhs-control" }) else {
             throw Failure(description: "control window missing")
         }
+        if ProcessInfo.processInfo.environment["APP_SNAPSHOT_PAGES"] == "effects" {
+            try await EffectSnapshots.run(model, control: control, directory: directory)
+            log("SNAPSHOT done \(directory)")
+            return
+        }
         for mode in ["light", "dark"] {
             NSApp.appearance = NSAppearance(named: mode == "light" ? .aqua : .darkAqua)
             for (name, size) in [("control", NSSize(width: Layout.defaultWidth, height: Layout.defaultHeight)),
@@ -166,9 +172,17 @@ enum Verification {
         }
         try await ProjectSnapshots.run(model, control: control, directory: directory)
         try await SourceSnapshots.run(model, control: control, directory: directory)
+        try await EffectSnapshots.run(model, control: control, directory: directory)
         log("SNAPSHOT done \(directory)")
     }
     static func capture(_ window: NSWindow, to path: String) throws {
+        if ProcessInfo.processInfo.environment["APP_LAYOUT_ONLY"] == "1" {
+            log("SKIP image capture (layout-only): \(path)")
+            return
+        }
+        guard NSApp.isActive, window.isKeyWindow || window.attachedSheet?.isKeyWindow == true else {
+            throw Failure(description: "Capture window is not active/key: \(path)")
+        }
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/sbin/screencapture")
         process.arguments = ["-x", "-o", "-l", String(window.windowNumber), path]

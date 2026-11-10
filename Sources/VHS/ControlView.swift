@@ -9,7 +9,10 @@ struct ControlView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .gridProbe("preview-column", area: "page", edge: nil)
             Divider()
-            SourceControls(model: model).frame(width: Layout.controlWidth)
+            Group {
+                if let effect = model.selectedEffect { EffectControls(model: model, effect: effect) }
+                else { SourceControls(model: model) }
+            }.frame(width: Layout.controlWidth)
                 .disabled(model.files.blocksSceneEditing)
                 .gridProbe("parameters-column", area: "page", edge: nil)
         }
@@ -38,27 +41,31 @@ struct ControlView: View {
         }
     }
     private var preview: some View {
-        VStack(alignment: .leading, spacing: Space.lg) {
-            Text("Live Preview").font(.headline).gridProbe("preview-title", area: "preview")
-            Group {
-                if let error = model.errorMessage {
-                    ContentUnavailableView("Unable to Render", systemImage: "exclamationmark.triangle", description: Text(error))
-                } else {
-                    MetalSurface(model: model)
-                        .accessibilityLabel("Live preview of \(model.scene.source.definition.title.lowercased())")
+        GeometryReader { geometry in
+            let height = min(geometry.size.width * 9 / 16, max(0, geometry.size.height - Layout.previewReservedHeight))
+            VStack(alignment: .leading, spacing: Space.lg) {
+                Text("Live Preview").font(.headline).gridProbe("preview-title", area: "preview")
+                Group {
+                    if let error = model.errorMessage {
+                        ContentUnavailableView("Unable to Render", systemImage: "exclamationmark.triangle", description: Text(error))
+                    } else {
+                        MetalSurface(model: model)
+                            .accessibilityLabel("Live preview of \(model.scene.source.definition.title.lowercased())")
+                    }
                 }
+                .frame(width: height * 16 / 9, height: height)
+                .clipShape(RoundedRectangle(cornerRadius: Layout.previewRadius))
+                .gridProbe("preview-surface", area: "preview")
+                HStack {
+                    Label(model.scene.source.definition.title, systemImage: model.scene.source.definition.symbol)
+                    Spacer()
+                    Text(model.isDirty ? "Edited" : (model.fileURL == nil ? "Not saved" : "Saved"))
+                }
+                .font(.subheadline).foregroundStyle(.secondary)
+                .gridProbe("preview-source", area: "preview")
+                EffectChain(model: model)
+                    .frame(maxHeight: .infinity, alignment: .topLeading)
             }
-            .aspectRatio(16.0 / 9, contentMode: .fit)
-            .clipShape(RoundedRectangle(cornerRadius: Layout.previewRadius))
-            .gridProbe("preview-surface", area: "preview")
-            HStack {
-                Label(model.scene.source.definition.title, systemImage: model.scene.source.definition.symbol)
-                Spacer()
-                Text(model.isDirty ? "Edited" : (model.fileURL == nil ? "Not saved" : "Saved"))
-            }
-            .font(.subheadline).foregroundStyle(.secondary)
-            .gridProbe("preview-source", area: "preview")
-            Spacer(minLength: 0)
         }
         .gridArea("preview", inset: 0)
     }

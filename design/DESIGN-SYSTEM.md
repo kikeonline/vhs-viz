@@ -15,3 +15,7 @@ Phase 1 adds no custom animation. Use native sliders and buttons; preserve keybo
 ## Procedural source inspector
 
 SourceControls generates native sliders, color pickers, choices, toggles, and an integer field from SourceRegistry metadata. The Source picker stays above a vertically scrolling inspector. Scroll view content uses the same Space scale and its own probes; parameters remain reachable at the minimum editor size. Color swatches display scene content, not app theme tokens. Shape geometry is aspect-correct in the viewport and independent of inspector layout.
+
+## Ordered effects
+
+A native List below Live Preview shows ordered effect instances, Bypass and keyboard-focusable Move Up/Down buttons. Add Effect is a native menu; Source returns to source controls. Selecting an effect replaces the right inspector with generated numeric/color controls and Remove Effect. System selection, text, buttons and checkboxes provide appearance/contrast/focus states; all custom gaps use Space. List/inspector scroll at minimum window size. Effect IDs and settings are document state; inspector selection is local UI state.

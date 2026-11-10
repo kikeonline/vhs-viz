@@ -86,7 +86,7 @@ func everySourcePersistsAndEveryValueUndoes(_ source: SourceKind) throws {
 @Test func versionOneMigrationPreservesIdentityColorAndSeed() throws {
     let data = Data(#"{"schemaVersion":1,"id":"EA579C18-3A01-4D71-8C52-6266456E86C3","name":"Old Show","scene":{"color":{"red":0.11,"green":0.22,"blue":0.33},"seed":4294967295}}"#.utf8)
     let migrated = try ProjectCodec.decode(data)
-    #expect(migrated.schemaVersion == 2 && migrated.scene.source == .solid)
+    #expect(migrated.schemaVersion == ProjectDocument.currentVersion && migrated.scene.source == .solid)
     #expect(migrated.id.uuidString == "EA579C18-3A01-4D71-8C52-6266456E86C3")
     #expect(migrated.name == "Old Show" && migrated.scene.seed == UInt32.max)
     #expect(migrated.scene.color == SceneColor(red: 0.11, green: 0.22, blue: 0.33))

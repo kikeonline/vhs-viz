@@ -77,3 +77,47 @@ fragment float4 sceneFragment(VertexOut in [[stage_in]], constant SourceUniforms
                              : 1-smoothstep(-feather,feather,d);
     return float4(mix(u.colorB.rgb,u.colorA.rgb,mask),1);
 }
+
+struct EffectUniforms {
+    float4 p0, colorA, colorB;
+    float2 resolution;
+    uint kind, padding;
+};
+fragment float4 effectFragment(VertexOut in [[stage_in]], constant EffectUniforms &u [[buffer(0)]],
+                               texture2d<float> image [[texture(0)]]) {
+    constexpr sampler sampleImage(coord::normalized, address::clamp_to_edge, filter::linear);
+    float2 uv = in.position.xy / u.resolution;
+    float3 original = image.sample(sampleImage, uv).rgb;
+    if (u.kind == 0) {
+        float shortSide = min(u.resolution.x, u.resolution.y);
+        float2 p = (uv-0.5)*u.resolution/shortSide - u.p0.xy;
+        float c = cos(u.p0.z), s = sin(u.p0.z);
+        p = float2(c*p.x+s*p.y, -s*p.x+c*p.y) / u.p0.w;
+        float2 source = p*shortSide/u.resolution + 0.5;
+        if (any(source < 0) || any(source > 1)) return float4(0,0,0,1);
+        return float4(image.sample(sampleImage, source).rgb,1);
+    }
+    if (u.kind == 1) {
+        // Truncated Gaussian: 33 taps over +/- radius, sigma = radius/3.
+        float3 sum = 0; float total = 0;
+        for (int i=-16; i<=16; ++i) {
+            float x = float(i)/16;
+            float weight = exp(-4.5*x*x);
+            sum += image.sample(sampleImage, uv+u.p0.yz*(x*u.p0.x)/u.resolution).rgb*weight;
+            total += weight;
+        }
+        return float4(sum/total,1);
+    }
+    if (u.kind == 2) {
+        float2 center = (floor(in.position.xy/u.p0.x)+0.5)*u.p0.x;
+        return float4(image.sample(sampleImage, center/u.resolution).rgb,1);
+    }
+    float luminance = dot(original,float3(0.2126,0.7152,0.0722));
+    if (u.kind == 3) {
+        float value = u.p0.y == 0 ? step(u.p0.x,luminance) : smoothstep(u.p0.x-u.p0.y,u.p0.x+u.p0.y,luminance);
+        return float4(float3(value),1);
+    }
+    if (u.kind == 4) return float4(mix(original,mix(u.colorA.rgb,u.colorB.rgb,luminance),u.p0.x),1);
+    float2 offset = u.p0.xy/u.resolution;
+    return float4(image.sample(sampleImage,uv+offset).r, original.g, image.sample(sampleImage,uv-offset).b,1);
+}
