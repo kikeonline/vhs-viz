@@ -19,7 +19,7 @@ Phases 1–3 are implemented and functionally verified. Phase 3A now passes the 
 
 Projects preserve scene values and seed across app restarts. MIDI learn, factory/user presets, selectable external-display fullscreen, audio/MIDI input and mappings, and production VST3 support remain planned; a native VST3 feasibility probe is implemented and tested. Schema 1/2 projects migrate to schema 4 with an empty effect chain and equivalent graph while preserving source settings, identity, color and seed. Accessibility and macOS 26 verification gaps are tracked in [the follow-up issue](https://github.com/kikeonline/vhs-viz/issues/10).
 
-The implementation currently exists in the local development checkout; application sources and build scripts have not yet been published to this GitHub repository. The commands below apply to that checkout.
+This repository contains the application sources, build scripts, design assets, and verification records. The commands below run from a local checkout.
 
 ## Roadmap
 
