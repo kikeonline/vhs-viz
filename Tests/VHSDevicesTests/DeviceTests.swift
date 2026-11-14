@@ -5,6 +5,7 @@ import VHSDevices
 import VHSDeviceIO
 import VHSRealtime
 import VHSInput
+import VHSCore
 
 @Suite(.serialized) struct DeviceTests {
     @Test func selectionSurvivesEndpointChangesWithoutSubstitution() {
@@ -105,9 +106,16 @@ import VHSInput
         }
         #expect(received.heldNotes == 1 && received.lastMIDI?.channel == 3 && received.lastMIDI?.number == 60)
         #expect(received.lastMIDI?.sampleTime ?? 0 > 0)
+        var mapping = VisualMapping(target:.init(node:ShaderGraph.sourceID,key:ParameterID.solidRed.rawValue))
+        mapping.source = .gate; mapping.channel = 3; mapping.number = 60
+        #expect(received.mappingInputs.value(for:mapping) == 1)
+        #expect(received.midiEvents.contains { $0.kind == .noteOn && $0.number == 60 })
+
         await service.stopMIDI()
         let stopped = await service.poll()
         #expect(stopped.heldNotes == 0 && stopped.lastMIDI == nil && stopped.midiStatus == .off)
+        #expect(stopped.mappingInputs.value(for:mapping) == nil && stopped.mappingInputs.notes.isEmpty)
+
         // The disposed input port must not deliver into the stopped service.
         #expect(MIDIReceivedEventList(endpoint, &list) == noErr)
         try await Task.sleep(for: .milliseconds(30))

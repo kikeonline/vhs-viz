@@ -54,7 +54,7 @@ public final class MetalRenderer {
                         command: any MTLCommandBuffer, slot: Int, graph: CompiledGraph? = nil) throws {
         guard texture.width <= 4096, texture.height <= 4096, frame.scene.effects.count <= EffectRegistry.maximumEffects else { throw RendererError.resourceCreation }
         if !frame.scene.canEditChain || graph != nil {
-            guard let program = graph ?? executableGraph, program.graph == frame.scene.graph else { throw GraphDiagnostic("Graph has no matching executable yet.") }
+            guard let program = graph ?? executableGraph, program.accepts(frame.scene.graph) else { throw GraphDiagnostic("Graph has no matching executable yet.") }
             let scratch = program.schedule.textureCount == 0 ? [] : try resources.textures(slot,device:device,width:texture.width,height:texture.height,count:program.schedule.textureCount)
             try program.encode(frame,to:texture,command:command,textures:scratch)
             return

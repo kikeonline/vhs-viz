@@ -36,6 +36,11 @@ final class MenuState: ObservableObject {
     var scene: SceneSnapshot { history.scene }
     var showsGraph = false
     let inputs = StandaloneInputs()
+    let mappingEditor = MappingEditorState()
+    @ObservationIgnored private var mappingEngine = MappingEngine()
+    @ObservationIgnored private var mappingTime = ContinuousClock.now
+    @ObservationIgnored private var midiSequence: UInt64 = 0
+    @ObservationIgnored private var feedbackTick = 0
     let graphEditor = GraphEditorState()
     var graphBuildMessage: String { renderSession?.builds.status.message ?? "Renderer unavailable" }
     var graphLayout: GraphLayout { session.graphLayout }
@@ -74,7 +79,21 @@ final class MenuState: ObservableObject {
     func registerSurface(_ view: MTKView) { renderSession?.register(view) }
     func unregisterSurface(_ view: MTKView) { renderSession?.unregister(view) }
     func tick() {
-        renderSession?.update(scene)
+        let now = ContinuousClock.now
+        let elapsed = mappingTime.duration(to:now).components
+        mappingTime = now
+        if inputs.snapshot.midiSequence != midiSequence {
+            midiSequence = inputs.snapshot.midiSequence
+            for event in inputs.snapshot.midiEvents where event.kind == .controller || (event.kind == .noteOn && event.value > 0) {
+                mappingEditor.accept(channel:event.channel,number:event.number,note:event.kind == .noteOn)
+            }
+        }
+        mappingEditor.inputAvailable = inputs.snapshot.mappingInputs.midiAvailable
+        let effective = mappingEngine.evaluate(scene,inputs:inputs.snapshot.mappingInputs,
+            deltaTime:Double(elapsed.seconds)+Double(elapsed.attoseconds)/1e18)
+        renderSession?.update(scene,effective:effective)
+        feedbackTick += 1
+        if feedbackTick % 4 == 0 { mappingEditor.feedback = mappingEngine.effective }
     }
     func beginEdit() {
         guard !files.blocksSceneEditing else { return }
@@ -83,17 +102,18 @@ final class MenuState: ObservableObject {
     func endEdit() { session.endEdit(); sync() }
     func send(_ action: SceneAction) {
         guard !files.blocksSceneEditing else { return }
-        session.send(action); sync()
+        mappingEditor.cancel(); session.send(action); sync()
     }
     func undo() {
         guard !files.blocksSceneEditing else { return }
-        session.undo(); sync()
+        mappingEditor.cancel(); session.undo(); sync()
     }
     func redo() {
         guard !files.blocksSceneEditing else { return }
-        session.redo(); sync()
+        mappingEditor.cancel(); session.redo(); sync()
     }
     func replaceProject(_ document: ProjectDocument, fileURL: URL? = nil) {
+        mappingEngine.reset(); mappingEditor.cancel(); mappingEditor.selected = nil
         selectedEffectID = nil
         graphEditor.selection = nil; graphEditor.pendingOutput = nil
         showsGraph = !document.scene.canEditChain

@@ -17,7 +17,7 @@ public enum ProjectError: Error, LocalizedError, Equatable {
 }
 
 public struct ProjectDocument: Codable, Equatable, Sendable {
-    public static let currentVersion = 4
+    public static let currentVersion = 5
     public let schemaVersion: Int
     public let id: UUID
     public let name: String
@@ -80,7 +80,18 @@ public enum ProjectCodec {
                 try migrated.validate()
                 return migrated
             }
+            if version == 4 {
+                let old = try decoder.decode(ProjectDocument.self, from: data)
+                let migrated = ProjectDocument(id: old.id, name: old.name, scene: old.scene.withMappings([]).withSync(.freeRun), graphLayout: old.graphLayout)
+                try migrated.validate()
+                return migrated
+            }
             guard version == ProjectDocument.currentVersion else { throw ProjectError.unsupportedVersion(version) }
+            struct CurrentEnvelope: Decodable {
+                struct CurrentScene: Decodable { let mappings: [VisualMapping]; let sync: SceneSync }
+                let scene: CurrentScene
+            }
+            _ = try decoder.decode(CurrentEnvelope.self, from: data)
             let document = try decoder.decode(ProjectDocument.self, from: data)
             try document.validate()
             return document

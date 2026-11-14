@@ -5,6 +5,13 @@ import VHSCore
 struct GraphShader {
     let graph: ShaderGraph
     let pass: GraphSchedule.Pass
+    static func numericTargets(_ graph: ShaderGraph) -> [GraphParameterTarget] {
+        graph.nodes.flatMap { node in node.kind.parameters.filter { GraphParameterTarget.eligible($0.kind) }.map { GraphParameterTarget(node: node.id, key: $0.id) } }
+    }
+    private func storedValue(_ node: GraphNode, _ key: String) -> String {
+        if let index = Self.numericTargets(graph).firstIndex(of: .init(node: node.id, key: key)) { return "values[\(index)]" }
+        return Self.literal(node.values[key]!)
+    }
     func expression(_ endpoint: GraphEndpoint, uv: String = "uv", depth: Int = 0) throws -> String {
         guard depth <= ShaderGraph.maximumNodes, let node = graph.node(endpoint.node) else { throw GraphDiagnostic("Missing expression node.",node:endpoint.node) }
         func input(_ key: String) throws -> String {
@@ -13,7 +20,7 @@ struct GraphShader {
         }
         func stored(_ key: String) throws -> String {
             if let endpoint = graph.input(node.id,key) { return "clamp(\(try expression(endpoint,uv:uv,depth:depth+1)),-1000.0f,1000.0f)" }
-            return Self.literal(node.values[key]!)
+            return storedValue(node,key)
         }
         let result: String
         switch node.kind {
@@ -47,7 +54,8 @@ struct GraphShader {
     private func value(_ key: String) throws -> String {
         if let e = graph.input(pass.node.id,key) { return try expression(e) }
         guard let value = pass.node.values[key] else { throw GraphDiagnostic("Missing \(key).",node:pass.node.id) }
-        return Self.literal(value)
+        _ = value
+        return storedValue(pass.node,key)
     }
     static func literal(_ value: ParameterValue) -> String {
         switch value {
@@ -74,7 +82,7 @@ struct GraphShader {
                 .oscillatorFrequency:"p0.x",.oscillatorAngle:"p0.z",.oscillatorPhase:"p0.w",.oscillatorForeground:"colorA",.oscillatorBackground:"colorB",
                 .shapeSize:"p0.x",.shapeX:"p0.y",.shapeY:"p0.z",.shapeRotation:"p0.w",.shapeSoftness:"p1.x",.shapeWidth:"p1.y",.shapeFill:"colorA",.shapeBackground:"colorB"
             ]
-            for p in kind.definition.parameters where graph.input(node.id,p.id.rawValue) != nil {
+            for p in kind.definition.parameters where graph.input(node.id,p.id.rawValue) != nil || GraphParameterTarget.eligible(p.kind) {
                 guard let field = assignments[p.id] else { continue }
                 var v = try value(p.id.rawValue)
                 if case let .number(range) = p.kind { v = "clamp(\(v),\(Float(range.lowerBound))f,\(Float(range.upperBound))f)" }
@@ -104,7 +112,7 @@ struct GraphShader {
                 .transform:["x":"p0.x","y":"p0.y","rotation":"p0.z","scale":"p0.w"],.blur:["radius":"p0.x"],.pixelate:["size":"p0.x"],
                 .threshold:["level":"p0.x","softness":"p0.y"],.colorize:["amount":"p0.x","low":"colorA","high":"colorB"],.rgbSplit:["x":"p0.x","y":"p0.y"]
             ]
-            for p in kind.definition.parameters where graph.input(node.id,p.id) != nil {
+            for p in kind.definition.parameters where graph.input(node.id,p.id) != nil || GraphParameterTarget.eligible(p.kind) {
                 var v = try value(p.id)
                 if case let .number(r) = p.kind { v = "clamp(\(v),\(Float(r.lowerBound))f,\(Float(r.upperBound))f)" }
                 if kind == .transform && p.id == "rotation" { v = "(\(v))*M_PI_F/180.0f" }
@@ -126,7 +134,7 @@ struct GraphShader {
         struct GraphFrame { float2 resolution; float time; uint seed; };
         float gSafe(float v) { return isfinite(v) ? clamp(v,-1000000.0f,1000000.0f) : 0.0f; }
         float2 gSafe2(float2 v) { return float2(gSafe(v.x),gSafe(v.y)); }
-        fragment float4 graphFragment(VertexOut in [[stage_in]], constant GraphFrame &frame [[buffer(0)]]\(textures)) {
+        fragment float4 graphFragment(VertexOut in [[stage_in]], constant GraphFrame &frame [[buffer(0)]], constant float *values [[buffer(1)]]\(textures)) {
             constexpr sampler graphSampler(coord::normalized,address::clamp_to_edge,filter::linear);
             float2 uv=in.position.xy/frame.resolution;
             \(body)

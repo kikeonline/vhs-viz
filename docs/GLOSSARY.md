@@ -73,3 +73,9 @@
 
 | System Audio | Audio from content selected through the macOS sharing picker; standalone only |
 | Choose Audio to Share… | Open the native picker for an explicitly requested system-audio session |
+
+| Mapping | Persisted input-to-parameter definition; live values remain transient |
+| Contribution | Input transformed into a native-unit offset added to the base value |
+| Learn / Relearn | Arm discovery for the next CC or note, then review before confirming |
+| Omni | Accept MIDI on all channels; highest held note wins for any-note sources |
+| Replace Conflicts | Remove overlapping input assignments when confirming a learned mapping |

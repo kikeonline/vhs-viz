@@ -49,3 +49,14 @@ Implementation and headless evidence are in PHASE-6-VERIFICATION.md. Live captur
 - Confirm standalone System Audio never requests microphone access, and VHS in Studio One still invokes no standalone capture picker or screen/audio permission. ScreenCaptureKit code is not a plug-in dependency.
 
 No live sharing picker, ScreenCaptureKit stream, permission prompt or system-audio playback test was performed in the locked-desktop run. Prior Studio One shutdown failure and macOS 26 acceptance stay open.
+
+## Phase 7 attended acceptance (added November 14)
+
+Implementation and actual automated evidence are in PHASE-7-VERIFICATION.md. These checks remain unperformed:
+
+- Inspect Mappings in standalone Chain/Nodes and the native host editor: light/dark/increased contrast, Bold Text, default/minimum/wide windows, long target names, empty/assigned/disabled/unavailable/waiting/no-input/candidate/conflict states, native popover placement and scrolling. Layout-only files do not certify appearance or readability.
+- With keyboard and VoiceOver, select targets, enter valid/invalid contribution/curve/smoothing fields, Return/Escape, toggle enable/invert, Learn/Relearn/Confirm/Cancel/Replace Conflicts/Clear, dismiss the popover and verify focus returns correctly. Values/units/status must be spoken without frame-by-frame announcements.
+- With physical audio and then actual System Audio playback, map all six analysis features to source/effect/graph targets. Verify ranges, inversion, curves and smoothing; stop/change/unplug/reconnect inputs and test no-data/silence. Base values, save data and undo must remain unchanged by live input. Record source/rate/channel configuration and actual latency/resource behavior.
+- With a hardware MIDI controller, discover CC and notes, inspect channel/Omni, reject a filtered channel, confirm/cancel conflicts, clear/relearn and save/reopen. Check highest-note priority, note/velocity/gate release, velocity-zero note-on, all-notes-off and device loss without stuck modulation. Automated virtual-source delivery is separate evidence.
+- In actual Studio One, use the proven hidden controller-assignment path and note bus. Start playback/live monitoring before Learn; identify/cancel chased candidates, confirm a live CC/note, save/quit/reopen the embedded definition in independent instances. The existing prototype supplies Peak + MIDI; production RMS/bands/transients, dynamic automation lanes and host undo acceptance remain Phase 8.
+- After the new Window → Show Mappings command, observe actual Edit-menu enablement before/after a slider/mapping edit; Command-Z, Shift-Command-Z, Show Output, close/reopen output, and Command-1 from output. Dedicated mapping self-tests call model actions and are not menu/keyboard acceptance. Existing Studio One quit-time regression and all prior deferred acceptance remain open.

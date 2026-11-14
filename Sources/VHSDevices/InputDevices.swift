@@ -1,6 +1,7 @@
 import Foundation
 import VHSDeviceIO
 import VHSInput
+import VHSCore
 
 public enum AudioInputSource: Hashable, Sendable { case device(String), system }
 public enum SystemAudioStatus: Int32, Sendable, CaseIterable {
@@ -44,6 +45,7 @@ public enum InputStatus: Sendable, Equatable {
     case off, waiting, active, silent, unavailable, denied, restricted, invalidChannels, failed(Int32)
 }
 public struct InputSnapshot: Sendable {
+    public var midiRevision = -1
     public var audioRevision = -1
     public var systemStatus: SystemAudioStatus = .off
     public var systemError: Int32 = 0
@@ -52,6 +54,9 @@ public struct InputSnapshot: Sendable {
     public var audioStatus: InputStatus = .off
     public var midiStatus: InputStatus = .off
     public var audio = AudioSignals()
+    public var mappingInputs = MappingInputs()
+    public var midiEvents: [MIDIEvent] = []
+    public var midiSequence: UInt64 = 0
     public var lastMIDI: MIDIEvent?
     public var heldNotes = 0
     public var audioDrops: UInt32 = 0

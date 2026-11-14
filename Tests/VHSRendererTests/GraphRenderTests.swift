@@ -100,3 +100,61 @@ private func execute(_ graph: ShaderGraph, renderer: MetalRenderer, time: Double
     #expect(session.frame.scene == scene)
     if case .failed = session.builds.status {} else { Issue.record("Expected node-specific failure") }
 }
+
+@Test func liveMappedGraphValuesUseExistingPipelineGPU() async throws {
+    let renderer = try MetalRenderer(), compiler = GraphCompiler(device:try #require(MTLCreateSystemDefaultDevice()))
+    // Force graph execution with a scalar driving Red, and an independent numeric Green.
+    let scalar = GraphNode(kind:.scalar,values:["value":.number(0.1)])
+    let solid = GraphNode(kind:.source(.solid)), blur = GraphNode(kind:.effect(.blur))
+    let graph = imageGraph([scalar,solid,blur],[link(scalar,solid,ParameterID.solidRed.rawValue),link(solid,blur,"image")],result:blur)
+    let base = SceneSnapshot().withGraph(graph)
+    let program = try await compiler.compile(graph)
+    var a = VisualMapping(target:.init(node:scalar.id,key:"value")); a.upper = 0.5
+    var b = VisualMapping(target:.init(node:solid.id,key:ParameterID.solidGreen.rawValue)); b.source = .peak; b.upper = 0.4
+    var c = VisualMapping(target:.init(node:blur.id,key:"radius")); c.upper = 0.1
+    let scene = base.withMappings([a,b,c])
+    var input = MappingInputs(); input.audio = [.rms:1,.peak:1]
+    var engine = MappingEngine()
+    let effective = engine.evaluate(scene,inputs:input,deltaTime:1/60)
+    let before = try renderer.readPixels(.init(scene:scene,time:0),width:16,height:16,graph:program)
+    let after = try renderer.readPixels(.init(scene:effective,time:0),width:16,height:16,graph:program)
+    #expect(before != after)
+    #expect(abs(Int(after[2])-srgb(0.6)) <= 2)
+    #expect(abs(Int(after[1])-srgb(0.48)) <= 2)
+    // Compare with a separately compiled effective graph; live updates need no compile.
+    let reference = try await compiler.compile(effective.graph)
+    #expect(after == (try renderer.readPixels(.init(scene:effective,time:0),width:16,height:16,graph:reference)))
+    #expect(scene.graph == graph && program.graph == graph)
+    input.audio = [:]
+    let released = engine.evaluate(scene,inputs:input,deltaTime:1/60)
+    #expect(before == (try renderer.readPixels(.init(scene:released,time:0),width:16,height:16,graph:program)))
+}
+
+@Test @MainActor func mappedGraphFramesDoNotRecompileAndFailureKeepsEffectiveValues() async throws {
+    let source = GraphNode(kind:.source(.solid)), number = GraphNode(kind:.scalar)
+    let graph = imageGraph([number,source],[link(number,source,ParameterID.solidRed.rawValue)],result:source)
+    var mapping = VisualMapping(target:.init(node:number.id,key:"value")); mapping.upper = 0.3
+    let scene = SceneSnapshot().withGraph(graph).withMappings([mapping])
+    let session = try RenderSession(fixedTime:0)
+    for _ in 0..<150 {
+        session.update(scene)
+        if session.frame.scene == scene { break }
+        try await Task.sleep(for:.milliseconds(20))
+    }
+    #expect(session.frame.scene == scene)
+    var input = MappingInputs(); input.audio[.rms] = 1
+    var engine = MappingEngine()
+    let effective = engine.evaluate(scene,inputs:input,deltaTime:1/60)
+    session.update(scene,effective:effective)
+    #expect(session.frame.scene == effective && session.builds.status == .ready)
+    input.audio[.rms] = 0.5
+    let next = engine.evaluate(scene,inputs:input,deltaTime:1/60)
+    session.update(scene,effective:next)
+    #expect(session.frame.scene == next && session.builds.status == .ready)
+    let broken = scene.withGraph(graph.removing(source.id))
+    session.update(broken,effective:broken)
+    #expect(session.frame.scene == next)
+    try await Task.sleep(for:.milliseconds(200)); session.update(broken,effective:broken)
+    #expect(session.frame.scene == next)
+    if case .failed = session.builds.status {} else { Issue.record("Invalid graph should report failure") }
+}

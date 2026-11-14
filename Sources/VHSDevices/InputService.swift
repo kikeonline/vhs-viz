@@ -75,6 +75,7 @@ public actor InputService {
     }
 
     public func poll() -> InputSnapshot {
+        snapshot.midiEvents = []
         guard !isShutDown else { return snapshot }
         do {
             if runtime == nil { runtime = try CaptureRuntime() }
@@ -105,6 +106,8 @@ public actor InputService {
             }
             if r.audio != nil { try r.analyzer.drain(r.audioQueue) }
             let events = r.midi.drain(r.midiQueue)
+            snapshot.midiEvents = events
+            snapshot.midiSequence &+= 1
             if let event = events.last { snapshot.lastMIDI = event }
             if vhs_midi_dropped(r.midiQueue) != snapshot.midiLosses && events.isEmpty { snapshot.lastMIDI = nil }
             snapshot.heldNotes = r.midi.state.heldNoteCount
@@ -159,7 +162,11 @@ public actor InputService {
             stopAudioRuntime(); stopMIDIRuntime(); wantsAudio = false; wantsMIDI = false
             snapshot.audioStatus = .failed(-2); snapshot.midiStatus = .failed(-2)
         }
+        snapshot.midiRevision = midiRevision
         snapshot.audioRevision = audioRevision
+        if let r = runtime {
+            snapshot.mappingInputs = r.midi.state.mappingInputs(audio: snapshot.audio, available: r.midiCapture != nil)
+        }
         return snapshot
     }
 

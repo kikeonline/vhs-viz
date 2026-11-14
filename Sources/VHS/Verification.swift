@@ -11,7 +11,7 @@ enum Verification {
         guard !started else { return }
         started = true
         let env = ProcessInfo.processInfo.environment
-        guard env["APP_SNAPSHOT"] != nil || CommandLine.arguments.contains("--selftest") || CommandLine.arguments.contains("--input-selftest") else { return }
+        guard env["APP_SNAPSHOT"] != nil || CommandLine.arguments.contains("--selftest") || (CommandLine.arguments.contains("--input-selftest") || CommandLine.arguments.contains("--mapping-selftest")) else { return }
         let watchdog = DispatchWorkItem { @Sendable in
             FileHandle.standardError.write(Data("FAIL verification timed out\n".utf8))
             exit(1)
@@ -21,6 +21,10 @@ enum Verification {
         defer { watchdog.cancel() }
         do {
             try await Task.sleep(for: .seconds(1))
+            if CommandLine.arguments.contains("--mapping-selftest") {
+                try MappingVerification.run(model)
+                log("MAPPING SELFTEST done")
+            }
             if CommandLine.arguments.contains("--input-selftest") {
                 try InputsVerification.run(model)
                 log("INPUT SELFTEST done")
@@ -32,6 +36,7 @@ enum Verification {
                 try await EffectVerification.run(model)
                 try await GraphVerification.run(model)
                 try InputsVerification.run(model)
+                try MappingVerification.run(model)
                 log("SELFTEST done")
             }
             if let directory = env["APP_SNAPSHOT"] {
@@ -151,6 +156,10 @@ enum Verification {
         try FileManager.default.createDirectory(atPath: directory, withIntermediateDirectories: true)
         guard let control = NSApp.windows.first(where: { $0.identifier?.rawValue == "vhs-control" }) else {
             throw Failure(description: "control window missing")
+        }
+        if ProcessInfo.processInfo.environment["APP_SNAPSHOT_PAGES"] == "mappings" {
+            try await MappingVerification.snapshots(model,control:control,directory:directory)
+            log("SNAPSHOT done \(directory)"); return
         }
         if let pages = ProcessInfo.processInfo.environment["APP_SNAPSHOT_PAGES"], ["inputs", "system-audio"].contains(pages) {
             try await InputsVerification.snapshots(model, control: control, directory: directory, systemAudio: pages == "system-audio")

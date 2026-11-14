@@ -1,0 +1,11 @@
+PASS mapping updates common preview/output frame
+PASS live mapping never dirties base values or adds history
+PASS mapping definition undo
+PASS mapping definition redo
+PASS learn reviews channel/CC with explicit Omni policy
+PASS cancel learn preserves saved assignment
+PASS learn respects explicit channel filter
+PASS confirm note learn commits one persisted definition
+PASS learned mapping project round trip
+PASS input release restores base frame
+MAPPING SELFTEST done

@@ -1,0 +1,313 @@
+Building for debugging...
+[Computing dependencies]
+[4 / 10] VHSRendererTests-product
+[6 / 12] VHSRendererTests-product
+[9 / 13] VHSRendererTests-product
+[11 / 13] VHSRendererTests-product
+Build complete! (3.17 secs.)
+Test Suite 'All tests' started at 2026-11-14 00:25:41.557.
+Test Suite 'All tests' passed at 2026-11-14 00:25:41.559.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
+Test Suite 'All tests' started at 2026-11-14 00:25:41.760.
+Test Suite 'All tests' passed at 2026-11-14 00:25:41.762.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
+Test Suite 'All tests' started at 2026-11-14 00:25:41.924.
+Test Suite 'All tests' passed at 2026-11-14 00:25:41.926.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
+Test Suite 'All tests' started at 2026-11-14 00:25:42.102.
+Test Suite 'All tests' passed at 2026-11-14 00:25:42.104.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
+Test Suite 'All tests' started at 2026-11-14 00:25:42.283.
+Test Suite 'All tests' passed at 2026-11-14 00:25:42.285.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
+Test Suite 'All tests' started at 2026-11-14 00:25:42.455.
+Test Suite 'All tests' passed at 2026-11-14 00:25:42.456.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Test exactEditsAndGestureHistory() started.
+◇ Test nativeKitLoadsBundledSpecification() started.
+◇ Test integerBoundariesAndLocale() started.
+◇ Test invalidDraftDoesNotCommit(_:) started.
+◇ Test case passing 1 argument text → "" to invalidDraftDoesNotCommit(_:) started.
+◇ Test case passing 1 argument text → " " to invalidDraftDoesNotCommit(_:) started.
+◇ Test case passing 1 argument text → "nan" to invalidDraftDoesNotCommit(_:) started.
+◇ Test case passing 1 argument text → "inf" to invalidDraftDoesNotCommit(_:) started.
+◇ Test case passing 1 argument text → "1abc" to invalidDraftDoesNotCommit(_:) started.
+◇ Test case passing 1 argument text → "0.5.2" to invalidDraftDoesNotCommit(_:) started.
+◇ Test case passing 1 argument text → "--1" to invalidDraftDoesNotCommit(_:) started.
+◇ Test case passing 1 argument text → "-0.1" to invalidDraftDoesNotCommit(_:) started.
+◇ Test case passing 1 argument text → "1e999" to invalidDraftDoesNotCommit(_:) started.
+◇ Test case passing 1 argument text → "1.1" to invalidDraftDoesNotCommit(_:) started.
+✔ Test exactEditsAndGestureHistory() passed after 0.006 seconds.
+✔ Test nativeKitLoadsBundledSpecification() passed after 0.008 seconds.
+✔ Test integerBoundariesAndLocale() passed after 0.008 seconds.
+✔ Test invalidDraftDoesNotCommit(_:) with 10 test cases passed after 0.008 seconds.
+✔ Test run with 4 tests in 0 suites passed after 0.009 seconds.
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Test effectUniformLayoutAndAnalyticFixtures() started.
+◇ Test gradientAnalyticSamplesAndVariants() started.
+◇ Test sourceUniformLayoutMatchesMetal() started.
+◇ Test shapesAspectOutlineAndVariants() started.
+◇ Test mappedGraphFramesDoNotRecompileAndFailureKeepsEffectiveValues() started.
+◇ Test allEffectBoundariesChainsAndPoolReuse() started.
+◇ Test staleBuildsAndLastValidFrameAreSafe() started.
+◇ Test versionTwoMigrationKeepsSourcePixels() started.
+◇ Test compiledSourcesEffectsAndMigrationMatchChainGPU() started.
+◇ Test blackWhiteAndResize() started.
+◇ Test sourceFixturesRepeatAtFixedSeedAndTime(_:) started.
+◇ Test solidFixtureUsesSRGBEncodingAndEveryPixel() started.
+◇ Test liveMappedGraphValuesUseExistingPipelineGPU() started.
+◇ Test blurSpreadsAndOrderMatters() started.
+◇ Test allParameterExtremesRenderOpaquePixels() started.
+◇ Test seededNoiseAndAnimation() started.
+◇ Test valueNodesUVTimeSamplingAndConnectedParametersGPU() started.
+◇ Test oscillatorWaveformsClockAndFreeze() started.
+◇ Test branchingImageBlendAndColorMathGPU() started.
+◇ Test case passing 1 argument source → .solid to sourceFixturesRepeatAtFixedSeedAndTime(_:) started.
+◇ Test case passing 1 argument source → .gradient to sourceFixturesRepeatAtFixedSeedAndTime(_:) started.
+◇ Test case passing 1 argument source → .noise to sourceFixturesRepeatAtFixedSeedAndTime(_:) started.
+◇ Test case passing 1 argument source → .oscillator to sourceFixturesRepeatAtFixedSeedAndTime(_:) started.
+✔ Test sourceUniformLayoutMatchesMetal() passed after 0.072 seconds.
+◇ Test case passing 1 argument source → .shape to sourceFixturesRepeatAtFixedSeedAndTime(_:) started.
+✔ Test solidFixtureUsesSRGBEncodingAndEveryPixel() passed after 0.074 seconds.
+✔ Test gradientAnalyticSamplesAndVariants() passed after 0.074 seconds.
+✔ Test shapesAspectOutlineAndVariants() passed after 0.074 seconds.
+✔ Test liveMappedGraphValuesUseExistingPipelineGPU() passed after 0.074 seconds.
+✔ Test blurSpreadsAndOrderMatters() passed after 0.074 seconds.
+✔ Test seededNoiseAndAnimation() passed after 0.074 seconds.
+✔ Test effectUniformLayoutAndAnalyticFixtures() passed after 0.074 seconds.
+✔ Test sourceFixturesRepeatAtFixedSeedAndTime(_:) with 5 test cases passed after 0.077 seconds.
+✔ Test versionTwoMigrationKeepsSourcePixels() passed after 0.078 seconds.
+✔ Test oscillatorWaveformsClockAndFreeze() passed after 0.078 seconds.
+✔ Test valueNodesUVTimeSamplingAndConnectedParametersGPU() passed after 0.078 seconds.
+✔ Test blackWhiteAndResize() passed after 0.079 seconds.
+✔ Test branchingImageBlendAndColorMathGPU() passed after 0.081 seconds.
+✔ Test allParameterExtremesRenderOpaquePixels() passed after 0.099 seconds.
+✔ Test allEffectBoundariesChainsAndPoolReuse() passed after 0.169 seconds.
+✔ Test mappedGraphFramesDoNotRecompileAndFailureKeepsEffectiveValues() passed after 0.366 seconds.
+✔ Test compiledSourcesEffectsAndMigrationMatchChainGPU() passed after 0.367 seconds.
+✔ Test staleBuildsAndLastValidFrameAreSafe() passed after 0.910 seconds.
+✔ Test run with 19 tests in 0 suites passed after 0.911 seconds.
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Test bridgeValuesAndInstanceIsolation() started.
+◇ Test concurrentProducerConsumerKeepsEventPayloads() started.
+◇ Test hostRestoreWinsOverUnconsumedEditorPublication() started.
+◇ Test boundedQueuePreservesOrderAndRejectsOverflow() started.
+◇ Test documentMailboxBoundsRevisionAndIsolation() started.
+✔ Test hostRestoreWinsOverUnconsumedEditorPublication() passed after 0.001 seconds.
+✔ Test bridgeValuesAndInstanceIsolation() passed after 0.001 seconds.
+✔ Test documentMailboxBoundsRevisionAndIsolation() passed after 0.001 seconds.
+✔ Test boundedQueuePreservesOrderAndRejectsOverflow() passed after 0.002 seconds.
+✔ Test concurrentProducerConsumerKeepsEventPayloads() passed after 0.044 seconds.
+✔ Test run with 5 tests in 0 suites passed after 0.044 seconds.
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Test channelsVelocityAndControllerNormalization(_:) started.
+◇ Test independentAudioInstancesAndConcurrentQueueWrap() started.
+◇ Test midiBurstQueueWrapAndInstanceIsolation() started.
+◇ Test queueRejectsInvalidMetadataWithoutReadingBuffers() started.
+◇ Test midiOverflowDisconnectAndInvalidPacketsCannotStickNotes() started.
+◇ Test ignoredSystemMessagesAndMalformedStreamsDoNotMakeNotes() started.
+◇ Test separatedFrequencyBands(_:) started.
+◇ Test silenceWarmupAndWindowTiming() started.
+◇ Test wholeBlockOverflowDiscardsStaleAudioAndRecovers() started.
+◇ Test stereoDoesNotCancelAndLayoutsAgree() started.
+◇ Test invalidSamplesClippingAndDCStayFinite() started.
+◇ Test calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test formatTimelineAndDisconnectResetWarmup() started.
+◇ Test allNotesOffAndControllerResetAreChannelScoped() started.
+◇ Test midiRecoveryKeepsOnlyPacketsAfterLossEpoch() started.
+◇ Test runningStatusPacketSplitAndTimestampOwnership() started.
+◇ Test hostNormalizedAndByteStreamMIDIProduceIdenticalMappingsAndReset() started.
+◇ Test sharedAudioSignalsMapEveryAnalysisFeature() started.
+◇ Test impulsesAndOnsetRecoverToSilence() started.
+◇ Test case passing 1 argument fixture → (93.75, 0) to separatedFrequencyBands(_:) started.
+◇ Test case passing 1 argument channel → 1 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 2 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument fixture → (750.0, 1) to separatedFrequencyBands(_:) started.
+◇ Test case passing 1 argument channel → 3 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument fixture → (6000.0, 2) to separatedFrequencyBands(_:) started.
+◇ Test case passing 1 argument rate → 8000.0 to calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test case passing 1 argument channel → 4 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument rate → 22050.0 to calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test case passing 1 argument channel → 5 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument rate → 44100.0 to calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test case passing 1 argument channel → 6 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument rate → 48000.0 to calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test case passing 1 argument channel → 7 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument rate → 96000.0 to calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test case passing 1 argument channel → 8 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument rate → 192000.0 to calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test case passing 1 argument channel → 9 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 10 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 11 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 12 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 13 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 14 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 15 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 16 to channelsVelocityAndControllerNormalization(_:) started.
+✔ Test queueRejectsInvalidMetadataWithoutReadingBuffers() passed after 0.056 seconds.
+✔ Test midiOverflowDisconnectAndInvalidPacketsCannotStickNotes() passed after 0.056 seconds.
+✔ Test midiRecoveryKeepsOnlyPacketsAfterLossEpoch() passed after 0.056 seconds.
+✔ Test allNotesOffAndControllerResetAreChannelScoped() passed after 0.056 seconds.
+✔ Test ignoredSystemMessagesAndMalformedStreamsDoNotMakeNotes() passed after 0.056 seconds.
+✔ Test runningStatusPacketSplitAndTimestampOwnership() passed after 0.056 seconds.
+✔ Test silenceWarmupAndWindowTiming() passed after 0.056 seconds.
+✔ Test sharedAudioSignalsMapEveryAnalysisFeature() passed after 0.056 seconds.
+✔ Test formatTimelineAndDisconnectResetWarmup() passed after 0.056 seconds.
+✔ Test hostNormalizedAndByteStreamMIDIProduceIdenticalMappingsAndReset() passed after 0.056 seconds.
+✔ Test wholeBlockOverflowDiscardsStaleAudioAndRecovers() passed after 0.056 seconds.
+✔ Test separatedFrequencyBands(_:) with 3 test cases passed after 0.056 seconds.
+✔ Test channelsVelocityAndControllerNormalization(_:) with 16 test cases passed after 0.057 seconds.
+✔ Test invalidSamplesClippingAndDCStayFinite() passed after 0.070 seconds.
+✔ Test midiBurstQueueWrapAndInstanceIsolation() passed after 0.095 seconds.
+✔ Test impulsesAndOnsetRecoverToSilence() passed after 0.104 seconds.
+✔ Test independentAudioInstancesAndConcurrentQueueWrap() passed after 0.105 seconds.
+✔ Test calibratedTonesAdaptToSampleRate(_:) with 6 test cases passed after 0.192 seconds.
+✔ Test stereoDoesNotCancelAndLayoutsAgree() passed after 0.283 seconds.
+✔ Test run with 19 tests in 0 suites passed after 0.283 seconds.
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite SystemAudioTests started.
+◇ Suite DeviceTests started.
+◇ Test selectionSurvivesEndpointChangesWithoutSubstitution() started.
+◇ Test nativePCMMatchesSharedEngine(_:) started.
+◇ Test case passing 1 argument planar → true to nativePCMMatchesSharedEngine(_:) started.
+✔ Test selectionSurvivesEndpointChangesWithoutSubstitution() passed after 0.001 seconds.
+◇ Test channelChoicesRejectMissingAndDuplicateChannels() started.
+✔ Test channelChoicesRejectMissingAndDuplicateChannels() passed after 0.001 seconds.
+◇ Test nativeAudioEnqueueMatchesSharedPlanarContractAndRejectsBadTime() started.
+✔ Test nativeAudioEnqueueMatchesSharedPlanarContractAndRejectsBadTime() passed after 0.016 seconds.
+◇ Test invalidNativeStartsFailWithoutOpeningHardware() started.
+✔ Test invalidNativeStartsFailWithoutOpeningHardware() passed after 0.001 seconds.
+◇ Test serviceStartsOffAndUnavailableSourcesStayOffAfterStop() started.
+◇ Test case passing 1 argument planar → false to nativePCMMatchesSharedEngine(_:) started.
+✔ Test nativePCMMatchesSharedEngine(_:) with 2 test cases passed after 0.029 seconds.
+◇ Test ignoredVideoAndDisabledReceiverDoNotTouchSamples() started.
+✔ Test ignoredVideoAndDisabledReceiverDoNotTouchSamples() passed after 0.001 seconds.
+◇ Test malformedPCMAndTimelineAreRejected() started.
+✔ Test malformedPCMAndTimelineAreRejected() passed after 0.013 seconds.
+◇ Test irregularMonoBuffersOverflowAndRateChangesRecover() started.
+✔ Test irregularMonoBuffersOverflowAndRateChangesRecover() passed after 0.024 seconds.
+◇ Test nativeIdleStopHasNoPickerAndQueuesAreIndependent() started.
+✔ Test nativeIdleStopHasNoPickerAndQueuesAreIndependent() passed after 0.011 seconds.
+◇ Test staleCrossSourceConfigurationCannotOpenPicker() started.
+✔ Test staleCrossSourceConfigurationCannotOpenPicker() passed after 0.025 seconds.
+◇ Test systemTerminalPolicyRequiresExplicitNewRequest() started.
+✔ Test systemTerminalPolicyRequiresExplicitNewRequest() passed after 0.001 seconds.
+✔ Suite SystemAudioTests passed after 0.105 seconds.
+✔ Test serviceStartsOffAndUnavailableSourcesStayOffAfterStop() passed after 0.089 seconds.
+◇ Test realCoreMIDIVirtualSourceDeliversAndStopsThroughService() started.
+✔ Test realCoreMIDIVirtualSourceDeliversAndStopsThroughService() passed after 0.054 seconds.
+◇ Test staleConfigurationCannotRestartStoppedCapture() started.
+✔ Test staleConfigurationCannotRestartStoppedCapture() passed after 0.002 seconds.
+◇ Test virtualMIDIUnplugAndReconnectRetainsStableIdentityAndClearsNotes() started.
+✔ Test virtualMIDIUnplugAndReconnectRetainsStableIdentityAndClearsNotes() passed after 0.034 seconds.
+✔ Suite DeviceTests passed after 0.199 seconds.
+✔ Test run with 15 tests in 2 suites passed after 0.199 seconds.
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Test invalidProjectNames(_:) started.
+◇ Test schemaThreeMigrationCreatesStableEquivalentGraph() started.
+◇ Test learnConflictsRequireExplicitReplacementAndCancelPreservesOriginal() started.
+◇ Test mappingContributionsPreserveBaseAndAreOrderIndependent() started.
+◇ Test projectRoundTrip() started.
+◇ Test customChainNodeIdentitiesSurviveBothEditors() started.
+◇ Test smoothingIsFrameRateIndependentAndReleases() started.
+◇ Test effectLimitsAndInvalidActions() started.
+◇ Test effectIdentityHistoryAndGesture() started.
+◇ Test mappingsSurviveSceneEditsUndoMigrationAndRoundTrip() started.
+◇ Test branchingInvalidatesRedoAndNoOpDoesNot() started.
+◇ Test inversionCurvesRangesAndDisabledMappings() started.
+◇ Test parameterValidation(input:expected:) started.
+◇ Test corruptAndUnsupportedDocuments() started.
+◇ Test everySourcePersistsAndEveryValueUndoes(_:) started.
+◇ Test versionOneMigrationPreservesIdentityColorAndSeed() started.
+◇ Test graphHistoryLayoutTargetsAndRoundTrip() started.
+◇ Test atomicSavePreservesValidFileOnFailure() started.
+◇ Test gestureIsOneUndoAndRedo() started.
+◇ Test malformedTypedSourceFilesAreRejected() started.
+◇ Test parameterBoundsAndTypeValidation() started.
+◇ Test oldProjectMigrationAndStrictEffectValidation() started.
+◇ Test fixedClockIsRepeatable() started.
+◇ Test reducerPreservesOriginalAndSeed() started.
+◇ Test caseOnlyRenameAndUnsavedRenameValidation() started.
+◇ Test historyIsBounded() started.
+◇ Test failingWriteAndCommitLeaveExistingDataIntact() started.
+◇ Test sourceSwitchKeepsSettingsAndEndsGesture() started.
+◇ Test noOpGestureAndUndoDuringDrag() started.
+◇ Test graphValidationTypesCyclesAndRequiredInputs() started.
+◇ Test invalidMappingDefinitionsAreRejectedWithoutDocumentMutation() started.
+◇ Test targetIdentitySurvivesReorderAndDeletionIsUnresolved() started.
+◇ Test sourceRegistryIsCompleteAndTyped() started.
+◇ Test graphLimitsAreEnforcedBeforeCompilation() started.
+◇ Test notePriorityOmniFilteringAndRelease() started.
+◇ Test renamePreservesDataAndRefusesCollision() started.
+◇ Test case passing 1 argument name → "" to invalidProjectNames(_:) started.
+◇ Test parameterAvailabilityAndPrecisionFollowMetadata() started.
+◇ Test dirtyTrackingAndConcurrentSaveSnapshot() started.
+◇ Test case passing 1 argument name → " " to invalidProjectNames(_:) started.
+◇ Test case passing 1 argument name → "." to invalidProjectNames(_:) started.
+◇ Test case passing 1 argument name → ".." to invalidProjectNames(_:) started.
+◇ Test case passing 1 argument name → "a/b" to invalidProjectNames(_:) started.
+◇ Test case passing 1 argument name → "a:b" to invalidProjectNames(_:) started.
+◇ Test case passing 2 arguments input → -1.0, expected → 0.0 to parameterValidation(input:expected:) started.
+◇ Test case passing 1 argument name → "a\b" to invalidProjectNames(_:) started.
+◇ Test case passing 1 argument source → .solid to everySourcePersistsAndEveryValueUndoes(_:) started.
+◇ Test case passing 2 arguments input → 2.0, expected → 1.0 to parameterValidation(input:expected:) started.
+◇ Test case passing 1 argument name → "a◇ Test case passing 1 argument source → .gradient to everySourcePersistsAndEveryValueUndoes(_:) started.
+◇ Test case passing 1 argument name → "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" to invalidProjectNames(_:) started.
+◇ Test case passing 1 argument source → .noise to everySourcePersistsAndEveryValueUndoes(_:) started.
+◇ Test case passing 1 argument source → .oscillator to everySourcePersistsAndEveryValueUndoes(_:) started.
+◇ Test case passing 1 argument source → .shape to everySourcePersistsAndEveryValueUndoes(_:) started.
+◇ Test case passing 2 arguments input → inf, expected → 0.0 to parameterValidation(input:expected:) started.
+◇ Test case passing 2 arguments input → nan, expected → 0.0 to parameterValidation(input:expected:) started.
+◇ Test case passing 2 arguments input → 0.5, expected → 0.5 to parameterValidation(input:expected:) started.
+✔ Test invalidProjectNames(_:) with 9 test cases passed after 0.012 seconds.
+✔ Test learnConflictsRequireExplicitReplacementAndCancelPreservesOriginal() passed after 0.012 seconds.
+✔ Test branchingInvalidatesRedoAndNoOpDoesNot() passed after 0.012 seconds.
+✔ Test parameterValidation(input:expected:) with 5 test cases passed after 0.012 seconds.
+✔ Test customChainNodeIdentitiesSurviveBothEditors() passed after 0.012 seconds.
+✔ Test inversionCurvesRangesAndDisabledMappings() passed after 0.012 seconds.
+✔ Test mappingContributionsPreserveBaseAndAreOrderIndependent() passed after 0.012 seconds.
+✔ Test corruptAndUnsupportedDocuments() passed after 0.012 seconds.
+✔ Test versionOneMigrationPreservesIdentityColorAndSeed() passed after 0.012 seconds.
+✔ Test projectRoundTrip() passed after 0.012 seconds.
+✔ Test everySourcePersistsAndEveryValueUndoes(_:) with 5 test cases passed after 0.012 seconds.
+✔ Test effectIdentityHistoryAndGesture() passed after 0.012 seconds.
+✔ Test schemaThreeMigrationCreatesStableEquivalentGraph() passed after 0.012 seconds.
+✔ Test mappingsSurviveSceneEditsUndoMigrationAndRoundTrip() passed after 0.012 seconds.
+✔ Test reducerPreservesOriginalAndSeed() passed after 0.012 seconds.
+✔ Test fixedClockIsRepeatable() passed after 0.012 seconds.
+✔ Test gestureIsOneUndoAndRedo() passed after 0.012 seconds.
+✔ Test graphHistoryLayoutTargetsAndRoundTrip() passed after 0.012 seconds.
+✔ Test noOpGestureAndUndoDuringDrag() passed after 0.012 seconds.
+✔ Test sourceSwitchKeepsSettingsAndEndsGesture() passed after 0.012 seconds.
+✔ Test malformedTypedSourceFilesAreRejected() passed after 0.012 seconds.
+✔ Test targetIdentitySurvivesReorderAndDeletionIsUnresolved() passed after 0.012 seconds.
+✔ Test graphValidationTypesCyclesAndRequiredInputs() passed after 0.012 seconds.
+✔ Test invalidMappingDefinitionsAreRejectedWithoutDocumentMutation() passed after 0.012 seconds.
+✔ Test notePriorityOmniFilteringAndRelease() passed after 0.012 seconds.
+✔ Test parameterAvailabilityAndPrecisionFollowMetadata() passed after 0.012 seconds.
+✔ Test dirtyTrackingAndConcurrentSaveSnapshot() passed after 0.012 seconds.
+✔ Test parameterBoundsAndTypeValidation() passed after 0.012 seconds.
+✔ Test sourceRegistryIsCompleteAndTyped() passed after 0.012 seconds.
+✔ Test atomicSavePreservesValidFileOnFailure() passed after 0.012 seconds.
+✔ Test effectLimitsAndInvalidActions() passed after 0.015 seconds.
+✔ Test oldProjectMigrationAndStrictEffectValidation() passed after 0.015 seconds.
+✔ Test renamePreservesDataAndRefusesCollision() passed after 0.015 seconds.
+✔ Test graphLimitsAreEnforcedBeforeCompilation() passed after 0.016 seconds.
+✔ Test caseOnlyRenameAndUnsavedRenameValidation() passed after 0.016 seconds.
+✔ Test failingWriteAndCommitLeaveExistingDataIntact() passed after 0.018 seconds.
+✔ Test historyIsBounded() passed after 0.027 seconds.
+✔ Test smoothingIsFrameRateIndependentAndReleases() passed after 0.052 seconds.
+✔ Test run with 38 tests in 0 suites passed after 0.052 seconds.

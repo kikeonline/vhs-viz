@@ -31,6 +31,12 @@ struct ControlView: View {
                         Text("Nodes").tag(true)
                     }.pickerStyle(.segmented).fixedSize()
                         .help("Switch between compatible chain and node editors")
+                    Button("Mappings", systemImage:"slider.horizontal.3") { model.mappingEditor.isPresented.toggle() }
+                        .help("Map audio or MIDI to visual parameters")
+                        .popover(isPresented:Binding(get:{model.mappingEditor.isPresented},set:{model.mappingEditor.isPresented = $0})) {
+                            MappingEditor(scene:model.scene,state:model.mappingEditor,send:model.send)
+                                .disabled(model.files.blocksSceneEditing)
+                        }
                     Button("Inputs", systemImage: "waveform") { model.inputs.showsInputs.toggle() }
                         .help("Choose standalone audio and MIDI inputs and view live levels")
                         .popover(isPresented: Binding(get: { model.inputs.showsInputs }, set: { model.inputs.showsInputs = $0 })) {

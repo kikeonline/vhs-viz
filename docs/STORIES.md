@@ -514,7 +514,7 @@ Status: implemented — automated/native PCM/cancellation/layout checks pass; li
 
 ## Phase 7 — Audio/MIDI mappings (#8)
 
-All stories below are planned; implementation has not started.
+Authorized on 2026-11-14 by “continue with next phase”. Implemented with automated evidence in PHASE-7-VERIFICATION.md; attended acceptance remains deferred.
 
 ### S-026 Map audio to a visual control
 As a performer, I map an audio signal to a source or effect parameter.
@@ -523,7 +523,7 @@ Depends: S-021, S-023, S-040
 Acceptance:
 - [unit] Range, inversion, curve, smoothing, enable/disable, and multiple-mapping composition obey documented bounds and frame-rate-independent rules.
 - [self] Physical audio modulates visuals while base values/undo history remain unchanged; repeat with system audio after S-025.
-Status: todo
+Status: implemented; automated verification in PHASE-7-VERIFICATION.md; physical/system/Studio One/native visual/keyboard acceptance remains deferred in Phase 4C and production host surface in Phase 8.
 
 ### S-027 Learn a MIDI controller mapping
 As a performer, I select a source/effect/node control and learn a CC or note assignment.
@@ -535,7 +535,7 @@ Acceptance:
 - [manual] Studio One learn workflow is demonstrated in Phase 3A and accepted in S-030; host-mediated assignment is documented if unassigned CC discovery is unavailable.
 - [unit] Documented precedence of base/host automation, MIDI, and audio is deterministic; silence/disconnect/all-notes-off recover safely.
 - [manual] A real standalone MIDI controller drives a mapped source/effect parameter without writing live event values into project data.
-Status: todo
+Status: implemented; automated verification in PHASE-7-VERIFICATION.md; physical/system/Studio One/native visual/keyboard acceptance remains deferred in Phase 4C and production host surface in Phase 8.
 
 ### S-028 Restore my performance mappings
 As a performer, I reopen a project with audio/MIDI mappings intact.
@@ -545,7 +545,7 @@ Acceptance:
 - [unit] Mapping definitions/sync settings round-trip with explicit schema migrations; missing/deleted/reordered targets are handled safely.
 - [self] Mapping edits undo/redo; continuous analysis/MIDI values never dirty the document or enter undo.
 - [self] Stable host automation bindings are specified without renumbering existing IDs on chain reorder.
-Status: todo
+Status: implemented; automated verification in PHASE-7-VERIFICATION.md; physical/system/Studio One/native visual/keyboard acceptance remains deferred in Phase 4C and production host surface in Phase 8.
 
 ## Phase 7A — Factory and user presets (#14)
 
@@ -702,3 +702,15 @@ Status: todo
 ## Later / excluded from this release
 
 AU, Windows, VST2, AAX, Intel/Rosetta delivery, other DAW certification, sound generation/audio effects, video export/streaming, third-party plug-in hosting, MIDI 2.0/MPE/SysEx, program-change scene banks, and standalone MIDI-clock sync. Standalone system audio remains required.
+
+## Phase 7 implementation notes — authorized 2026-11-14
+
+Automated implementation evidence: PHASE-7-VERIFICATION.md. Phase 7A remains unauthorized.
+
+S-026–S-028 are authorized by “continue with next phase”. Scope: shared persisted mappings, standalone and existing host-editor learn, effective display-rate values, migration and fixtures. Production host automation remains Phase 8; physical/system/Studio One acceptance remains attended.
+
+UX (S-026): Mappings toolbar → choose an eligible node/parameter → Add Mapping → edit input/range/curve/smoothing inline. A scrollable popover keeps the preview running. Empty: “Add a mapping to make this scene respond to audio or MIDI.” Unavailable targets remain listed with a recovery message; connected graph inputs take precedence. Enable, invert, clear and exact native-unit range fields have native keyboard/accessibility controls. Each definition edit is undoable; meters show effective values without changing base controls.
+
+UX (S-027): Select a mapping → Learn → move a CC/play a note → inspect channel/number → Confirm or Cancel. Relearn explicitly rearms; a candidate never commits automatically. Waiting explains input setup and the manual assignment fallback. Omni/1–16 is explicit. Conflicting assignments require Replace Conflicts or Cancel. Clear removes the assignment via undoable mapping removal. Host learn uses the existing fixed discovery bank, with a reminder to arm after Studio One's controller chase.
+
+UX (S-028): Save/Open restores definitions; runtime levels and learn candidates are excluded. Deleted/switched targets stay unresolved visibly; undo restores them. Mapping edits share scene history. Free Run is the default persisted sync choice; Follow DAW execution remains Phase 8.

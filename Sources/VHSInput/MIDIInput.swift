@@ -1,4 +1,5 @@
 import VHSRealtime
+import VHSCore
 
 public struct MIDIEvent: Sendable, Equatable {
     public enum Kind: Sendable { case noteOn, noteOff, controller, reset }
@@ -9,6 +10,9 @@ public struct MIDIEvent: Sendable, Equatable {
     /// Packet containing the status/first running-status data byte, not completion packet.
     public let sampleTime: Int64
     public let offset: Int32
+    public init(kind: Kind, channel: Int, number: Int, value: Double, sampleTime: Int64 = 0, offset: Int32 = 0) {
+        self.kind = kind; self.channel = channel; self.number = number; self.value = value; self.sampleTime = sampleTime; self.offset = offset
+    }
 }
 
 /// Worker-owned MIDI 1.0 byte-stream decoder. No Core MIDI or host APIs.
@@ -59,6 +63,7 @@ public struct MIDIDecoder {
 public struct MIDIState: Sendable {
     public private(set) var selectedChannel: Int?
     private var notes = [Double](repeating: 0, count: 16 * 128)
+    private var received = Set<Int>()
     private var controllers = [Double](repeating: 0, count: 16 * 128)
     public var heldNoteCount: Int { notes.reduce(0) { $0 + ($1 > 0 ? 1 : 0) } }
 
@@ -75,7 +80,21 @@ public struct MIDIState: Sendable {
         guard (1...16).contains(channel), (0...127).contains(number) else { return 0 }
         return controllers[(channel - 1) * 128 + number]
     }
+    public func mappingInputs(audio: AudioSignals = .init(), available: Bool = true) -> MappingInputs {
+        var result = MappingInputs()
+        if audio.ready { result.audio = [.rms:audio.rms,.peak:audio.peak,.low:audio.low,.mid:audio.mid,.high:audio.high,.transient:audio.transient] }
+        result.midiAvailable = available
+        for channel in 1...16 {
+            for number in 0...127 {
+                let index = (channel-1)*128+number
+                if notes[index] > 0 { result.notes.append(.init(channel:channel,number:number,velocity:notes[index])) }
+                if received.contains(index) { result.controllers[index] = controllers[index] }
+            }
+        }
+        return result
+    }
     public mutating func reset() {
+        received.removeAll()
         notes = .init(repeating: 0, count: 16 * 128)
         controllers = .init(repeating: 0, count: 16 * 128)
     }
@@ -90,11 +109,11 @@ public struct MIDIState: Sendable {
         case .noteOn: notes[index] = event.value
         case .noteOff: notes[index] = 0
         case .controller:
-            controllers[index] = event.value
+            controllers[index] = event.value; received.insert(index)
             if event.number == 120 || (123...127).contains(event.number) {
                 for i in base..<base + 128 { notes[i] = 0 }
             } else if event.number == 121 {
-                for i in base..<base + 128 { controllers[i] = 0 }
+                for i in base..<base + 128 { controllers[i] = 0; received.remove(i) }
             }
         case .reset: break
         }

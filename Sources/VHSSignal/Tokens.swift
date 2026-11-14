@@ -1,6 +1,8 @@
 import SwiftUI
 
 public enum Layout {
+    public static let mappingWidth: CGFloat = 480
+    public static let mappingHeight: CGFloat = 560
     public static let inputWidth: CGFloat = 400
     public static let inputMaxHeight: CGFloat = 560
     public static let graphSeedWidth: CGFloat = 72

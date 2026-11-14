@@ -1,6 +1,6 @@
 # Shared input engine — Phase 5A
 
-VHSInput is a worker-owned Swift/Accelerate library with no UI, device, project, history or renderer dependency. VHSRealtime supplies the C handoff queues. At Phase 5A neither was connected to capture devices or the VST3 probe. Phase 5B now adds standalone adapters/Signal status and meters (see INPUTS.md); production host integration remains Phase 8. Synthetic interleaved/planar equivalence does not certify actual host/device routing.
+VHSInput is a worker-owned Swift/Accelerate library with no UI, device capture, file I/O, history ownership or renderer dependency. Phase 7 adds a VHSCore dependency for immutable mapping-input contracts. VHSRealtime supplies the C handoff queues. At Phase 5A neither was connected to capture devices or the VST3 probe. Phase 5B now adds standalone adapters/Signal status and meters (see INPUTS.md); production host integration remains Phase 8. Synthetic interleaved/planar equivalence does not certify actual host/device routing.
 
 ## Ownership and callback boundary
 

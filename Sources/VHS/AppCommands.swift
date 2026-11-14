@@ -30,6 +30,8 @@ struct VHSCommands: Commands {
                 .keyboardShortcut("z", modifiers: [.command, .shift]).disabled(!canRedo)
         }
         CommandGroup(after: .windowArrangement) {
+            Button("Show Mappings") { openWindow(id: "control"); model.mappingEditor.isPresented = true }
+
             Button("Show Control Window") { openWindow(id: "control") }
                 .keyboardShortcut("1")
             Button("Show Output") { model.output.show() }

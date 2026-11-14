@@ -10,8 +10,28 @@ public final class CompiledGraph: @unchecked Sendable {
     init(graph: ShaderGraph, schedule: GraphSchedule, pipelines: [any MTLRenderPipelineState]) {
         self.graph = graph; self.schedule = schedule; self.pipelines = pipelines
     }
+    /// Pipelines bake topology, bypass and nonnumeric values; eligible numbers are uniforms.
+    func accepts(_ candidate: ShaderGraph) -> Bool {
+        guard graph.edges == candidate.edges, graph.nodes.count == candidate.nodes.count else { return false }
+        for (original,node) in zip(graph.nodes,candidate.nodes) {
+            guard original.id == node.id, original.kind == node.kind, original.bypassed == node.bypassed,
+                  original.values.count == node.values.count else { return false }
+            for p in original.kind.parameters {
+                if GraphParameterTarget.eligible(p.kind) {
+                    guard let value = node.values[p.id], p.allows(value) else { return false }
+                } else if original.values[p.id] != node.values[p.id] { return false }
+            }
+        }
+        return true
+    }
     func encode(_ frame: RenderFrame, to output: any MTLTexture, command: any MTLCommandBuffer, textures: [any MTLTexture]) throws {
         struct Uniforms { var resolution: SIMD2<Float>; var time: Float; var seed: UInt32 }
+        let targets = GraphShader.numericTargets(graph)
+        var values = targets.map { target -> Float in
+            if case let .number(value) = frame.scene.graph.node(target.node)?.values[target.key] { return Float(value) }
+            return 0
+        }
+        if values.isEmpty { values = [0] }
         for (index,pass) in schedule.passes.enumerated() {
             let descriptor = MTLRenderPassDescriptor()
             descriptor.colorAttachments[0].texture = pass.slot.map { textures[$0] } ?? output
@@ -23,6 +43,7 @@ public final class CompiledGraph: @unchecked Sendable {
                 encoder.setFragmentTexture(textures[slot],index:binding)
             }
             var uniforms = Uniforms(resolution:.init(Float(output.width),Float(output.height)),time:frame.time.isFinite ? Float(min(Double(Float.greatestFiniteMagnitude/4),max(-Double(Float.greatestFiniteMagnitude/4),frame.time))) : 0,seed:frame.scene.seed)
+            encoder.setFragmentBytes(values,length:values.count * MemoryLayout<Float>.stride,index:1)
             encoder.setFragmentBytes(&uniforms,length:MemoryLayout<Uniforms>.stride,index:0)
             encoder.drawPrimitives(type:.triangle,vertexStart:0,vertexCount:3); encoder.endEncoding()
         }

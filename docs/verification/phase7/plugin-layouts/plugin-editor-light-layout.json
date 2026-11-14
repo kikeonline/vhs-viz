@@ -1,0 +1,188 @@
+{
+  "probes" : [
+    {
+      "area" : "7AD5C2A4-3DDA-4A19-B282-C5F9031849DF-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "7AD5C2A4-3DDA-4A19-B282-C5F9031849DF-parameter",
+      "width" : 280,
+      "x" : 40,
+      "y" : 316
+    },
+    {
+      "area" : "7AD5C2A4-3DDA-4A19-B282-C5F9031849DF-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "7AD5C2A4-3DDA-4A19-B282-C5F9031849DF-label",
+      "width" : 280,
+      "x" : 40,
+      "y" : 316
+    },
+    {
+      "area" : "7AD5C2A4-3DDA-4A19-B282-C5F9031849DF-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "7AD5C2A4-3DDA-4A19-B282-C5F9031849DF-slider",
+      "width" : 280,
+      "x" : 40,
+      "y" : 356
+    },
+    {
+      "area" : "928ED088-B7FF-4FCA-BABC-B5529DE58565-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "928ED088-B7FF-4FCA-BABC-B5529DE58565-label",
+      "width" : 280,
+      "x" : 40,
+      "y" : 232
+    },
+    {
+      "area" : "928ED088-B7FF-4FCA-BABC-B5529DE58565-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "928ED088-B7FF-4FCA-BABC-B5529DE58565-parameter",
+      "width" : 280,
+      "x" : 40,
+      "y" : 232
+    },
+    {
+      "area" : "928ED088-B7FF-4FCA-BABC-B5529DE58565-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "928ED088-B7FF-4FCA-BABC-B5529DE58565-slider",
+      "width" : 280,
+      "x" : 40,
+      "y" : 272
+    },
+    {
+      "area" : "F0A20228-4B91-4721-B47E-8AD487367887-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "F0A20228-4B91-4721-B47E-8AD487367887-parameter",
+      "width" : 280,
+      "x" : 40,
+      "y" : 148
+    },
+    {
+      "area" : "F0A20228-4B91-4721-B47E-8AD487367887-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "F0A20228-4B91-4721-B47E-8AD487367887-label",
+      "width" : 280,
+      "x" : 40,
+      "y" : 148
+    },
+    {
+      "area" : "F0A20228-4B91-4721-B47E-8AD487367887-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "F0A20228-4B91-4721-B47E-8AD487367887-slider",
+      "width" : 280,
+      "x" : 40,
+      "y" : 188
+    },
+    {
+      "area" : "plugin-controls",
+      "height" : 424,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "plugin-controls",
+      "width" : 280,
+      "x" : 40,
+      "y" : 112
+    },
+    {
+      "area" : "plugin-controls",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "plugin-source",
+      "width" : 32,
+      "x" : 40,
+      "y" : 112
+    },
+    {
+      "area" : "plugin-controls",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "plugin-0",
+      "width" : 280,
+      "x" : 40,
+      "y" : 148
+    },
+    {
+      "area" : "plugin-controls",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "plugin-1",
+      "width" : 280,
+      "x" : 40,
+      "y" : 232
+    },
+    {
+      "area" : "plugin-controls",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "plugin-2",
+      "width" : 280,
+      "x" : 40,
+      "y" : 316
+    },
+    {
+      "area" : "plugin-editor",
+      "height" : 640,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "plugin-editor",
+      "width" : 960,
+      "x" : 20,
+      "y" : 92
+    },
+    {
+      "area" : "plugin-editor",
+      "height" : 424,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "plugin-controls",
+      "width" : 280,
+      "x" : 40,
+      "y" : 112
+    },
+    {
+      "area" : "plugin-editor",
+      "height" : 348.75,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "plugin-preview",
+      "width" : 620,
+      "x" : 340,
+      "y" : 112
+    }
+  ],
+  "window" : {
+    "height" : 720,
+    "width" : 1000
+  }
+}

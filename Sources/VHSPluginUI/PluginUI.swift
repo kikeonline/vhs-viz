@@ -7,6 +7,7 @@ import VHSCore
 import VHSRenderer
 import VHSRealtime
 import VHSGraphUI
+import VHSInput
 
 @Observable final class PluginRuntime: NSObject, NSWindowDelegate {
     let bridge: OpaquePointer
@@ -14,6 +15,11 @@ import VHSGraphUI
     var session = ProjectSession(document:.init(name:"Plug-in Scene"))
     let graphEditor = GraphEditorState()
     var showsGraph = false
+    let mappingEditor = MappingEditorState()
+    @ObservationIgnored private var mappingEngine = MappingEngine()
+    @ObservationIgnored private var mappingMIDI = MIDIState()
+    @ObservationIgnored private var mappingTime = ContinuousClock.now
+    @ObservationIgnored private var feedbackTick = 0
     @ObservationIgnored private var documentRevision: UInt32 = 0
     @ObservationIgnored private var documentBytes = [UInt8](repeating:0,count:Int(VHS_STATE_CAPACITY))
     @ObservationIgnored private var pendingDocument: Data?
@@ -25,16 +31,10 @@ import VHSGraphUI
     var cc = 0.0
     var tempo = 0.0
     var playing = false
-    var learning = false
-    var candidate: VHSInput?
-    var learnedChannel: Int32?
-    var learnedController: Int32?
-    var learnedValue = 0.0
     var dropped: UInt32 = 0
     var error: String?
     @ObservationIgnored var output: NSWindow?
     @ObservationIgnored var timer: Timer?
-    @ObservationIgnored var notes = [Double](repeating: 0, count: 16 * 128)
     @ObservationIgnored var lastBlock = ContinuousClock.now
     init(_ bridge: OpaquePointer, shaderURL: URL? = nil) throws {
         self.bridge = bridge
@@ -66,46 +66,51 @@ import VHSGraphUI
         let before = vhs_bridge_dropped(bridge)
         for _ in 0..<256 {
             guard vhs_bridge_pop(bridge, &event) != 0 else { break }
+            if event.kind == 1 || event.kind == 2 || event.kind == 3 {
+                let kind: MIDIEvent.Kind = event.kind == 3 ? .controller : (event.kind == 1 && event.value > 0 ? .noteOn : .noteOff)
+                let accepted = mappingMIDI.apply(.init(kind:kind,channel:Int(event.channel)+1,number:Int(event.number),value:event.value))
+                if accepted && (kind == .controller || kind == .noteOn) { mappingEditor.accept(channel:Int(event.channel)+1,number:Int(event.number),note:kind == .noteOn) }
+            }
+            if event.kind == 4 { mappingMIDI.reset() }
             switch event.kind {
             case 0:
                 peak = event.value; tempo = event.flags & 4 != 0 ? event.tempo : 0
                 playing = event.flags & 2 != 0; lastBlock = .now
-            case 1, 2:
-                if (0..<16).contains(event.channel), (0..<128).contains(event.number) {
-                    notes[Int(event.channel) * 128 + Int(event.number)] = event.kind == 1 ? event.value : 0
-                }
-            case 3:
-                if learning, candidate == nil { candidate = event; learning = false }
-                if event.channel == learnedChannel && event.number == learnedController { learnedValue = event.value }
-            case 4: notes = Array(repeating: 0, count: notes.count); peak = 0
+            case 1, 2: break // Shared MIDI state owns note lifetime.
+            case 3: break // Controller state and learn use the shared MIDI/mapping path above.
+            case 4: peak = 0
             default: break
             }
         }
         dropped = vhs_bridge_dropped(bridge)
         // Overflow invalidates held-note state, including retained queued note-ons.
         if dropped != before || dropped != lastDropped || lastBlock.duration(to: .now) > .milliseconds(250) {
-            notes = Array(repeating: 0, count: notes.count); peak = 0; learnedValue = 0; playing = false
+            peak = 0; playing = false; mappingMIDI.reset()
         }
         lastDropped = dropped
-        velocity = notes.max() ?? 0
-        // Prototype bindings: audio peak -> red; held velocity -> green; host CC1 -> blue.
-        // Persisted base values remain separate from transient input.
-        var scene = session.history.scene
-        if scene.canEditChain && scene.source == .solid {
-            scene = SceneReducer.reduce(scene,.setColor(.init(red:min(1,red+peak),green:min(1,green+velocity),blue:min(1,blue+(learnedController == nil ? cc : learnedValue)))))
-        }
-        render.update(scene)
+        let scene = session.history.scene
+        let now = ContinuousClock.now
+        let elapsed = mappingTime.duration(to:now).components; mappingTime = now
+        var input = mappingMIDI.mappingInputs(available:lastBlock.duration(to:now) <= .milliseconds(250))
+        velocity = input.notes.map(\.velocity).max() ?? 0
+        if lastBlock.duration(to:now) <= .milliseconds(250) { input.audio[.peak] = peak }
+        mappingEditor.inputAvailable = input.midiAvailable
+        let effective = mappingEngine.evaluate(scene,inputs:input,deltaTime:Double(elapsed.seconds)+Double(elapsed.attoseconds)/1e18)
+        render.update(scene,effective:effective)
+        feedbackTick += 1
+        if feedbackTick % 4 == 0 { mappingEditor.feedback = mappingEngine.effective }
         publishDocument()
     }
     func sendGraph(_ action: SceneAction) {
+        mappingEditor.cancel()
         session.send(action)
         syncGraphBase(); queueDocument(); tick()
     }
     func setGraphLayout(_ layout: GraphLayout) { session.setGraphLayout(layout); queueDocument() }
     func beginGraphEdit() { session.beginEdit() }
     func endGraphEdit() { session.endEdit(); queueDocument() }
-    func undoGraph() { session.undo(); syncGraphBase(); queueDocument(); tick() }
-    func redoGraph() { session.redo(); syncGraphBase(); queueDocument(); tick() }
+    func undoGraph() { mappingEditor.cancel(); session.undo(); syncGraphBase(); queueDocument(); tick() }
+    func redoGraph() { mappingEditor.cancel(); session.redo(); syncGraphBase(); queueDocument(); tick() }
     private func syncGraphBase() {
         if session.history.scene.canEditChain && session.history.scene.source == .solid {
             let color = session.history.scene.color
@@ -137,6 +142,7 @@ import VHSGraphUI
         guard origin != 0 else { return }
         do {
             let document = count == 0 ? ProjectDocument(name:"Plug-in Scene") : try ProjectCodec.decode(Data(documentBytes.prefix(Int(count))))
+            mappingEngine.reset(); mappingMIDI.reset(); mappingEditor.cancel(); mappingEditor.selected = nil
             session = ProjectSession(document:document); graphEditor.selection = nil; graphEditor.pendingOutput = nil
             pendingDocument = nil; showsGraph = !document.scene.canEditChain
             error = nil
@@ -162,6 +168,11 @@ struct PluginEditor: View {
     var body: some View {
         VStack(alignment:.leading,spacing:Space.sm) {
             HStack(spacing:Space.sm) {
+                Button("Mappings") { runtime.mappingEditor.isPresented.toggle() }
+                    .help("Map host audio or MIDI to visual parameters")
+                    .popover(isPresented:Binding(get:{runtime.mappingEditor.isPresented},set:{runtime.mappingEditor.isPresented = $0})) {
+                        MappingEditor(scene:runtime.session.history.scene,state:runtime.mappingEditor,host:true,send:runtime.sendGraph)
+                    }
                 Button(runtime.showsGraph ? "Probe Controls" : "Nodes") { runtime.showsGraph.toggle() }
                 if runtime.showsGraph {
                     Button("Undo Graph Edit") { runtime.undoGraph() }.disabled(!runtime.session.history.canUndo)
@@ -174,7 +185,7 @@ struct PluginEditor: View {
                 if let error = runtime.error { Text(error).font(KitType.meta).foregroundStyle(Ink.secondary).fixedSize(horizontal:false,vertical:true) }
                 HStack(alignment:.top,spacing:Space.lg) {
                     PluginSurface(runtime:runtime).frame(width:Layout.graphPreviewWidth,height:Layout.graphPreviewWidth*9/16)
-                    Text("Host graph state is embedded. Production mapping/automation follows in later phases.").font(KitType.meta).foregroundStyle(Ink.secondary)
+                    Text("Host graph state is embedded. Mappings are embedded; production automation follows in Phase 8.").font(KitType.meta).foregroundStyle(Ink.secondary)
                 }
                 GraphEditor(graph:runtime.session.history.scene.graph,layout:runtime.session.graphLayout,seed:runtime.session.history.scene.seed,state:runtime.graphEditor,
                             send:runtime.sendGraph,setLayout:runtime.setGraphLayout,beginEdit:runtime.beginGraphEdit,endEdit:runtime.endGraphEdit)
@@ -191,27 +202,7 @@ struct PluginEditor: View {
                 Button("Show Output", systemImage: KitIcon.output.rawValue) { runtime.showOutput() }
                     .help("Open this instance’s visual output")
                     .accessibilityLabel("Show Output")
-                Text("Audio → Red · Velocity → Green · CC1 → Blue").font(KitType.meta).foregroundStyle(Ink.secondary)
-                Button(runtime.learning ? "Cancel Learn" : "Learn Blue") {
-                    runtime.candidate = nil; runtime.learning.toggle()
-                }.accessibilityLabel(runtime.learning ? "Cancel Learn" : "Learn Blue")
-                if let candidate = runtime.candidate {
-                    Text("Channel \(candidate.channel + 1) · CC\(candidate.number)")
-                    HStack(spacing: Space.sm) {
-                        Button("Confirm") {
-                            runtime.learnedChannel = candidate.channel; runtime.learnedController = candidate.number
-                            runtime.learnedValue = candidate.value; runtime.candidate = nil
-                        }
-                        Button("Cancel") { runtime.candidate = nil }
-                    }
-                } else if runtime.learning {
-                    Text("Move a MIDI controller…").foregroundStyle(Ink.secondary)
-                } else if let cc = runtime.learnedController, let channel = runtime.learnedChannel {
-                    Text("Blue: Channel \(channel + 1) · CC\(cc)").foregroundStyle(Ink.secondary)
-                    Button("Clear Learn") {
-                        runtime.learnedChannel = nil; runtime.learnedController = nil; runtime.learnedValue = 0
-                    }
-                }
+                Text("Choose Mappings to assign host audio or MIDI.").font(KitType.meta).foregroundStyle(Ink.secondary)
                 Text("Peak \(runtime.peak, specifier: "%.3f") · Velocity \(runtime.velocity, specifier: "%.3f") · CC1 \(runtime.cc, specifier: "%.3f")")
                     .monospacedDigit().font(KitType.meta)
                 Text(runtime.tempo > 0 ? "\(runtime.tempo.formatted()) BPM · \(runtime.playing ? "Playing" : "Stopped")" : "No host tempo")

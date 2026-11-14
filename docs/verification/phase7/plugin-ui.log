@@ -1,0 +1,41 @@
+Another instance of SwiftPM (PID: 91684) is already running using '/Users/kike/Code/vhs/.build', waiting until that process has finished execution...Building for debugging...
+[Computing dependencies]
+[1 / 11] VHSInput
+Build complete! (0.50 secs.)
+PASS base values stay independent
+PASS shared learn detects host channel/controller
+PASS host context reaches display timer
+PASS held notes stay independent
+PASS overflow clears queued held notes
+PASS two independent output windows
+PASS closing one output preserves the other
+PASS detaching editor preserves output
+PASS graph host state validates without an editor or external file
+PASS graph document/layout restore independently without auto-opening output
+PASS graph edits do not leak between instances
+PASS native plug-in renders a compiled branching/value graph
+SKIP image capture (layout-only): plugin-editor-light
+SKIP image capture (layout-only): plugin-graph-light
+SKIP image capture (layout-only): plugin-editor-dark
+SKIP image capture (layout-only): plugin-graph-dark
+SKIP image capture (layout-only): plugin-editor-light-high-contrast
+SKIP image capture (layout-only): plugin-graph-light-high-contrast
+SKIP image capture (layout-only): plugin-editor-dark-high-contrast
+SKIP image capture (layout-only): plugin-graph-dark-high-contrast
+PASS persisted learner receives host discovery CC
+PASS host live mappings preserve document and undo history
+PASS host CC modulates shared frame without prototype bindings
+PASS persisted learner receives host notes
+PASS host state recalls mapping definitions without live values/output
+PASS host-editor mapping undo uses existing scene history
+PASS host-editor mapping redo restores stable target
+PASS instance teardown closes output and stops timer
+PLUGIN SELFTEST done
+PASS plugin-editor-dark-high-contrast-layout.json: 12 probes in 5 areas, 0 lined up across areas
+PASS plugin-editor-dark-layout.json: 12 probes in 5 areas, 0 lined up across areas
+PASS plugin-editor-light-high-contrast-layout.json: 12 probes in 5 areas, 0 lined up across areas
+PASS plugin-editor-light-layout.json: 12 probes in 5 areas, 0 lined up across areas
+PASS plugin-graph-dark-high-contrast-layout.json: 12 probes in 4 areas, 0 lined up across areas
+PASS plugin-graph-dark-layout.json: 12 probes in 4 areas, 0 lined up across areas
+PASS plugin-graph-light-high-contrast-layout.json: 12 probes in 4 areas, 0 lined up across areas
+PASS plugin-graph-light-layout.json: 12 probes in 4 areas, 0 lined up across areas

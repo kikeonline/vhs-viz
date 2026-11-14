@@ -20,7 +20,7 @@ import VHSInput
     @ObservationIgnored private var task: Task<Void, Never>?
     @ObservationIgnored private var audioRevision = 0
     @ObservationIgnored private var midiRevision = 0
-    @ObservationIgnored private let isolated = ProcessInfo.processInfo.environment["APP_SNAPSHOT"] != nil || CommandLine.arguments.contains("--selftest") || CommandLine.arguments.contains("--input-selftest")
+    @ObservationIgnored private let isolated = ProcessInfo.processInfo.environment["APP_SNAPSHOT"] != nil || CommandLine.arguments.contains("--selftest") || (CommandLine.arguments.contains("--input-selftest") || CommandLine.arguments.contains("--mapping-selftest"))
 
     init() {
         let defaults = UserDefaults.standard
@@ -40,14 +40,22 @@ import VHSInput
                 guard let self, !Task.isCancelled else { return }
                 var next = value
                 if value.audioRevision < audioRevision {
+                    next.mappingInputs.audio = snapshot.mappingInputs.audio
                     next.audio = snapshot.audio; next.audioStatus = snapshot.audioStatus
                     next.systemStatus = snapshot.systemStatus; next.systemError = snapshot.systemError
                 } else {
                     if case .failed = value.audioStatus { wantsAudio = false }
                     if usesSystemAudio, value.systemStatus.isTerminal { wantsAudio = false }
                 }
+                if value.midiRevision < midiRevision {
+                    next.mappingInputs.notes = snapshot.mappingInputs.notes
+                    next.mappingInputs.controllers = snapshot.mappingInputs.controllers
+                    next.mappingInputs.midiAvailable = snapshot.mappingInputs.midiAvailable
+                    next.midiEvents = []; next.midiSequence = snapshot.midiSequence
+                    next.lastMIDI = snapshot.lastMIDI; next.heldNotes = snapshot.heldNotes; next.midiStatus = snapshot.midiStatus
+                }
                 snapshot = next
-                if case .failed = value.midiStatus { wantsMIDI = false }
+                if case .failed = next.midiStatus { wantsMIDI = false }
                 try? await Task.sleep(for: .milliseconds(wantsAudio || wantsMIDI ? 67 : 1000))
             }
         }
@@ -115,6 +123,7 @@ import VHSInput
     }
     private func applyAudio() {
         audioRevision += 1
+        snapshot.mappingInputs.audio = [:]
         guard !isolated else { return }
         snapshot.audio = AudioSignals()
         snapshot.audioStatus = wantsAudio ? .waiting : .off
@@ -128,6 +137,9 @@ import VHSInput
     }
     private func applyMIDI() {
         midiRevision += 1
+        snapshot.mappingInputs.notes = []; snapshot.mappingInputs.controllers = [:]; snapshot.mappingInputs.midiAvailable = false
+        snapshot.midiEvents = []; snapshot.lastMIDI = nil; snapshot.heldNotes = 0
+        snapshot.midiStatus = wantsMIDI ? .waiting : .off
         guard !isolated else { return }
         let revision = midiRevision, id = midiID, channel = midiChannel, enabled = wantsMIDI
         Task { try? await service.configureMIDI(id: id, channel: channel, enabled: enabled, revision: revision) }

@@ -27,15 +27,17 @@ public func runPluginProbe(folder: String) async throws {
     window.center(); window.makeKeyAndOrderFront(nil); NSApp.activate()
     vhs_bridge_set(a, 0, 0.7); first.tick(); second.tick()
     try check(first.red == 0.7 && second.red == 0.24, "base values stay independent")
-    first.learning = true
+    var initialLearn = VisualMapping(target:.init(node:ShaderGraph.sourceID,key:ParameterID.solidBlue.rawValue))
+    initialLearn.channel = 3
+    first.mappingEditor.learn(initialLearn)
     var event = VHSInput(); event.kind = 3; event.channel = 2; event.number = 74; event.value = 0.5; event.offset = 17
     vhs_bridge_push(a, event); first.tick()
-    try check(first.candidate?.number == 74 && first.candidate?.channel == 2 && first.candidate?.offset == 17 && !first.learning, "learn detects channel/controller/offset")
-    first.learnedChannel = 2; first.learnedController = 74; first.candidate = nil
+    try check(first.mappingEditor.candidate?.number == 74 && first.mappingEditor.candidate?.channel == 3 && !first.mappingEditor.waiting, "shared learn detects host channel/controller")
+    first.mappingEditor.cancel()
     event.value = 0.25; vhs_bridge_push(a, event)
     var block = VHSInput(); block.kind = 0; block.value = 0.1; block.tempo = 139; block.flags = 7
     vhs_bridge_push(a, block); first.tick()
-    try check(first.learnedValue == 0.25 && first.tempo == 139 && first.playing, "learned CC and host context reach display timer")
+    try check(first.tempo == 139 && first.playing, "host context reaches display timer")
     event.kind = 1; event.channel = 0; event.number = 60; event.value = 0.75
     vhs_bridge_push(a, event); first.tick()
     try check(first.velocity == 0.75 && second.velocity == 0, "held notes stay independent")
@@ -50,7 +52,7 @@ public func runPluginProbe(folder: String) async throws {
     window.contentView = nil
     try check(first.output?.isVisible == true, "detaching editor preserves output")
     window.contentView = NSHostingView(rootView: PluginEditor(runtime: second))
-    first.learning = false; first.candidate = nil; first.learnedController = nil; first.learnedChannel = nil
+    first.mappingEditor.cancel()
     vhs_bridge_set(a, 0, 0.24); first.tick()
     first.output?.close(); second.output?.close()
     let aColor = GraphNode(kind:.color), aImage = GraphNode(kind:.imageFromColor), final = GraphNode(kind:.output)
@@ -96,6 +98,31 @@ public func runPluginProbe(folder: String) async throws {
             else { GridProbes.shared.write(to:path,window:window.contentLayoutRect.size) }
         }
     }
+    // Phase 7 uses the same host-fed discovery events and embedded document envelope.
+    first.sendGraph(.setGraph(SceneSnapshot().graph))
+    var mapping = VisualMapping(target:.init(node:ShaderGraph.sourceID,key:ParameterID.solidRed.rawValue))
+    mapping.source = .cc; mapping.number = 74; mapping.channel = 3; mapping.upper = 0.25
+    first.sendGraph(.setMappings([mapping]))
+    first.mappingEditor.learn(mapping)
+    event.kind = 3; event.channel = 2; event.number = 74; event.value = 0.5
+    vhs_bridge_push(a,block); vhs_bridge_push(a,event); first.tick()
+    try check(first.mappingEditor.candidate?.number == 74 && first.mappingEditor.candidate?.channel == 3,"persisted learner receives host discovery CC")
+    first.mappingEditor.cancel()
+    let baseDocument = first.session.document, baseHistory = first.session.history.past
+    for _ in 0..<10 { vhs_bridge_push(a,block); first.tick() }
+    try check(first.session.document == baseDocument && first.session.history.past == baseHistory,"host live mappings preserve document and undo history")
+    try check(abs(first.render.frame.scene.number(.solidRed)-(first.session.history.scene.number(.solidRed)+0.125)) < 1e-12,"host CC modulates shared frame without prototype bindings")
+    first.mappingEditor.learn(mapping)
+    event.kind = 1; event.number = 60; event.value = 0.8
+    vhs_bridge_push(a,event); first.tick()
+    try check(first.mappingEditor.candidate?.source == .gate && first.mappingEditor.candidate?.number == 60,"persisted learner receives host notes")
+    first.mappingEditor.cancel()
+    let mappingCount = vhs_bridge_copy_document(a,&bytes,UInt32(bytes.count),&origin,&revision)
+    _ = bytes.withUnsafeBufferPointer { vhs_bridge_store_document(b,$0.baseAddress,UInt32(mappingCount),1) }
+    second.tick()
+    try check(second.session.history.scene.mappings == [mapping] && second.output == nil,"host state recalls mapping definitions without live values/output")
+    first.undoGraph(); try check(first.session.history.scene.mappings.isEmpty,"host-editor mapping undo uses existing scene history")
+    first.redoGraph(); try check(first.session.history.scene.mappings == [mapping],"host-editor mapping redo restores stable target")
     first.showOutput(); first.stop()
     try check(first.output == nil && first.timer == nil, "instance teardown closes output and stops timer")
 }
@@ -107,7 +134,9 @@ public func writePluginGraphFixture(to path: String) throws {
     let graph = ShaderGraph(nodes:[a,b,amount,mix,output],edges:[
         .init(from:.init(a.id),to:.init(mix.id,"a")),.init(from:.init(b.id),to:.init(mix.id,"b")),
         .init(from:.init(amount.id),to:.init(mix.id,"amount")),.init(from:.init(mix.id),to:.init(output.id,"image"))])
-    let document = ProjectDocument(name:"Graph Host Fixture",scene:SceneSnapshot(source:.noise,seed:678).withGraph(graph),
+    var mapping = VisualMapping(target:.init(node:amount.id,key:"value"))
+    mapping.source = .cc; mapping.channel = 3; mapping.number = 74
+    let document = ProjectDocument(name:"Graph Host Fixture",scene:SceneSnapshot(source:.noise,seed:678).withGraph(graph).withMappings([mapping]),
                                  graphLayout:.init(positions:[mix.id.uuidString:.init(x:480,y:240)],pan:.init(x:24,y:48),zoom:0.75))
     try ProjectCodec.encode(document).write(to:URL(fileURLWithPath:path),options:.atomic)
 }

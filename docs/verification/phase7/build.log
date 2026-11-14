@@ -1,0 +1,11 @@
+Building for debugging...
+[Computing dependencies]
+[2 / 13] VHSGraphUI
+[4 / 15] VHSGraphUI
+[7 / 13] VHSGraphUI
+[12 / 13] VHSPluginUI-product
+[15 / 15] VHSPluginUI-product
+Build complete! (3.82 secs.)
+Another instance of SwiftPM (PID: 91704) is already running using '/Users/kike/Code/vhs/.build', waiting until that process has finished execution...wrote Resources/Assets.car and Resources/AppIcon.icns
+/Users/kike/Code/vhs/build/VHS.app: replacing existing signature
+Built /Users/kike/Code/vhs/build/VHS.app
