@@ -11,27 +11,35 @@ enum Verification {
         guard !started else { return }
         started = true
         let env = ProcessInfo.processInfo.environment
-        guard env["APP_SNAPSHOT"] != nil || CommandLine.arguments.contains("--selftest") else { return }
+        guard env["APP_SNAPSHOT"] != nil || CommandLine.arguments.contains("--selftest") || CommandLine.arguments.contains("--input-selftest") else { return }
         let watchdog = DispatchWorkItem { @Sendable in
             FileHandle.standardError.write(Data("FAIL verification timed out\n".utf8))
             exit(1)
         }
-        DispatchQueue.global().asyncAfter(deadline: .now() + 120, execute: watchdog)
+        let timeout = min(600, max(120, Double(env["APP_VERIFICATION_TIMEOUT"] ?? "") ?? 120))
+        DispatchQueue.global().asyncAfter(deadline: .now() + timeout, execute: watchdog)
         defer { watchdog.cancel() }
         do {
             try await Task.sleep(for: .seconds(1))
+            if CommandLine.arguments.contains("--input-selftest") {
+                try InputsVerification.run(model)
+                log("INPUT SELFTEST done")
+            }
             if CommandLine.arguments.contains("--selftest") {
                 try await selftest(model)
                 try await ProjectVerification.run(model)
                 try await SourceVerification.run(model)
                 try await EffectVerification.run(model)
                 try await GraphVerification.run(model)
+                try InputsVerification.run(model)
                 log("SELFTEST done")
             }
             if let directory = env["APP_SNAPSHOT"] {
                 try await snapshots(model, directory: directory)
             }
-            NSApp.terminate(nil)
+            // Leave the current MainActor task before AppKit enters terminateLater's
+            // nested loop, so asynchronous input teardown can acquire MainActor.
+            NSApp.perform(#selector(NSApplication.terminate(_:)), with: nil, afterDelay: 0)
         } catch {
             FileHandle.standardError.write(Data("FAIL \(error)\n".utf8))
             exit(1)
@@ -143,6 +151,10 @@ enum Verification {
         try FileManager.default.createDirectory(atPath: directory, withIntermediateDirectories: true)
         guard let control = NSApp.windows.first(where: { $0.identifier?.rawValue == "vhs-control" }) else {
             throw Failure(description: "control window missing")
+        }
+        if let pages = ProcessInfo.processInfo.environment["APP_SNAPSHOT_PAGES"], ["inputs", "system-audio"].contains(pages) {
+            try await InputsVerification.snapshots(model, control: control, directory: directory, systemAudio: pages == "system-audio")
+            log("SNAPSHOT done \(directory)"); return
         }
         if ProcessInfo.processInfo.environment["APP_SNAPSHOT_PAGES"] == "signal" {
             try await SignalSnapshots.run(model, control: control, directory: directory)

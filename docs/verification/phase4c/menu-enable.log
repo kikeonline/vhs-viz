@@ -1,0 +1,4 @@
+baseline undo=false redo=true
+slider edit undo=true redo=false
+undo undo=false redo=true
+redo undo=true redo=false

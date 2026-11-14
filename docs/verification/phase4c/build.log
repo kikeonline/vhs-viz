@@ -1,0 +1,11 @@
+Building for debugging...
+[Computing dependencies]
+[1 / 10] VHSPluginUI
+[2 / 5] VHS-product
+[5 / 8] VHS-product
+[6 / 8] VHS-product
+[8 / 10] VHS-product
+Build complete! (3.48 secs.)
+wrote Resources/Assets.car and Resources/AppIcon.icns
+/Users/kike/Code/vhs/build/VHS.app: replacing existing signature
+Built /Users/kike/Code/vhs/build/VHS.app

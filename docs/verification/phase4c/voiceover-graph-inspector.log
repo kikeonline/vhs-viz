@@ -1,0 +1,19 @@
+In scroll area 23 items Solid
+Connections
+Orca, Bell in Phases, VHS · Attention requested group To open the notifications menu, press Control-Option-N.
+Base value Red Solid input Red, scalar pop up button
+Green
+Base value Green Solid input Green, scalar pop up button
+Blue
+Base value Blue Solid input Blue, scalar pop up button
+Red
+0.24 Red text
+0.24  Red red · stable target 00000000-0000-4000-8000-000000000001 / source.solid.red
+Green
+0.08 Green text
+0.08  Green green · stable target 00000000-0000-4000-8000-000000000001 / source.solid.green
+Blue
+0.62 Blue text
+0.62  Blue blue · stable target 00000000-0000-4000-8000-000000000001 / source.solid.blue
+Canvas position
+0

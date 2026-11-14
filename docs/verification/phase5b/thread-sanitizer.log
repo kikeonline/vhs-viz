@@ -1,0 +1,34 @@
+Building for debugging...
+[Provisioning 1 / 22]
+[1 / 4]
+[2 / 5] VHSDevices
+[7 / 10] VHSDevices
+[10 / 14] VHSDevicesTests-product
+[12 / 16] VHSDevicesTests-product
+[17 / 19] VHSDevicesTests-product
+[20 / 24] VHS-product
+[22 / 26] VHS-product
+[25 / 26] VHS-product
+Build complete! (2.27 secs.)
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite DeviceTests started.
+◇ Test selectionSurvivesEndpointChangesWithoutSubstitution() started.
+✔ Test selectionSurvivesEndpointChangesWithoutSubstitution() passed after 0.001 seconds.
+◇ Test channelChoicesRejectMissingAndDuplicateChannels() started.
+✔ Test channelChoicesRejectMissingAndDuplicateChannels() passed after 0.001 seconds.
+◇ Test nativeAudioEnqueueMatchesSharedPlanarContractAndRejectsBadTime() started.
+✔ Test nativeAudioEnqueueMatchesSharedPlanarContractAndRejectsBadTime() passed after 0.015 seconds.
+◇ Test invalidNativeStartsFailWithoutOpeningHardware() started.
+✔ Test invalidNativeStartsFailWithoutOpeningHardware() passed after 0.001 seconds.
+◇ Test serviceStartsOffAndUnavailableSourcesStayOffAfterStop() started.
+✔ Test serviceStartsOffAndUnavailableSourcesStayOffAfterStop() passed after 0.596 seconds.
+◇ Test realCoreMIDIVirtualSourceDeliversAndStopsThroughService() started.
+✔ Test realCoreMIDIVirtualSourceDeliversAndStopsThroughService() passed after 0.048 seconds.
+◇ Test staleConfigurationCannotRestartStoppedCapture() started.
+✔ Test staleConfigurationCannotRestartStoppedCapture() passed after 0.005 seconds.
+◇ Test virtualMIDIUnplugAndReconnectRetainsStableIdentityAndClearsNotes() started.
+✔ Test virtualMIDIUnplugAndReconnectRetainsStableIdentityAndClearsNotes() passed after 0.008 seconds.
+✔ Suite DeviceTests passed after 0.676 seconds.
+✔ Test run with 8 tests in 1 suite passed after 0.676 seconds.

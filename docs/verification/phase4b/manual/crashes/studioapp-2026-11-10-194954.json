@@ -1,0 +1,105 @@
+{
+  "procName": "studioapp",
+  "pid": 87471,
+  "captureTime": "2026-11-10 19:49:51.8774 -0500",
+  "procLaunch": "2026-11-10 19:47:36.2196 -0500",
+  "exception": {
+    "codes": "0x0000000000000001, 0x0000000127f754f0",
+    "rawCodes": [
+      1,
+      4965487856
+    ],
+    "type": "EXC_BAD_ACCESS",
+    "signal": "SIGSEGV",
+    "subtype": "KERN_INVALID_ADDRESS at 0x0000000127f754f0"
+  },
+  "termination": {
+    "flags": 0,
+    "code": 11,
+    "namespace": "SIGNAL",
+    "indicator": "Segmentation fault: 11",
+    "byProc": "exc handler",
+    "byPid": 87471
+  },
+  "faultingThread": 0,
+  "vhsImagesInCrash": [
+    "libVHSPluginUI.dylib"
+  ],
+  "faultingFrames": [
+    {
+      "image": null,
+      "symbol": null,
+      "imageOffset": 4965487856
+    },
+    {
+      "image": "libdispatch.dylib",
+      "symbol": "_dispatch_call_block_and_release",
+      "imageOffset": 6572
+    },
+    {
+      "image": "libdispatch.dylib",
+      "symbol": "_dispatch_client_callout",
+      "imageOffset": 108224
+    },
+    {
+      "image": "libdispatch.dylib",
+      "symbol": "_dispatch_main_queue_drain.cold.6",
+      "imageOffset": 229924
+    },
+    {
+      "image": "libdispatch.dylib",
+      "symbol": "_dispatch_main_queue_drain",
+      "imageOffset": 65724
+    },
+    {
+      "image": "libdispatch.dylib",
+      "symbol": "_dispatch_main_queue_callback_4CF",
+      "imageOffset": 65532
+    },
+    {
+      "image": "CoreFoundation",
+      "symbol": "__CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__",
+      "imageOffset": 768056
+    },
+    {
+      "image": "CoreFoundation",
+      "symbol": "__CFRunLoopRun",
+      "imageOffset": 517748
+    },
+    {
+      "image": "CoreFoundation",
+      "symbol": "_CFRunLoopRunSpecificWithOptions",
+      "imageOffset": 1399092
+    },
+    {
+      "image": "AppKit",
+      "symbol": "-[NSPersistentUIManager _waitForPendingChangesToFinish]",
+      "imageOffset": 7437160
+    },
+    {
+      "image": "AppKit",
+      "symbol": "-[NSPersistentUIManager discardAllPersistentStateAndClose]",
+      "imageOffset": 3036584
+    },
+    {
+      "image": "AppKit",
+      "symbol": "-[NSApplication _pushPersistentStateTerminationGeneration]",
+      "imageOffset": 2303240
+    },
+    {
+      "image": "AppKit",
+      "symbol": "-[NSApplication terminate:]",
+      "imageOffset": 2301376
+    },
+    {
+      "image": "AppKit",
+      "symbol": "-[NSApplication _terminateFromSender:askIfShouldTerminate:saveWindows:]",
+      "imageOffset": 3471040
+    },
+    {
+      "image": "AppKit",
+      "symbol": "__52-[NSApplication(NSAppleEventHandling) _handleAEQuit]_block_invoke",
+      "imageOffset": 3470680
+    }
+  ]
+}

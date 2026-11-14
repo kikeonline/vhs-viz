@@ -1,0 +1,14 @@
+__TEXT                      13cf60000-13cfc4000    [  400K   352K     0K     0K] r-x/rwx SM=COW          /Applications/Studio One 5.app/Contents/PlugIns/coreaudio.bundle/Contents/MacOS/coreaudio
+__DATA_CONST                13cfc4000-13cfd4000    [   64K    64K    64K     0K] r--/rwx SM=COW          /Applications/Studio One 5.app/Contents/PlugIns/coreaudio.bundle/Contents/MacOS/coreaudio
+__LINKEDIT                  13cfe4000-13cff0000    [   48K    16K     0K     0K] r--/rwx SM=COW          /Applications/Studio One 5.app/Contents/PlugIns/coreaudio.bundle/Contents/MacOS/coreaudio
+__TEXT                     700e028000-700e094000   [  432K   368K     0K     0K] r-x/rwx SM=COW          /Users/kike/Library/Audio/Plug-Ins/VST3/VHS Phase 3A.vst3/Contents/MacOS/VHSPrototype
+__DATA_CONST               700e094000-700e098000   [   16K    16K    16K     0K] r--/rwx SM=COW          /Users/kike/Library/Audio/Plug-Ins/VST3/VHS Phase 3A.vst3/Contents/MacOS/VHSPrototype
+__LINKEDIT                 700e09c000-700e158000   [  752K    16K     0K     0K] r--/rwx SM=COW          /Users/kike/Library/Audio/Plug-Ins/VST3/VHS Phase 3A.vst3/Contents/MacOS/VHSPrototype
+__TEXT                     700e564000-700e6ec000   [ 1568K  1456K     0K     0K] r-x/rwx SM=COW          /Users/kike/Library/Audio/Plug-Ins/VST3/VHS Phase 3A.vst3/Contents/Frameworks/libVHSPluginUI.dylib
+__DATA_CONST               700e6ec000-700e6f4000   [   32K    32K    32K     0K] r--/rwx SM=COW          /Users/kike/Library/Audio/Plug-Ins/VST3/VHS Phase 3A.vst3/Contents/Frameworks/libVHSPluginUI.dylib
+__LINKEDIT                 700e708000-700e97c000   [ 2512K   768K     0K     0K] r--/rwx SM=COW          /Users/kike/Library/Audio/Plug-Ins/VST3/VHS Phase 3A.vst3/Contents/Frameworks/libVHSPluginUI.dylib
+__DATA                      13cfd4000-13cfd8000    [   16K    16K    16K     0K] rw-/rwx SM=COW          /Applications/Studio One 5.app/Contents/PlugIns/coreaudio.bundle/Contents/MacOS/coreaudio
+__DATA                      13cfd8000-13cfe4000    [   48K    48K    48K     0K] rw-/rwx SM=PRV          /Applications/Studio One 5.app/Contents/PlugIns/coreaudio.bundle/Contents/MacOS/coreaudio
+__DATA                     700e098000-700e09c000   [   16K    16K    16K     0K] rw-/rwx SM=COW          /Users/kike/Library/Audio/Plug-Ins/VST3/VHS Phase 3A.vst3/Contents/MacOS/VHSPrototype
+__DATA                     700e6f4000-700e6fc000   [   32K    32K    32K     0K] rw-/rwx SM=COW          /Users/kike/Library/Audio/Plug-Ins/VST3/VHS Phase 3A.vst3/Contents/Frameworks/libVHSPluginUI.dylib
+__DATA                     700e6fc000-700e708000   [   48K    48K    48K     0K] rw-/rwx SM=PRV          /Users/kike/Library/Audio/Plug-Ins/VST3/VHS Phase 3A.vst3/Contents/Frameworks/libVHSPluginUI.dylib

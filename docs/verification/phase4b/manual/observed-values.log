@@ -1,0 +1,103 @@
+slider-drag
+~ 	5 text Edited
+~ 		13 text field Red, Value: 0.83
+~ 		14 slider (settable), Value: 0.8300000000000001, Secondary Actions: increment, decrement
+The focused UI element is 14 slider (settable), Value: 0.8300000000000001, Secondary Actions: increment, decrement.
+slider-undo
+~ 	5 text Not saved
+~ 		13 text field Red, Value: 0.24
+~ 		14 slider (settable), Value: 0.24, Secondary Actions: increment, decrement
+The focused UI element is 14 slider (settable), Value: 0.24, Secondary Actions: increment, decrement.
+number-moved
+	35 text Ready
+	40 text field (settable) Graph seed, Value: 1, Placeholder: Seed
+	46 pop up button, Value: 3. Number
+		120 pop up button, Value: Base value
+		122 text field Value, Value: 0.50
+		123 value · stable target 0b3b8c3f-eacf-45f5-bdab-01fba0dd2949 / value (settable), Value: 0.5, Secondary Actions: increment, decrement
+		127 text field (settable) Node canvas position X, Value: 284, Placeholder: Position X
+		129 text field (settable) Node canvas position Y, Value: 220, Placeholder: Position Y
+				27 radio button Chain, Value: 0
+				28 radio button Nodes, Value: 1
+The focused UI element is 40 text field (settable) Graph seed, Value: 1, Placeholder: Seed.
+wire-rejected
+	35 text Ready
+	40 text field (settable) Graph seed, Value: 1, Placeholder: Seed
+	46 pop up button, Value: 2. Output
+	135 text Node 00000000: Image requires image, received scalar.
+		134 pop up button, Value: Solid · 0000
+		127 text field (settable) Node canvas position X, Value: 264, Placeholder: Position X
+		129 text field (settable) Node canvas position Y, Value: 24, Placeholder: Position Y
+				27 radio button Chain, Value: 0
+				28 radio button Nodes, Value: 1
+The focused UI element is 40 text field (settable) Graph seed, Value: 1, Placeholder: Seed.
+wire-valid
+	40 text field (settable) Graph seed, Value: 1, Placeholder: Seed
+	46 pop up button, Value: 1. Solid
+		137 pop up button, Value: Number · 0B3B
+		139 pop up button, Value: Base value
+		141 pop up button, Value: Base value
+		143 text field (disabled) Red, Value: 0.24
+		144 red · stable target 00000000-0000-4000-8000-000000000001 / source.solid.red (disabled, settable), Value: 0.24, Secondary Actions: increment, decrement
+		147 text field Green, Value: 0.08
+		148 green · stable target 00000000-0000-4000-8000-000000000001 / source.solid.green (settable), Value: 0.08, Secondary Actions: increment, decrement
+		151 text field Blue, Value: 0.62
+		152 blue · stable target 00000000-0000-4000-8000-000000000001 / source.solid.blue (settable), Value: 0.62, Secondary Actions: increment, decrement
+		127 text field (settable) Node canvas position X, Value: 24, Placeholder: Position X
+		129 text field (settable) Node canvas position Y, Value: 24, Placeholder: Position Y
+				27 radio button Chain, Value: 0
+				28 radio button Nodes, Value: 1
+The focused UI element is 40 text field (settable) Graph seed, Value: 1, Placeholder: Seed.
+foreground-wire-drag
+	2 text Ready
+	8 text field (settable) Graph seed, Value: 1, Placeholder: Seed
+	14 pop up button, Value: 1. Solid
+		30 pop up button, Value: Number · 0B3B
+		32 pop up button, Value: Number · 0B3B
+		34 pop up button, Value: Base value
+		36 text field (disabled) Red, Value: 0.24
+		37 red · stable target 00000000-0000-4000-8000-000000000001 / source.solid.red (disabled, settable), Value: 0.24, Secondary Actions: increment, decrement
+		40 text field (disabled) Green, Value: 0.08
+		41 green · stable target 00000000-0000-4000-8000-000000000001 / source.solid.green (disabled, settable), Value: 0.08, Secondary Actions: increment, decrement
+		44 text field Blue, Value: 0.62
+		45 blue · stable target 00000000-0000-4000-8000-000000000001 / source.solid.blue (settable), Value: 0.62, Secondary Actions: increment, decrement
+		49 text field (settable) Node canvas position X, Value: 24, Placeholder: Position X
+		51 text field (settable) Node canvas position Y, Value: 24, Placeholder: Position Y
+				62 radio button Chain, Value: 0
+				63 radio button Nodes, Value: 1
+The focused UI element is 8 text field (settable) Graph seed, Value: 1, Placeholder: Seed.
+reset-result
+	3 pop up button, Value: Solid
+	5 text Not saved
+		13 text field Red, Value: 0.24
+		14 slider (settable), Value: 0.24, Secondary Actions: increment, decrement
+		17 text field Green, Value: 0.08
+		18 slider (settable), Value: 0.08, Secondary Actions: increment, decrement
+		21 text field Blue, Value: 0.62
+		22 slider (settable), Value: 0.62, Secondary Actions: increment, decrement
+				27 radio button Chain, Value: 1
+				28 radio button Nodes, Value: 0
+The focused UI element is 0 standard window Untitled.
+host-seed-focus
+No UI element is currently focused.
+host-seed-edit
+	23 text Ready
+	29 text field (settable) Graph seed, Value: 142, Placeholder: Seed
+	35 pop up button Selected node, Value: Choose a Node
+The focused UI element is 29 text field (settable) Graph seed, Value: 142, Placeholder: Seed.
+host-undo
+~ 	29 text field (settable) Graph seed, Value: 14, Placeholder: Seed
+The focused UI element is 29 text field (settable) Graph seed, Value: 14, Placeholder: Seed.
+host-redo
+~ 	29 text field (settable) Graph seed, Value: 142, Placeholder: Seed
+The focused UI element is 29 text field (settable) Graph seed, Value: 142, Placeholder: Seed.
+host-recalled-graph
+	23 text Ready
+	29 text field (settable) Graph seed, Value: 142, Placeholder: Seed
+	35 pop up button Selected node, Value: Choose a Node
+The focused UI element is 0 window VHS-phase3a-probe · Inserts · 2 - VHS Phase 3A 2.
+host-first-graph
+	69 text Ready
+	75 text field (settable) Graph seed, Value: 1, Placeholder: Seed
+	81 pop up button Selected node, Value: Choose a Node
+The focused UI element is 0 window VHS-phase3a-probe · Inserts · 1 - VHS Phase 3A.

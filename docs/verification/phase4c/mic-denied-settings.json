@@ -1,0 +1,46 @@
+{
+  "id": "b485f01d-f3c6-4cae-96f3-b1b0347620db",
+  "ok": true,
+  "result": {
+    "snapshot": {
+      "coordinateSpace": "window",
+      "app": {
+        "name": "System Settings",
+        "bundleId": "com.apple.systempreferences",
+        "pid": 1278
+      },
+      "id": "5B72CFAA-8530-49D3-9E20-AFFB17F49C9C",
+      "window": {
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "x": 339,
+        "title": "Microphone",
+        "y": 100,
+        "width": 740,
+        "isOffscreen": false,
+        "height": 799,
+        "id": 77,
+        "screenIndex": 0
+      },
+      "treeText": "App=com.apple.systempreferences (pid 1278)\nWindow: \"Microphone\", App: System Settings.\n\n0 standard window Microphone\n\t1 split group\n\t\t2 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t3 list Sidebar\n\t\t\t\t4 outline row\n\t\t\t\t\t5 cell\n\t\t\t\t6 outline row\n\t\t\t\t\t7 cell\n\t\t\t\t\t\t8 button\n\t\t\t\t9 outline row\n\t\t\t\t\t10 cell\n\t\t\t\t\t\t11 button\n\t\t\t\t12 outline row\n\t\t\t\t\t13 cell\n\t\t\t\t14 outline row\n\t\t\t\t\t15 cell\n\t\t\t\t\t\t16 button, Value: 1\n\t\t\t\t17 outline row\n\t\t\t\t\t18 cell\n\t\t\t\t\t\t19 button\n\t\t\t\t20 outline row\n\t\t\t\t\t21 cell\n\t\t\t\t22 outline row\n\t\t\t\t\t23 cell\n\t\t\t\t\t\t24 button\n\t\t\t\t25 outline row\n\t\t\t\t\t26 cell\n\t\t\t\t\t\t27 button\n\t\t\t\t28 outline row\n\t\t\t\t\t29 cell\n\t\t\t\t\t\t30 button\n\t\t\t\t31 outline row\n\t\t\t\t\t32 cell\n\t\t\t\t\t\t33 button\n\t\t\t\t34 outline row\n\t\t\t\t\t35 cell\n\t\t\t\t\t\t36 button\n\t\t\t\t37 outline row\n\t\t\t\t\t38 cell\n\t\t\t\t39 outline row\n\t\t\t\t\t40 cell\n\t\t\t\t\t\t41 button\n\t\t\t\t42 outline row\n\t\t\t\t\t43 cell\n\t\t\t\t\t\t44 button\n\t\t\t\t45 outline row\n\t\t\t\t\t46 cell\n\t\t\t\t\t\t47 button\n\t\t\t\t48 outline row\n\t\t\t\t\t49 cell\n\t\t\t\t\t\t50 button\n\t\t\t\t51 outline row\n\t\t\t\t\t52 cell\n\t\t\t\t\t\t53 button\n\t\t\t\t54 outline row\n\t\t\t\t\t55 cell\n\t\t\t\t\t\t56 button\n\t\t\t\t57 outline row\n\t\t\t\t\t58 cell\n\t\t\t\t\t\t59 button\n\t\t\t60 scroll bar 0\n\t\t\t\t61 value indicator 0\n\t\t\t\t62 increment arrow button\n\t\t\t\t63 decrement arrow button\n\t\t\t\t64 increment page button\n\t\t\t\t65 decrement page button\n\t\t66 search text field (settable) Placeholder: Search\n\t\t\t67 button Search\n\t\t68 splitter, Value: 231.5\n\t\t69 scroll area, Secondary Actions: scroll up, scroll down, cancel\n\t\t\t70 text Allow the applications below to access your microphone.\n\t\t\t71 text Ableton Live 12 Lite\n\t\t\t72 switch, Value: 1\n\t\t\t73 text Archetype Gojira X\n\t\t\t74 switch, Value: 1\n\t\t\t75 text Archetype Rabea X\n\t\t\t76 switch, Value: 1\n\t\t\t77 text Google Chrome\n\t\t\t78 switch, Value: 1\n\t\t\t79 text Orca\n\t\t\t80 switch, Value: 1\n\t\t\t81 text Parallax X\n\t\t\t82 switch, Value: 1\n\t\t\t83 text Studio One 5\n\t\t\t84 switch, Value: 1\n\t\t\t85 text VHS\n\t\t\t86 switch, Value: 0\n\t87 toolbar\n\t\t88 container, Secondary Actions: name: move previous  target:0x0  selector:(null), name: remove from toolbar  target:0x0  selector:(null)\n\t\t\t89 button Go Back\n\t\t\t90 menu button (disabled) Go Forward\n\t91 close button\n\t92 zoom button\n\t93 minimize button\n\t94 text Microphone\n\nThe focused UI element is 3 list Sidebar.",
+      "elementCount": 95,
+      "truncation": {
+        "maxDepthReached": false,
+        "truncated": false,
+        "maxNodes": 1200,
+        "maxDepth": 64
+      },
+      "focusedElementId": 3
+    },
+    "screenshot": null,
+    "screenshotStatus": {
+      "state": "skipped",
+      "reason": "no_screenshot_flag"
+    }
+  },
+  "_meta": {
+    "runtimeId": "dec57975-cfa4-4f4e-8311-3aa67bfe2583"
+  }
+}

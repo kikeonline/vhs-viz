@@ -13,6 +13,9 @@
 <key>LSMinimumSystemVersion</key><string>26.0</string>
 <key>LSApplicationCategoryType</key><string>public.app-category.graphics-design</string>
 <key>NSHighResolutionCapable</key><true/>
+<key>NSMicrophoneUsageDescription</key><string>VHS analyzes your selected audio input to show live levels and frequency bands. Audio is not recorded.</string>
+<key>NSScreenCaptureUsageDescription</key><string>VHS uses content you select in the macOS sharing picker to analyze system audio. Screen images are not saved.</string>
+<key>NSAudioCaptureUsageDescription</key><string>VHS analyzes audio from the apps or display you select to show live levels and frequency bands. Audio is not saved.</string>
 <key>CFBundleDocumentTypes</key><array><dict>
 <key>CFBundleTypeName</key><string>VHS Project</string>
 <key>CFBundleTypeRole</key><string>Editor</string>

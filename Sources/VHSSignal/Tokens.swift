@@ -1,6 +1,8 @@
 import SwiftUI
 
 public enum Layout {
+    public static let inputWidth: CGFloat = 400
+    public static let inputMaxHeight: CGFloat = 560
     public static let graphSeedWidth: CGFloat = 72
     public static let graphMinWidth = SignalSpecification.number("metric", "graphMinWidth")
     public static let graphMinHeight = SignalSpecification.number("metric", "graphMinHeight")

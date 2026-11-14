@@ -1,0 +1,1 @@
+Four Studio One quit-time crash summaries from November 10. Two pre-quit memory maps locate the failing PC in the host coreaudio module at offset 0x94f0. One mapped session had no VHS image loaded. Raw reports remain in ~/Library/Logs/DiagnosticReports. No newer Studio One report was present during the November 11 follow-up.

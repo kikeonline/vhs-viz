@@ -1,0 +1,63 @@
+{
+  "id": "c04455b6-9040-4e6e-b14f-14dcf528968f",
+  "ok": true,
+  "result": {
+    "screenshotStatus": {
+      "reason": "no_screenshot_flag",
+      "state": "skipped"
+    },
+    "action": {
+      "delivery": "background",
+      "targetWindowId": 77,
+      "path": "accessibility",
+      "fallbackReason": null,
+      "actionName": "AXPress",
+      "verification": {
+        "state": "unverified",
+        "reason": "accessibility_action_unasserted"
+      }
+    },
+    "snapshot": {
+      "coordinateSpace": "window",
+      "app": {
+        "bundleId": "com.apple.systempreferences",
+        "name": "System Settings",
+        "pid": 1278
+      },
+      "id": "FDBBC2A0-89B0-48D1-9CC1-50529ADC1A65",
+      "window": {
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "x": 339,
+        "title": "Motion",
+        "y": 100,
+        "width": 740,
+        "isOffscreen": false,
+        "height": 799,
+        "id": 77,
+        "screenIndex": 0
+      },
+      "treeText": "App=com.apple.systempreferences (pid 1278)\nWindow: \"Motion\", App: System Settings.\n\nChanges since the previous snapshot (~ changed, - removed). Unchanged elements are omitted and keep their indexes.\n~ \t\t\t170 switch, Value: 1\n\nThe focused UI element is 66 search text field (settable), Value: Reduce motion, Placeholder: Search.",
+      "elementCount": 36,
+      "truncation": {
+        "maxDepthReached": false,
+        "truncated": false,
+        "maxNodes": 1200,
+        "maxDepth": 64
+      },
+      "focusedElementId": 66,
+      "treeDiff": {
+        "baseSnapshotId": "C22C396B-58A2-4AF8-8E5B-4C7666735F08",
+        "changed": 1,
+        "added": 0,
+        "removed": 0
+      }
+    },
+    "screenshot": null
+  },
+  "_meta": {
+    "runtimeId": "dec57975-cfa4-4f4e-8311-3aa67bfe2583"
+  }
+}

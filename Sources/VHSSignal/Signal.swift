@@ -26,6 +26,7 @@ public enum Ink {
         })
     }
     public static var canvas: Color { color("canvas") }
+    public static var warning: Color { color("warning") }
     public static var surface: Color { color("surface") }
     public static var raised: Color { color("raised") }
     public static var hover: Color { color("hover") }

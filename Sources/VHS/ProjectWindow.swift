@@ -102,8 +102,13 @@ final class ProjectAppDelegate: NSObject, NSApplicationDelegate {
         Task { await model.files.openProject(url) }
     }
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        guard let model, model.isDirty || model.files.isBusy else { return .terminateNow }
-        Task { sender.reply(toApplicationShouldTerminate: await model.files.prepareToLeave()) }
+        guard let model else { return .terminateNow }
+        Task {
+            var mayQuit = true
+            if model.isDirty || model.files.isBusy { mayQuit = await model.files.prepareToLeave() }
+            if mayQuit { await model.inputs.shutdown() }
+            sender.reply(toApplicationShouldTerminate: mayQuit)
+        }
         return .terminateLater
     }
 }

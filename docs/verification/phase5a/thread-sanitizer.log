@@ -1,0 +1,70 @@
+Building for debugging...
+[2 / 5] VHSInput
+[9 / 12] VHSInput
+[12 / 16] VHSInputTests-product
+[14 / 18] VHSInputTests-product
+[19 / 21] VHSInputTests-product
+Build complete! (1.32 secs.)
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Test separatedFrequencyBands(_:) started.
+◇ Test allNotesOffAndControllerResetAreChannelScoped() started.
+◇ Test invalidSamplesClippingAndDCStayFinite() started.
+◇ Test midiRecoveryKeepsOnlyPacketsAfterLossEpoch() started.
+◇ Test formatTimelineAndDisconnectResetWarmup() started.
+◇ Test midiBurstQueueWrapAndInstanceIsolation() started.
+◇ Test calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test stereoDoesNotCancelAndLayoutsAgree() started.
+◇ Test queueRejectsInvalidMetadataWithoutReadingBuffers() started.
+◇ Test midiOverflowDisconnectAndInvalidPacketsCannotStickNotes() started.
+◇ Test impulsesAndOnsetRecoverToSilence() started.
+◇ Test silenceWarmupAndWindowTiming() started.
+◇ Test independentAudioInstancesAndConcurrentQueueWrap() started.
+◇ Test wholeBlockOverflowDiscardsStaleAudioAndRecovers() started.
+◇ Test ignoredSystemMessagesAndMalformedStreamsDoNotMakeNotes() started.
+◇ Test channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument fixture → (93.75, 0) to separatedFrequencyBands(_:) started.
+◇ Test runningStatusPacketSplitAndTimestampOwnership() started.
+◇ Test case passing 1 argument fixture → (6000.0, 2) to separatedFrequencyBands(_:) started.
+◇ Test case passing 1 argument fixture → (750.0, 1) to separatedFrequencyBands(_:) started.
+◇ Test case passing 1 argument rate → 8000.0 to calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test case passing 1 argument rate → 22050.0 to calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test case passing 1 argument rate → 44100.0 to calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test case passing 1 argument rate → 48000.0 to calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test case passing 1 argument rate → 96000.0 to calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test case passing 1 argument rate → 192000.0 to calibratedTonesAdaptToSampleRate(_:) started.
+◇ Test case passing 1 argument channel → 1 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 2 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 3 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 4 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 5 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 6 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 7 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 8 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 9 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 10 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 11 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 12 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 13 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 14 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 15 to channelsVelocityAndControllerNormalization(_:) started.
+◇ Test case passing 1 argument channel → 16 to channelsVelocityAndControllerNormalization(_:) started.
+✔ Test queueRejectsInvalidMetadataWithoutReadingBuffers() passed after 0.123 seconds.
+✔ Test midiRecoveryKeepsOnlyPacketsAfterLossEpoch() passed after 0.123 seconds.
+✔ Test allNotesOffAndControllerResetAreChannelScoped() passed after 0.123 seconds.
+✔ Test midiOverflowDisconnectAndInvalidPacketsCannotStickNotes() passed after 0.123 seconds.
+✔ Test silenceWarmupAndWindowTiming() passed after 0.123 seconds.
+✔ Test formatTimelineAndDisconnectResetWarmup() passed after 0.123 seconds.
+✔ Test ignoredSystemMessagesAndMalformedStreamsDoNotMakeNotes() passed after 0.123 seconds.
+✔ Test wholeBlockOverflowDiscardsStaleAudioAndRecovers() passed after 0.123 seconds.
+✔ Test runningStatusPacketSplitAndTimestampOwnership() passed after 0.123 seconds.
+✔ Test separatedFrequencyBands(_:) with 3 test cases passed after 0.124 seconds.
+✔ Test channelsVelocityAndControllerNormalization(_:) with 16 test cases passed after 0.124 seconds.
+✔ Test invalidSamplesClippingAndDCStayFinite() passed after 0.170 seconds.
+✔ Test midiBurstQueueWrapAndInstanceIsolation() passed after 0.178 seconds.
+✔ Test independentAudioInstancesAndConcurrentQueueWrap() passed after 0.188 seconds.
+✔ Test impulsesAndOnsetRecoverToSilence() passed after 0.201 seconds.
+✔ Test calibratedTonesAdaptToSampleRate(_:) with 6 test cases passed after 0.323 seconds.
+✔ Test stereoDoesNotCancelAndLayoutsAgree() passed after 0.404 seconds.
+✔ Test run with 17 tests in 0 suites passed after 0.404 seconds.

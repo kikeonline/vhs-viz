@@ -35,6 +35,7 @@ final class MenuState: ObservableObject {
     @ObservationIgnored lazy var output = OutputWindowController(model: self)
     var scene: SceneSnapshot { history.scene }
     var showsGraph = false
+    let inputs = StandaloneInputs()
     let graphEditor = GraphEditorState()
     var graphBuildMessage: String { renderSession?.builds.status.message ?? "Renderer unavailable" }
     var graphLayout: GraphLayout { session.graphLayout }
@@ -63,6 +64,7 @@ final class MenuState: ObservableObject {
     }
     func start() {
         guard timer == nil else { return }
+        inputs.startPolling()
         refreshMenu()
         timer = Timer.scheduledTimer(withTimeInterval: 1.0 / 60, repeats: true) { @Sendable [weak self] _ in
             MainActor.assumeIsolated { self?.tick() }

@@ -1,0 +1,46 @@
+{
+  "id": "25b8ca8c-9c45-46bd-8c32-dee0992308d9",
+  "ok": true,
+  "result": {
+    "screenshotStatus": {
+      "reason": "no_screenshot_flag",
+      "state": "skipped"
+    },
+    "snapshot": {
+      "coordinateSpace": "window",
+      "app": {
+        "name": "VHS",
+        "bundleId": "com.kike.vhs",
+        "pid": 57186
+      },
+      "id": "CE0F6E93-D2CC-48CF-B11C-63477AFF1918",
+      "window": {
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "x": 0,
+        "title": "Untitled",
+        "y": 33,
+        "width": 1440,
+        "isOffscreen": false,
+        "height": 900,
+        "id": 834,
+        "screenIndex": 0
+      },
+      "treeText": "App=com.kike.vhs (pid 57186)\nWindow: \"Untitled\", App: VHS.\n\n0 standard window Untitled\n\t1 text Live Preview\n\t2 text Source\n\t3 pop up button, Value: Solid\n\t4 text Solid\n\t5 text Not saved\n\t6 text Effects\n\t7 text 0/16\n\t8 button\n\t9 menu button Add Effect\n\t10 text No effects yet\n\t11 scroll area, Secondary Actions: scroll up, scroll down\n\t\t12 text Red\n\t\t13 text field Red, Value: 0.24\n\t\t14 text Invalid Red\n\t\t15 slider (settable), Value: 0.24, Secondary Actions: increment, decrement\n\t\t\t16 value indicator\n\t\t17 text Green\n\t\t18 text field Green, Value: 0.08\n\t\t19 slider (settable), Value: 0.08, Secondary Actions: increment, decrement\n\t\t\t20 value indicator\n\t\t21 text Blue\n\t\t22 text field Blue, Value: 0.62\n\t\t23 slider (settable), Value: 0.62, Secondary Actions: increment, decrement\n\t\t\t24 value indicator\n\t25 toolbar\n\t\t26 container, Secondary Actions: name: remove from toolbar  target:0x0  selector:(null)\n\t\t\t27 radio group\n\t\t\t\t28 radio button Chain, Value: 1\n\t\t\t\t29 radio button Nodes, Value: 0\n\t\t\t30 button\n\t\t\t31 button\n\t32 close button\n\t33 full screen button, Secondary Actions: zoom the window\n\t34 minimize button\n\t35 text Untitled\n\nThe focused UI element is 13 text field Red, Value: 0.24.",
+      "elementCount": 36,
+      "truncation": {
+        "maxNodes": 1200,
+        "maxDepth": 64,
+        "truncated": false,
+        "maxDepthReached": false
+      },
+      "focusedElementId": 13
+    },
+    "screenshot": null
+  },
+  "_meta": {
+    "runtimeId": "dec57975-cfa4-4f4e-8311-3aa67bfe2583"
+  }
+}

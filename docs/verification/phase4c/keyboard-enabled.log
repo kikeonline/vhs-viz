@@ -1,0 +1,18 @@
+AXSlider | slider | 0.24
+AXTextField | Green | 0.08 
+AXSlider | slider | 0.08
+AXTextField | Blue | 0.62 
+AXSlider | slider | 0.62
+AXRadioButton | Chain | 1
+AXButton | button | missing value
+AXButton | button | missing value
+AXPopUpButton | pop up button | Solid
+AXButton | button | missing value
+AXMenuButton | menu button | missing value
+AXTextField | Red | 0.24 
+AXSlider | slider | 0.24
+AXTextField | Green | 0.08 
+AXSlider | slider | 0.08
+AXTextField | Blue | 0.62 
+AXSlider | slider | 0.62
+AXRadioButton | Chain | 1

@@ -31,6 +31,11 @@ struct ControlView: View {
                         Text("Nodes").tag(true)
                     }.pickerStyle(.segmented).fixedSize()
                         .help("Switch between compatible chain and node editors")
+                    Button("Inputs", systemImage: "waveform") { model.inputs.showsInputs.toggle() }
+                        .help("Choose standalone audio and MIDI inputs and view live levels")
+                        .popover(isPresented: Binding(get: { model.inputs.showsInputs }, set: { model.inputs.showsInputs = $0 })) {
+                            InputsView(inputs: model.inputs)
+                        }
                     Button("Show Output",systemImage: KitIcon.output.rawValue) { model.output.show() }.help("Open the performance output window (Command-Shift-O)")
                 }
             }

@@ -1,0 +1,57 @@
+{
+  "id": "a51e646b-eee5-40af-b008-9f20fab38a32",
+  "ok": true,
+  "result": {
+    "screenshot": {
+      "scale": 2,
+      "format": "png",
+      "height": 1104,
+      "width": 1760,
+      "path": "/var/folders/k3/qt9b11v54zj1n07zm01ktk0c0000gn/T/orca-computer-use/a51e646b-eee5-40af-b008-9f20fab38a32-screenshot.png",
+      "dataOmitted": true,
+      "expiresAt": "2026-11-13T02:12:09.798Z"
+    },
+    "snapshot": {
+      "coordinateSpace": "window",
+      "app": {
+        "name": "VHS",
+        "pid": 57186,
+        "bundleId": "com.kike.vhs"
+      },
+      "id": "50D56FB3-1FFF-4F72-A67C-88C148098778",
+      "window": {
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "x": 0,
+        "title": "Untitled",
+        "y": 33,
+        "width": 880,
+        "isOffscreen": false,
+        "height": 552,
+        "id": 834,
+        "screenIndex": 0
+      },
+      "treeText": "App=com.kike.vhs (pid 57186)\nWindow: \"Untitled\", App: VHS.\n\n0 standard window Untitled\n\t1 text Live Preview\n\t2 text Source\n\t3 pop up button, Value: Solid\n\t4 text Solid\n\t5 text Not saved\n\t6 text Effects\n\t7 text 0/16\n\t8 button\n\t9 menu button Add Effect\n\t10 text No effects yet\n\t11 scroll area, Secondary Actions: scroll up, scroll down\n\t\t12 text Red\n\t\t13 text field Red, Value: 0.24\n\t\t15 slider (settable), Value: 0.24, Secondary Actions: increment, decrement\n\t\t\t16 value indicator\n\t\t17 text Green\n\t\t18 text field Green, Value: 0.08\n\t\t19 slider (settable), Value: 0.08, Secondary Actions: increment, decrement\n\t\t\t20 value indicator\n\t\t21 text Blue\n\t\t22 text field Blue, Value: 0.62\n\t\t23 slider (settable), Value: 0.62, Secondary Actions: increment, decrement\n\t\t\t24 value indicator\n\t25 toolbar\n\t\t26 container, Secondary Actions: name: remove from toolbar  target:0x0  selector:(null)\n\t\t\t27 radio group\n\t\t\t\t28 radio button Chain, Value: 1\n\t\t\t\t29 radio button Nodes, Value: 0\n\t\t\t30 button\n\t\t\t\t36 popover, Secondary Actions: cancel\n\t\t\t\t\t37 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t38 text Inputs\n\t\t\t\t\t\t39 text Audio\n\t\t\t\t\t\t40 text Audio input\n\t\t\t\t\t\t41 pop up button, Value: MacBook Pro Microphone\n\t\t\t\t\t\t42 text Channels\n\t\t\t\t\t\t43 pop up button, Value: 1 (mono)\n\t\t\t\t\t\t44 button\n\t\t\t\t\t\t45 text 44.1 kHz\n\t\t\t\t\t\t46 text Audio off\n\t\t\t\t\t\t47 text MIDI\n\t\t\t\t\t\t48 text MIDI source\n\t\t\t\t\t\t49 pop up button, Value: Choose Source\n\t\t\t\t\t\t50 text MIDI channel\n\t\t\t\t\t\t51 pop up button, Value: Omni\n\t\t\t\t\t\t52 button (disabled)\n\t\t\t\t\t\t53 text MIDI off\n\t\t\t\t\t\t54 text Held notes: 0\n\t\t\t\t\t\t55 text No MIDI event\n\t\t\t\t\t\t56 scroll bar 0\n\t\t\t\t\t\t\t57 value indicator 0\n\t\t\t\t\t\t\t58 increment arrow button\n\t\t\t\t\t\t\t59 decrement arrow button\n\t\t\t\t\t\t\t60 increment page button\n\t\t\t\t\t\t\t61 decrement page button\n\t\t\t31 button\n\t32 close button\n\t33 full screen button, Secondary Actions: zoom the window\n\t34 minimize button\n\t35 text Untitled\n\nThe focused UI element is 0 standard window Untitled.",
+      "elementCount": 61,
+      "truncation": {
+        "maxDepthReached": false,
+        "truncated": false,
+        "maxNodes": 1200,
+        "maxDepth": 64
+      },
+      "focusedElementId": 0
+    },
+    "screenshotStatus": {
+      "state": "captured",
+      "metadata": {
+        "windowId": 834,
+        "engine": "screenCaptureKit"
+      }
+    }
+  },
+  "_meta": {
+    "runtimeId": "dec57975-cfa4-4f4e-8311-3aa67bfe2583"
+  }
+}

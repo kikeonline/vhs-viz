@@ -1,0 +1,490 @@
+{
+  "probes" : [
+    {
+      "area" : "6E5D0BE2-97D3-42A0-9F3E-4A531630FC13-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "6E5D0BE2-97D3-42A0-9F3E-4A531630FC13-parameter",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 248
+    },
+    {
+      "area" : "6E5D0BE2-97D3-42A0-9F3E-4A531630FC13-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "6E5D0BE2-97D3-42A0-9F3E-4A531630FC13-label",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 248
+    },
+    {
+      "area" : "6E5D0BE2-97D3-42A0-9F3E-4A531630FC13-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "6E5D0BE2-97D3-42A0-9F3E-4A531630FC13-slider",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 288
+    },
+    {
+      "area" : "9E365395-EDA6-4FA6-AFAF-66D5A777A95A-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "9E365395-EDA6-4FA6-AFAF-66D5A777A95A-label",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 164
+    },
+    {
+      "area" : "9E365395-EDA6-4FA6-AFAF-66D5A777A95A-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "9E365395-EDA6-4FA6-AFAF-66D5A777A95A-parameter",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 164
+    },
+    {
+      "area" : "9E365395-EDA6-4FA6-AFAF-66D5A777A95A-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "9E365395-EDA6-4FA6-AFAF-66D5A777A95A-slider",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 204
+    },
+    {
+      "area" : "CE46AC3F-6CA8-4AF4-A0D8-51FD5E5FD74C-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "CE46AC3F-6CA8-4AF4-A0D8-51FD5E5FD74C-label",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 332
+    },
+    {
+      "area" : "CE46AC3F-6CA8-4AF4-A0D8-51FD5E5FD74C-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "CE46AC3F-6CA8-4AF4-A0D8-51FD5E5FD74C-parameter",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 332
+    },
+    {
+      "area" : "CE46AC3F-6CA8-4AF4-A0D8-51FD5E5FD74C-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "CE46AC3F-6CA8-4AF4-A0D8-51FD5E5FD74C-slider",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 372
+    },
+    {
+      "area" : "effect-chain",
+      "height" : 56,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "effect-chain",
+      "width" : 1079,
+      "x" : 20,
+      "y" : 758.9375
+    },
+    {
+      "area" : "effect-chain",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-chain-header",
+      "width" : 1079,
+      "x" : 20,
+      "y" : 758.9375
+    },
+    {
+      "area" : "effect-chain",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-chain-empty",
+      "width" : 85.5,
+      "x" : 20,
+      "y" : 798.9375
+    },
+    {
+      "area" : "input-audio-body",
+      "height" : 275,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "input-audio-body",
+      "width" : 360,
+      "x" : 20,
+      "y" : 96
+    },
+    {
+      "area" : "input-audio-body",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-audio-title",
+      "width" : 36.5,
+      "x" : 20,
+      "y" : 96
+    },
+    {
+      "area" : "input-audio-body",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-device",
+      "width" : 360,
+      "x" : 20,
+      "y" : 124
+    },
+    {
+      "area" : "input-audio-body",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-channels",
+      "width" : 360,
+      "x" : 20,
+      "y" : 160
+    },
+    {
+      "area" : "input-audio-body",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-audio-action",
+      "width" : 360,
+      "x" : 20,
+      "y" : 196
+    },
+    {
+      "area" : "input-audio-body",
+      "edge" : "lead",
+      "height" : 14,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-audio-status",
+      "width" : 69,
+      "x" : 20,
+      "y" : 240
+    },
+    {
+      "area" : "input-audio-body",
+      "edge" : "lead",
+      "height" : 105,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-audio-meters",
+      "width" : 360,
+      "x" : 20,
+      "y" : 266
+    },
+    {
+      "area" : "input-midi-body",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-midi-title",
+      "width" : 29,
+      "x" : 20,
+      "y" : 411
+    },
+    {
+      "area" : "input-midi-body",
+      "height" : 211,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "input-midi-body",
+      "width" : 360,
+      "x" : 20,
+      "y" : 411
+    },
+    {
+      "area" : "input-midi-body",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-midi-source",
+      "width" : 360,
+      "x" : 20,
+      "y" : 439
+    },
+    {
+      "area" : "input-midi-body",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-midi-channel",
+      "width" : 360,
+      "x" : 20,
+      "y" : 475
+    },
+    {
+      "area" : "input-midi-body",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-midi-action",
+      "width" : 82.5,
+      "x" : 20,
+      "y" : 511
+    },
+    {
+      "area" : "input-midi-body",
+      "edge" : "lead",
+      "height" : 14,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-midi-status",
+      "width" : 63,
+      "x" : 20,
+      "y" : 555
+    },
+    {
+      "area" : "input-midi-body",
+      "edge" : "lead",
+      "height" : 15,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-midi-held",
+      "width" : 77.5,
+      "x" : 20,
+      "y" : 581
+    },
+    {
+      "area" : "input-midi-body",
+      "edge" : "lead",
+      "height" : 14,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "input-midi-event",
+      "width" : 74,
+      "x" : 20,
+      "y" : 608
+    },
+    {
+      "area" : "inputs",
+      "height" : 610,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "inputs",
+      "width" : 400,
+      "x" : 0,
+      "y" : 32
+    },
+    {
+      "area" : "inputs",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "inputs-title",
+      "width" : 58,
+      "x" : 20,
+      "y" : 52
+    },
+    {
+      "area" : "inputs",
+      "edge" : "lead",
+      "height" : 295,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "inputs-audio",
+      "width" : 360,
+      "x" : 20,
+      "y" : 96
+    },
+    {
+      "area" : "inputs",
+      "edge" : "lead",
+      "height" : 211,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "inputs-midi",
+      "width" : 360,
+      "x" : 20,
+      "y" : 411
+    },
+    {
+      "area" : "inspector",
+      "height" : 776,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "inspector",
+      "width" : 248,
+      "x" : 1156,
+      "y" : 88
+    },
+    {
+      "area" : "inspector",
+      "edge" : "lead",
+      "height" : 56,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source-picker",
+      "width" : 105.5,
+      "x" : 1156,
+      "y" : 88
+    },
+    {
+      "area" : "inspector",
+      "edge" : "lead",
+      "height" : 700,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "parameter-scroll",
+      "width" : 248,
+      "x" : 1156,
+      "y" : 164
+    },
+    {
+      "area" : "page",
+      "height" : 848,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "page",
+      "width" : 1440,
+      "x" : 0,
+      "y" : 52
+    },
+    {
+      "area" : "page",
+      "height" : 808,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-column",
+      "width" : 1079,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "page",
+      "height" : 808,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "parameters-column",
+      "width" : 280,
+      "x" : 1140,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-title",
+      "width" : 79,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "height" : 808,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "preview",
+      "width" : 1079,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 606.9375,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-surface",
+      "width" : 1079,
+      "x" : 20,
+      "y" : 104
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-source",
+      "width" : 1079,
+      "x" : 20,
+      "y" : 726.9375
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.red",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 164
+    },
+    {
+      "area" : "source-parameters",
+      "height" : 232,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "source-parameters",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 164
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.green",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 248
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.blue",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 332
+    }
+  ],
+  "window" : {
+    "height" : 560,
+    "width" : 400
+  }
+}

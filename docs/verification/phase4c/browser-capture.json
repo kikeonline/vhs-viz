@@ -1,0 +1,57 @@
+{
+  "id": "3f696fc1-46fe-4ddc-bf43-030057763822",
+  "ok": true,
+  "result": {
+    "snapshot": {
+      "coordinateSpace": "window",
+      "app": {
+        "bundleId": "com.kike.vhs",
+        "pid": 60355,
+        "name": "VHS"
+      },
+      "id": "542CAE63-2CCE-4884-A280-4026CDA7A8C5",
+      "window": {
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "x": 0,
+        "title": "Untitled",
+        "y": 33,
+        "width": 1440,
+        "isOffscreen": false,
+        "height": 900,
+        "id": 1052,
+        "screenIndex": 0
+      },
+      "treeText": "App=com.kike.vhs (pid 60355)\nWindow: \"Untitled\", App: VHS.\n\n0 standard window Untitled\n\t1 text Live Preview\n\t2 text Source\n\t3 pop up button, Value: Solid\n\t4 text Solid\n\t5 text Not saved\n\t6 text Effects\n\t7 text 0/16\n\t8 button\n\t9 menu button Add Effect\n\t10 text No effects yet\n\t11 scroll area, Secondary Actions: scroll up, scroll down\n\t\t12 text Red\n\t\t13 text field Red, Value: 0.24\n\t\t14 slider (settable), Value: 0.24, Secondary Actions: increment, decrement\n\t\t\t15 value indicator\n\t\t16 text Green\n\t\t17 text field Green, Value: 0.08\n\t\t18 slider (settable), Value: 0.08, Secondary Actions: increment, decrement\n\t\t\t19 value indicator\n\t\t20 text Blue\n\t\t21 text field Blue, Value: 0.62\n\t\t22 slider (settable), Value: 0.62, Secondary Actions: increment, decrement\n\t\t\t23 value indicator\n\t24 toolbar\n\t\t25 container, Secondary Actions: name: remove from toolbar  target:0x0  selector:(null)\n\t\t\t26 radio group\n\t\t\t\t27 radio button Chain, Value: 1\n\t\t\t\t28 radio button Nodes, Value: 0\n\t\t\t29 button\n\t\t\t30 button\n\t31 close button\n\t32 full screen button, Secondary Actions: zoom the window\n\t33 minimize button\n\t34 text Untitled\n\nNo UI element is currently focused.",
+      "elementCount": 35,
+      "truncation": {
+        "maxDepthReached": false,
+        "truncated": false,
+        "maxNodes": 1200,
+        "maxDepth": 64
+      },
+      "focusedElementId": null
+    },
+    "screenshotStatus": {
+      "metadata": {
+        "windowId": 1052,
+        "engine": "screenCaptureKit"
+      },
+      "state": "captured"
+    },
+    "screenshot": {
+      "height": 1800,
+      "scale": 2,
+      "format": "png",
+      "width": 2880,
+      "path": "/var/folders/k3/qt9b11v54zj1n07zm01ktk0c0000gn/T/orca-computer-use/3f696fc1-46fe-4ddc-bf43-030057763822-screenshot.png",
+      "dataOmitted": true,
+      "expiresAt": "2026-11-13T02:31:18.303Z"
+    }
+  },
+  "_meta": {
+    "runtimeId": "dec57975-cfa4-4f4e-8311-3aa67bfe2583"
+  }
+}

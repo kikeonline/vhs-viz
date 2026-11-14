@@ -1,0 +1,110 @@
+{
+  "procName": "studioapp",
+  "pid": 89272,
+  "captureTime": "2026-11-10 20:12:41.7041 -0500",
+  "procLaunch": "2026-11-10 20:02:11.5449 -0500",
+  "exception": {
+    "codes": "0x0000000000000001, 0x0000000120a054f0",
+    "rawCodes": [
+      1,
+      4842345712
+    ],
+    "type": "EXC_BAD_ACCESS",
+    "signal": "SIGSEGV",
+    "subtype": "KERN_INVALID_ADDRESS at 0x0000000120a054f0"
+  },
+  "termination": {
+    "flags": 0,
+    "code": 11,
+    "namespace": "SIGNAL",
+    "indicator": "Segmentation fault: 11",
+    "byProc": "exc handler",
+    "byPid": 89272
+  },
+  "faultingThread": 0,
+  "vhsImagesInCrash": [],
+  "faultingFrames": [
+    {
+      "image": null,
+      "symbol": null,
+      "imageOffset": 4842345712
+    },
+    {
+      "image": "libdispatch.dylib",
+      "symbol": "_dispatch_call_block_and_release",
+      "imageOffset": 6572
+    },
+    {
+      "image": "libdispatch.dylib",
+      "symbol": "_dispatch_client_callout",
+      "imageOffset": 108224
+    },
+    {
+      "image": "libdispatch.dylib",
+      "symbol": "_dispatch_main_queue_drain.cold.6",
+      "imageOffset": 229924
+    },
+    {
+      "image": "libdispatch.dylib",
+      "symbol": "_dispatch_main_queue_drain",
+      "imageOffset": 65724
+    },
+    {
+      "image": "libdispatch.dylib",
+      "symbol": "_dispatch_main_queue_callback_4CF",
+      "imageOffset": 65532
+    },
+    {
+      "image": "CoreFoundation",
+      "symbol": "__CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__",
+      "imageOffset": 768056
+    },
+    {
+      "image": "CoreFoundation",
+      "symbol": "__CFRunLoopRun",
+      "imageOffset": 517748
+    },
+    {
+      "image": "CoreFoundation",
+      "symbol": "_CFRunLoopRunSpecificWithOptions",
+      "imageOffset": 1399092
+    },
+    {
+      "image": "AppKit",
+      "symbol": "-[NSPersistentUIManager _waitForPendingChangesToFinish]",
+      "imageOffset": 7437160
+    },
+    {
+      "image": "AppKit",
+      "symbol": "-[NSPersistentUIManager discardAllPersistentStateAndClose]",
+      "imageOffset": 3036584
+    },
+    {
+      "image": "AppKit",
+      "symbol": "-[NSApplication _pushPersistentStateTerminationGeneration]",
+      "imageOffset": 2303240
+    },
+    {
+      "image": "AppKit",
+      "symbol": "-[NSApplication terminate:]",
+      "imageOffset": 2301376
+    },
+    {
+      "image": "AppKit",
+      "symbol": "-[NSApplication _terminateFromSender:askIfShouldTerminate:saveWindows:]",
+      "imageOffset": 3471040
+    },
+    {
+      "image": "AppKit",
+      "symbol": "__52-[NSApplication(NSAppleEventHandling) _handleAEQuit]_block_invoke",
+      "imageOffset": 3470680
+    }
+  ],
+  "preQuitMappingMatch": {
+    "start": "0x1209fc000",
+    "end": "0x120a60000",
+    "image": "/Applications/Studio One 5.app/Contents/PlugIns/coreaudio.bundle/Contents/MacOS/coreaudio",
+    "moduleOffset": "0x94f0",
+    "source": "Pre-quit vmmap output captured in the November 10 session. Raw temporary map was cleared by the November 11 reboot. Mapping excerpt retained in the conversation tool output."
+  }
+}

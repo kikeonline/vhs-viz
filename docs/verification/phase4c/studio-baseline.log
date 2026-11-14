@@ -1,0 +1,13 @@
+### Warning: Module rewireservice could not be loaded: The bundle ?rewireservice.bundle? couldn?t be loaded because it doesn?t contain a version for the current architecture. -> The bundle doesn?t contain a version for the current architecture.
+### Warning: Module rexcodec could not be loaded: The bundle ?rexcodec.bundle? couldn?t be loaded because it doesn?t contain a version for the current architecture. -> The bundle doesn?t contain a version for the current architecture.
+### Warning: UCNET:Enabled UDP multicast on official port 47809 (1 sockets)
+### Warning: UCNET:Local UDP port bound to 51651 (3 sockets)
+### Warning: UCNET:Adding server via UDP discovery 192.168.2.107 : tcp 58281 udp 54017 (alive event)
+### Warning: UCNET:Server "Plug-in Scanner" (id = "{8D9E3B18-220C-8543-8765-1D8EEF28A570}.58080") resolved at host "192.168.2.107", tcp 58281 udp 54017
+### Warning: UCNET:Resolving hostname localhost...
+### Warning: UCNET:Connecting to localhost...
+### Warning: UCNET:Removing server via UDP discovery 192.168.2.107 : tcp 58281 udp 54017 (leave event)
+### Warning: UCNET:Server "Plug-in Scanner" removed.
+### Warning: SecItemCopyMatching() failed with error -25300!
+### Warning: Function pointer preset_discovery_init not found in library ### Warning: Function pointer appd_rc_init not found in library ### Warning: UCNET:Started listening on TCP port 58286 (3 sockets)
+### Warning: UCNET:Server "Studio One/5.5.2.86528 macOS ARM64" registration reply received.

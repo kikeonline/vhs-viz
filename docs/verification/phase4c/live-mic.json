@@ -1,0 +1,57 @@
+{
+  "id": "6d99dd94-c609-440d-bc48-9d98db307652",
+  "ok": true,
+  "result": {
+    "screenshot": {
+      "format": "png",
+      "height": 1800,
+      "scale": 2,
+      "width": 2880,
+      "path": "/var/folders/k3/qt9b11v54zj1n07zm01ktk0c0000gn/T/orca-computer-use/6d99dd94-c609-440d-bc48-9d98db307652-screenshot.png",
+      "dataOmitted": true,
+      "expiresAt": "2026-11-13T01:54:21.622Z"
+    },
+    "screenshotStatus": {
+      "metadata": {
+        "windowId": 520,
+        "engine": "screenCaptureKit"
+      },
+      "state": "captured"
+    },
+    "snapshot": {
+      "treeText": "App=com.kike.vhs (pid 53017)\nWindow: \"Untitled\", App: VHS.\n\n0 standard window Untitled\n\t1 text Live Preview\n\t2 text Source\n\t3 pop up button, Value: Solid\n\t4 text Solid\n\t5 text Not saved\n\t6 text Effects\n\t7 text 0/16\n\t8 button\n\t9 menu button Add Effect\n\t10 text No effects yet\n\t11 scroll area, Secondary Actions: scroll up, scroll down\n\t\t12 text Red\n\t\t13 text field Red, Value: 0.24\n\t\t14 slider (settable), Value: 0.24, Secondary Actions: increment, decrement\n\t\t\t15 value indicator\n\t\t16 text Green\n\t\t17 text field Green, Value: 0.08\n\t\t18 slider (settable), Value: 0.08, Secondary Actions: increment, decrement\n\t\t\t19 value indicator\n\t\t20 text Blue\n\t\t21 text field Blue, Value: 0.62\n\t\t22 slider (settable), Value: 0.62, Secondary Actions: increment, decrement\n\t\t\t23 value indicator\n\t24 toolbar\n\t\t25 container, Secondary Actions: name: remove from toolbar  target:0x0  selector:(null)\n\t\t\t26 radio group\n\t\t\t\t27 radio button Chain, Value: 1\n\t\t\t\t28 radio button Nodes, Value: 0\n\t\t\t29 button\n\t\t\t\t61 popover, Secondary Actions: cancel\n\t\t\t\t\t62 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t63 text Inputs\n\t\t\t\t\t\t64 text Audio\n\t\t\t\t\t\t65 text Audio input\n\t\t\t\t\t\t66 pop up button, Value: MacBook Pro Microphone\n\t\t\t\t\t\t67 text Channels\n\t\t\t\t\t\t68 pop up button, Value: 1 (mono)\n\t\t\t\t\t\t69 button\n\t\t\t\t\t\t70 text 44.1 kHz\n\t\t\t\t\t\t71 text Listening\n\t\t\t\t\t\t72 text MIDI\n\t\t\t\t\t\t73 text MIDI source\n\t\t\t\t\t\t74 pop up button, Value: Choose Source\n\t\t\t\t\t\t75 text MIDI channel\n\t\t\t\t\t\t76 pop up button, Value: Omni\n\t\t\t\t\t\t77 button (disabled)\n\t\t\t\t\t\t78 text MIDI off\n\t\t\t\t\t\t79 text Held notes: 0\n\t\t\t\t\t\t80 text No MIDI event\n\t\t\t\t\t\t81 scroll bar 0\n\t\t\t\t\t\t\t82 value indicator 0\n\t\t\t\t\t\t\t83 increment arrow button\n\t\t\t\t\t\t\t84 decrement arrow button\n\t\t\t\t\t\t\t85 increment page button\n\t\t\t\t\t\t\t86 decrement page button\n\t\t\t30 button\n\t31 close button\n\t32 full screen button, Secondary Actions: zoom the window\n\t33 minimize button\n\t34 text Untitled\n\nThe focused UI element is 13 text field Red, Value: 0.24.",
+      "focusedElementId": 13,
+      "coordinateSpace": "window",
+      "elementCount": 61,
+      "window": {
+        "isMinimized": false,
+        "isOffscreen": false,
+        "width": 1440,
+        "height": 900,
+        "y": 33,
+        "platform": {
+          "layer": 0
+        },
+        "screenIndex": 0,
+        "id": 520,
+        "title": "Untitled",
+        "x": 0
+      },
+      "app": {
+        "bundleId": "com.kike.vhs",
+        "name": "VHS",
+        "pid": 53017
+      },
+      "truncation": {
+        "truncated": false,
+        "maxDepth": 64,
+        "maxNodes": 1200,
+        "maxDepthReached": false
+      },
+      "id": "22C03BD4-2094-4301-A1F7-CA5D50544899"
+    }
+  },
+  "_meta": {
+    "runtimeId": "dec57975-cfa4-4f4e-8311-3aa67bfe2583"
+  }
+}

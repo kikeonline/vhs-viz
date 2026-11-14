@@ -1,0 +1,30 @@
+Baseline Red 0.24
+Edit menu Undo, Redo = false,true
+Keyboard Navigation mode: 2
+Keyboard focus: 13 text field Red, Value: 0.24.
+Return committed exact value 0.44
+Edit menu Undo, Redo = true,false
+Command-Z restored baseline 0.24
+Edit menu Undo, Redo = false,true
+Shift-Command-Z restored exact edit 0.44
+Keyboard focus: 13 text field Red, Value: 0.44.
+Escape canceled draft 0.44
+Keyboard focus: 13 text field Red, Value: 0.44.
+Invalid input left scene unchanged 0.44
+Invalid feedback visible in accessibility tree
+Escape cleared invalid draft 0.44
+Keyboard focus: 14 slider (settable), Value: 0.44, Secondary Actions: increment, decrement.
+Right Arrow changed focused slider by one step 0.45
+Edit menu Undo, Redo = true,false
+Command-Z undid slider edit 0.44
+Shift-Command-Z redid slider edit 0.45
+Undo restored clean state 0.24
+Edit menu Undo, Redo = false,true
+Show Output opened: VHS Output, Untitled
+Traceback (most recent call last):
+  File "/tmp/VHS-4B-manual/check.py", line 71, in <module>
+    key(13,'command down');assert 'VHS Output' not in ax(),ax()
+AssertionError: VHS Output, Untitled
+PASS output closes via the window close button
+PASS Show Output reopens output
+PASS Command-1 from output returns to control

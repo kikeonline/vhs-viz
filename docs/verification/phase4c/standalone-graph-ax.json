@@ -1,0 +1,46 @@
+{
+  "id": "7e837721-8dce-483b-9a9e-bf9fa8bb29ba",
+  "ok": true,
+  "result": {
+    "screenshotStatus": {
+      "state": "skipped",
+      "reason": "no_screenshot_flag"
+    },
+    "snapshot": {
+      "coordinateSpace": "window",
+      "app": {
+        "name": "VHS",
+        "pid": 57186,
+        "bundleId": "com.kike.vhs"
+      },
+      "id": "5065DD0E-1612-4B6F-B104-5D196BC6421B",
+      "window": {
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "x": 0,
+        "title": "Untitled",
+        "y": 33,
+        "width": 1000,
+        "isOffscreen": false,
+        "height": 692,
+        "id": 834,
+        "screenIndex": 0
+      },
+      "treeText": "App=com.kike.vhs (pid 57186)\nWindow: \"Untitled\", App: VHS.\n\n0 standard window Untitled\n\t1 text Shader Graph\n\t2 text Ready\n\t3 button\n\t4 button (disabled)\n\t5 button (disabled)\n\t6 text Seed\n\t7 text field (settable) Graph seed, Value: 1, Placeholder: Seed\n\t8 button\n\t9 text 100%\n\t10 button\n\t11 menu button Pan\n\t12 text Selected node\n\t13 pop up button, Value: Choose a Node\n\t14 button\n\t15 button\n\t16 button\n\t17 button\n\t18 button\n\t19 text Shader graph canvas; use the inspector for keyboard wiring\n\t20 button\n\t21 button\n\t22 scroll area, Secondary Actions: scroll up, scroll down\n\t\t23 text Select a node to edit its values and connections.\n\t24 toolbar\n\t\t25 container, Secondary Actions: name: remove from toolbar  target:0x0  selector:(null)\n\t\t\t26 radio group\n\t\t\t\t27 radio button Chain, Value: 0\n\t\t\t\t28 radio button Nodes, Value: 1\n\t\t\t29 button\n\t\t\t30 button\n\t31 close button\n\t32 full screen button, Secondary Actions: zoom the window\n\t33 minimize button\n\t34 text Untitled\n\nThe focused UI element is 29 button.",
+      "elementCount": 35,
+      "truncation": {
+        "maxNodes": 1200,
+        "maxDepthReached": false,
+        "truncated": false,
+        "maxDepth": 64
+      },
+      "focusedElementId": 29
+    },
+    "screenshot": null
+  },
+  "_meta": {
+    "runtimeId": "dec57975-cfa4-4f4e-8311-3aa67bfe2583"
+  }
+}

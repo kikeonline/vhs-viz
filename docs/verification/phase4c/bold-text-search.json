@@ -1,0 +1,46 @@
+{
+  "id": "80036dc0-a03a-450d-9ca7-0682cc70196a",
+  "ok": true,
+  "result": {
+    "snapshot": {
+      "coordinateSpace": "window",
+      "app": {
+        "name": "System Settings",
+        "bundleId": "com.apple.systempreferences",
+        "pid": 1278
+      },
+      "id": "C5FACC99-B144-4279-BBDC-31C1606488AB",
+      "window": {
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "x": 339,
+        "title": "Motion",
+        "y": 100,
+        "width": 740,
+        "isOffscreen": false,
+        "height": 799,
+        "id": 77,
+        "screenIndex": 0
+      },
+      "treeText": "App=com.apple.systempreferences (pid 1278)\nWindow: \"Motion\", App: System Settings.\n\n0 standard window Motion\n\t1 split group\n\t\t2 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t3 list Sidebar\n\t\t\t\t180 outline row\n\t\t\t\t\t181 cell\n\t\t\t\t182 outline row\n\t\t\t\t\t183 cell\n\t\t\t\t\t\t184 button\n\t\t66 search text field (settable), Value: Bold Text, Placeholder: Search\n\t\t\t67 button Search\n\t\t\t159 button cancel\n\t\t68 splitter, Value: 231.5\n\t\t168 scroll area, Secondary Actions: scroll up, scroll down, cancel\n\t\t\t169 text Reduce motion\n\t\t\t170 switch, Value: 1\n\t\t\t171 text Auto-play animated images\n\t\t\t172 switch, Value: 1\n\t\t\t173 text Prefer non-blinking cursor\n\t\t\t174 switch, Value: 0\n\t\t\t175 text Vehicle Motion Cues\n\t\t\t176 text Dots appear near the edges of your Mac screen. They follow the movement of the vehicle and may help reduce motion sickness.\n\t\t\t177 switch, Value: 0\n\t\t\t178 button\n\t\t\t179 button Help\n\t87 toolbar\n\t\t88 container, Secondary Actions: name: move previous  target:0x0  selector:(null), name: remove from toolbar  target:0x0  selector:(null)\n\t\t\t89 button Go Back\n\t\t\t90 menu button (disabled) Go Forward\n\t91 close button\n\t92 zoom button\n\t93 minimize button\n\t94 text Motion\n\nThe focused UI element is 66 search text field (settable), Value: Bold Text, Placeholder: Search.",
+      "elementCount": 33,
+      "truncation": {
+        "maxNodes": 1200,
+        "maxDepth": 64,
+        "truncated": false,
+        "maxDepthReached": false
+      },
+      "focusedElementId": 66
+    },
+    "screenshot": null,
+    "screenshotStatus": {
+      "reason": "no_screenshot_flag",
+      "state": "skipped"
+    }
+  },
+  "_meta": {
+    "runtimeId": "dec57975-cfa4-4f4e-8311-3aa67bfe2583"
+  }
+}

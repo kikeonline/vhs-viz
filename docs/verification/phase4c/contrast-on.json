@@ -1,0 +1,63 @@
+{
+  "id": "4c6f8e3d-0778-4f90-94ea-df6c4f9c1f06",
+  "ok": true,
+  "result": {
+    "screenshotStatus": {
+      "reason": "no_screenshot_flag",
+      "state": "skipped"
+    },
+    "action": {
+      "delivery": "background",
+      "targetWindowId": 77,
+      "path": "accessibility",
+      "fallbackReason": null,
+      "actionName": "AXPress",
+      "verification": {
+        "state": "unverified",
+        "reason": "accessibility_action_unasserted"
+      }
+    },
+    "screenshot": null,
+    "snapshot": {
+      "coordinateSpace": "window",
+      "app": {
+        "bundleId": "com.apple.systempreferences",
+        "name": "System Settings",
+        "pid": 1278
+      },
+      "id": "5BABB590-F19C-44B6-A7E1-2BDD71DA0237",
+      "window": {
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "x": 339,
+        "title": "Display",
+        "y": 100,
+        "width": 740,
+        "isOffscreen": false,
+        "height": 799,
+        "id": 77,
+        "screenIndex": 0
+      },
+      "treeText": "App=com.apple.systempreferences (pid 1278)\nWindow: \"Display\", App: System Settings.\n\nChanges since the previous snapshot (~ changed, - removed). Unchanged elements are omitted and keep their indexes.\n~ \t\t\t193 switch, Value: 1\n\nThe focused UI element is 66 search text field (settable), Value: Bold Text, Placeholder: Search.",
+      "elementCount": 80,
+      "truncation": {
+        "maxDepthReached": false,
+        "truncated": false,
+        "maxNodes": 1200,
+        "maxDepth": 64
+      },
+      "focusedElementId": 66,
+      "treeDiff": {
+        "baseSnapshotId": "1866A0F9-04E6-4A57-B721-AC827F9ACBB9",
+        "changed": 1,
+        "added": 0,
+        "removed": 0
+      }
+    }
+  },
+  "_meta": {
+    "runtimeId": "dec57975-cfa4-4f4e-8311-3aa67bfe2583"
+  }
+}

@@ -1,21 +1,38 @@
 # VHS design system
 
-## Grid.swift
-Use Space tokens for all margins and gaps: 4, 8, 12, 16, 20, 24, 32 points. Window content margins are 20 points. Probe custom sections in snapshot mode; native slider internals align themselves.
+VHS / Signal was approved on 2026-11-10. [KIT.md](KIT.md) and [tokens.json](tokens.json) specify the design; the [HTML sheet](vhs-design-system.html) is a visual reference. Phase 4B implements the native baseline for current features. Every later UI-bearing phase uses it automatically. Actual visual, keyboard, VoiceOver and Studio One acceptance remains deferred under the user's automated-only direction; see [Phase 4B evidence](../docs/PHASE-4B-VERIFICATION.md).
 
-## Tokens.swift
-Layout contains control-column and window dimensions plus the preview corner radius. The preview keeps its source aspect ratio. The minimum editor size must preserve every control.
+## Shared native module
 
-## Color and typography
-Use semantic system background, primary and secondary text, native control tint, and system text styles. The default accent follows the Mac. Scene RGB values are user content and are independent of the editor's semantic colors. Do not tint the editor with the scene color.
+`Sources/VHSSignal` is imported by standalone, VHSGraphUI and VHSPluginUI. It has no app/runtime dependency or mutable theme singleton. Scene colors remain content; performance output is an unstyled Metal surface. System menus, alerts, file/color panels, window chrome and host ownership stay native.
 
-## Motion and accessibility
-Phase 1 adds no custom animation. Use native sliders and buttons; preserve keyboard interaction, help, labels, and values. Do not convey meaning solely through color. Appearance follows macOS, including increased contrast.
+The approved JSON is bundled unchanged at `Resources/tokens.json`. `tools/check-signal.sh` detects copy drift. Update both copies together. Runtime semantic colors, spacing, specified layout metrics, radii and type sizes read this data. Do not create another palette or spacing scale. `Resources.swift` resolves the plug-in's adjacent resource bundle independently of a DAW's Bundle.main; command-line development uses SwiftPM resources.
 
-## Procedural source inspector
+| Specification | Native API | Use |
+| --- | --- | --- |
+| themes.*.canvas/surface/raised/hover | Ink.canvas/surface/raised/hover | Workspace, inspector/rows, inputs/actions, pointer states |
+| text/secondary/muted/divider/controlBorder | Ink.text/secondary/muted/divider/border | Text hierarchy, decorative divider, essential boundary |
+| accent/focus | Ink.accent | Dynamic Mac accent override; Signal for Multicolor, active selection/focus |
+| selection/error and graph image/scalar/vector | Ink.selection/error; Ink.color(type role) | State fill, invalid fields, typed wires/port glyphs |
+| space | Space | Existing 4/8/12/16/20/24/32 scale; margin aliases xl |
+| metric | Metric and Layout | Control/row/parameter/focus; editor and graph geometry |
+| radius | Radius; Layout.previewRadius | Controls/nodes, panels, aspect-preserving preview |
+| type | KitType | System title/section/body/label/meta and tabular value fonts |
+| motion | Motion.hover/disclosure | Named easing; Reduce Motion returns no animation |
+| icon vocabulary | KitIcon | SF Symbols for commands, status and typed ports |
 
-SourceControls generates native sliders, color pickers, choices, toggles, and an integer field from SourceRegistry metadata. The Source picker stays above a vertically scrolling inspector. Scroll view content uses the same Space scale and its own probes; parameters remain reachable at the minimum editor size. Color swatches display scene content, not app theme tokens. Shape geometry is aspect-correct in the viewport and independent of inspector layout.
+`Layout` also retains named legacy renderer/editor dimensions absent from the specification (seed field, graph pan step, library size, preview reservation). These are layout contracts, not a second design scale. No raw colors, fonts, radii or durations belong in feature views. `Grid.swift` now lives in this shared module; its opt-in diagnostic registry is not product scene state.
 
-## Ordered effects
+## Controls and states
 
-A native List below Live Preview shows ordered effect instances, Bypass and keyboard-focusable Move Up/Down buttons. Add Effect is a native menu; Source returns to source controls. Selecting an effect replaces the right inspector with generated numeric/color controls and Remove Effect. System selection, text, buttons and checkboxes provide appearance/contrast/focus states; all custom gaps use Space. List/inspector scroll at minimum window size. Effect IDs and settings are document state; inspector selection is local UI state.
+`signalTheme()` applies semantic text, native control tint, button style, canvas and Bold Text handling. `SignalButtonStyle` retains native Button behavior and supplies hover/pressed/disabled/inactive appearance plus additive keyboard focus. `SignalCanvasButtonStyle` preserves compact node/port geometry. `signalRow` supplies hover, selection fill/leading rule, inactive selection and accessibility selection traits. Native toggles, pickers, text fields and color panels retain system semantics.
+
+`NumericParameter` is the generated source/effect/node and prototype RGB control. It pairs a native slider with a trailing exact-value field and separate unit. Sliders use registry precision for step size; symmetric signed ranges include a neutral tick. Return validates the complete finite number against registry bounds (whole numbers for seeds); invalid drafts remain visible with an inline explanation. Escape discards the draft. Leaving an uncommitted field does not edit the scene. Context-menu Reset restores the registry default. A continuous gesture begins/ends one edit; exact commit/reset is one action, with no-op history suppressed by the existing reducer. Host exact edits retain begin/value/end automation brackets.
+
+The compact editor retains 20pt margins, a 280pt inspector and effects below preview at default/minimum/wide sizes. Inspector and effect list scroll independently. The optional wide chain rail is not used. Bypass stays explicit and editable; ordering/removal remain native keyboard-focusable commands. Source/effect summaries are help, not permanent inspector prose. Graph wires use type colors, glyphs and text, and native picker wiring remains available.
+
+## Gallery and verification
+
+`APP_KIT_GALLERY=1` opens the native gallery in the editor. Snapshot mode also captures each forced state separately: rest, hover, pressed, selected, focused, disabled, inactive, error and bypassed. `APP_SNAPSHOT_PAGES=signal` runs gallery and long-name/16-effect default/minimum/wide fixtures in all four appearance/contrast variants. Normal snapshots additionally cover all sources/effects, inspector bottoms, graph errors/library and native document dialogs. Use `APP_LAYOUT_ONLY=1` while the automated-only direction applies; it produces measured layout evidence and explicitly skips PNGs.
+
+Run `tools/check-signal.sh`, `tools/grid-lint.sh`, the Swift layout checker, relevant regression suites and the shared editor harness. Layout data cannot prove appearance, actual keyboard behavior, contrast perception or assistive-technology announcements. Preserve outstanding acceptance in the phase verification record.

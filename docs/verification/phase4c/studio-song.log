@@ -1,0 +1,45 @@
+### Warning: Module rewireservice could not be loaded: The bundle ?rewireservice.bundle? couldn?t be loaded because it doesn?t contain a version for the current architecture. -> The bundle doesn?t contain a version for the current architecture.
+### Warning: Module rexcodec could not be loaded: The bundle ?rexcodec.bundle? couldn?t be loaded because it doesn?t contain a version for the current architecture. -> The bundle doesn?t contain a version for the current architecture.
+### Warning: UCNET:Enabled UDP multicast on official port 47809 (1 sockets)
+### Warning: UCNET:Local UDP port bound to 60884 (3 sockets)
+### Warning: UCNET:Adding server via UDP discovery 192.168.2.107 : tcp 58324 udp 51813 (alive event)
+### Warning: UCNET:Server "Plug-in Scanner" (id = "{401F7E72-A3A9-774B-B799-CFD56CA0C2B0}.58221") resolved at host "192.168.2.107", tcp 58324 udp 51813
+### Warning: UCNET:Resolving hostname localhost...
+### Warning: UCNET:Connecting to localhost...
+### Warning: UCNET:Removing server via UDP discovery 192.168.2.107 : tcp 58324 udp 51813 (leave event)
+### Warning: UCNET:Server "Plug-in Scanner" removed.
+### Warning: SecItemCopyMatching() failed with error -25300!
+### Warning: Function pointer preset_discovery_init not found in library ### Warning: Function pointer appd_rc_init not found in library ### Warning: UCNET:Started listening on TCP port 58329 (3 sockets)
+### Warning: UCNET:Server "Studio One/5.5.2.86528 macOS ARM64" registration reply received.
+ elapsed: 1 iterations in 0.000078 seconds
+ elapsed: 1 iterations in 0.000044 seconds
+### Warning: Function pointer preset_discovery_init not found in library ### Warning: Function pointer appd_rc_init not found in library  elapsed: 1 iterations in 0.879262 seconds
+ elapsed: 1 iterations in 0.012917 seconds
+ elapsed: 1 iterations in 0.000009 seconds
+ elapsed: 1 iterations in 0.000010 seconds
+ elapsed: 1 iterations in 1.109836 seconds
+### Warning: Huge parameter list in generic editor!
+ elapsed: 1 iterations in 0.000071 seconds
+ elapsed: 1 iterations in 0.000038 seconds
+ elapsed: 1 iterations in 0.006317 seconds
+ elapsed: 1 iterations in 0.018471 seconds
+ elapsed: 1 iterations in 0.000010 seconds
+ elapsed: 1 iterations in 0.000008 seconds
+ elapsed: 1 iterations in 44.535831 seconds
+### Warning: Huge parameter list in generic editor!
+ elapsed: 1 iterations in 0.000028 seconds
+ elapsed: 1 iterations in 0.000012 seconds
+ elapsed: 1 iterations in 0.000026 seconds
+ elapsed: 1 iterations in 0.000017 seconds
+ elapsed: 1 iterations in 0.000642 seconds
+ elapsed: 1 iterations in 0.000291 seconds
+ elapsed: 1 iterations in 0.043755 seconds
+### Warning: Huge parameter list in generic editor!
+### Warning: Huge parameter list in generic editor!
+ elapsed: 1 iterations in 0.000026 seconds
+ elapsed: 1 iterations in 0.000012 seconds
+ elapsed: 1 iterations in 0.000026 seconds
+ elapsed: 1 iterations in 0.000018 seconds
+ elapsed: 1 iterations in 0.000539 seconds
+ elapsed: 1 iterations in 0.000291 seconds
+ elapsed: 1 iterations in 0.049457 seconds
