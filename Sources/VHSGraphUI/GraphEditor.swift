@@ -66,7 +66,7 @@ public struct GraphEditor: View {
             LabeledContent("Seed") {
                 TextField("Seed",value:Binding(get:{seed},set:{send(.setSeed($0))}),format:.number.grouping(.never))
                     .textFieldStyle(.roundedBorder).frame(width:Layout.graphSeedWidth).accessibilityLabel("Graph seed")
-            }
+            }.fixedSize(horizontal:true,vertical:false)
             Spacer(minLength:Space.sm)
             Button("Zoom Out",systemImage: KitIcon.zoomOut.rawValue) { zoom(layout.zoom-0.25) }.labelStyle(.iconOnly).help("Zoom out by 25 percent").disabled(layout.zoom <= 0.25)
             Text(layout.zoom,format:.percent.precision(.fractionLength(0))).font(KitType.meta).monospacedDigit()

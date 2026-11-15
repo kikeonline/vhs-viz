@@ -78,9 +78,12 @@ enum Verification {
         try await Task.sleep(for: .seconds(0.4))
         guard let output = model.output.window else { throw Failure(description: "output opens") }
         try check(output.contentView != nil && output.isVisible, "output opens with live view")
+        NSApp.activate(); output.makeKeyAndOrderFront(nil)
         output.setContentSize(NSSize(width: 640, height: 360))
         try await Task.sleep(for: .seconds(0.3))
-        output.performClose(nil)
+        log("WINDOW CLOSE context: active=\(NSApp.isActive), key=\(NSApp.keyWindow?.title ?? "none"), outputKey=\(output.isKeyWindow), enabled=\(MenuState.shared.canCloseWindow)")
+        try shortcut("w", modifiers: .command)
+        try await Task.sleep(for: .milliseconds(200))
         try check(model.output.window == nil && model.scene == edited, "closing output releases view and preserves scene")
         model.output.show()
         try await Task.sleep(for: .seconds(0.3))
@@ -118,7 +121,9 @@ enum Verification {
         for item in NSApp.mainMenu?.items ?? [] {
             if let submenu = item.submenu { submenu.delegate?.menuNeedsUpdate?(submenu) }
         }
-        let keyCode: CGKeyCode = ["z": 6, "o": 31, "1": 18, "n": 45, "s": 1, "r": 15, "a": 0, "q": 12][key] ?? 0
+        guard let keyCode: CGKeyCode = ["z": 6, "o": 31, "1": 18, "n": 45, "s": 1, "r": 15, "a": 0, "q": 12, "w": 13][key] else {
+            throw Failure(description:"Unsupported verification shortcut: \(key)")
+        }
         guard let keyboard = CGEvent(keyboardEventSource: nil, virtualKey: keyCode, keyDown: true) else {
             throw Failure(description: "Unable to create shortcut event: \(key)")
         }

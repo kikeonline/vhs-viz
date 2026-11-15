@@ -7,6 +7,19 @@ import VHSGraphUI
 
 final class MenuState: ObservableObject {
     static let shared = MenuState()
+    @Published private(set) var canCloseWindow = false
+    private var windowObservers: [NSObjectProtocol] = []
+    init() {
+        for name in [NSWindow.didBecomeKeyNotification, NSWindow.didResignKeyNotification,
+                     NSWindow.willCloseNotification, NSApplication.didBecomeActiveNotification] {
+            windowObservers.append(NotificationCenter.default.addObserver(forName:name,object:nil,queue:.main) { @Sendable [weak self] _ in
+                // Closing/key-window notifications can precede AppKit updating keyWindow.
+                Task { @MainActor [weak self] in
+                    self?.canCloseWindow = NSApp.keyWindow?.styleMask.contains(.closable) == true
+                }
+            })
+        }
+    }
     @Published private(set) var canUndo = false
     @Published private(set) var canRedo = false
     @Published private(set) var fileCommandsEnabled = true

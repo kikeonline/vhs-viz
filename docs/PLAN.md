@@ -35,7 +35,7 @@ Existing issue numbers are preserved. The former Phase 8 readiness issue #9 beco
 | 4 | Ordered effects and scene editor | #5 | Implemented; active-window/keyboard verification pending |
 | 4A | Node-based shader editor | #13 | Implemented; automated checks pass; manual checks deferred |
 | 4B | Signal UI implementation for current features | — (local plan) | Implemented; automated and partial manual evidence recorded |
-| 4C | Attended desktop verification and observed regressions | #10 / local plan | Deferred by user on 2026-11-11; see PHASE-4C-VERIFICATION.md |
+| 4C | Attended desktop verification and observed regressions | #10 / local plan | In progress: Command-W verified; Seed layout fix built; native host/accessibility/hardware checks remain open |
 | 5A | Shared audio analysis and MIDI engine | #6 | Implemented; headless fixtures and Thread Sanitizer pass |
 | 5B | Standalone audio/MIDI adapters and Signal input UI | #6 | Implemented; automated checks pass; attended device/permission/UI acceptance in 4C |
 | 6 | Standalone system audio capture | #7 | Implemented; automated checks pass; attended acceptance in 4C |
@@ -112,6 +112,10 @@ Phase 6 is standalone-only and does not block direct DAW audio/MIDI work. Follow
 - **Phase 4C — Attended desktop verification**
   - Preserve historical evidence and complete only the outstanding desktop checks listed in PHASE-4C-VERIFICATION.md when the user has computer access.
   - Observed failures remain failures until reproduced and resolved or explicitly accepted; deferred checks are never counted as passes. This gate remains required before release, but does not block the authorized headless Phase 5A work.
+  - **Progress checkpoint, 2026-11-15:** the attended session observed standalone Edit-menu/undo/redo/output behavior, native Save As/reopen, microphone permission denial/re-grant, real built-in microphone capture and transient RMS mapping, and mapping numeric validation/commit/cancel/undo. These are partial acceptance, not blanket device/host passes.
+  - **Fixes and regression evidence:** Close Window/Command-W now uses key-window availability and passes both the recorded foreground check and the full standalone self-test. The shared graph Seed group retains its intrinsic width to address observed wrapping; its new native visual acceptance remains pending. Signed debug build, real VST3 processor/state fixtures, SDK validator 47/0, embedded-editor state/lifecycle harness, eight layout fixtures, grid lint and Signal checks pass. The audit's 100-function unit/GPU/input run is recorded separately. See PHASE-4C-VERIFICATION.md and verification/phase4c/2026-11-15/SESSION.md.
+  - **Resume order:** establish a stable unlocked desktop; review the rebuilt Seed label and reproduce host select-all/focus in a disposable Studio One song; complete native file-panel/appearance/keyboard/VoiceOver checks; complete explicit System Audio sharing/playback and remaining permission/lifecycle checks; test available physical MIDI/interface hardware. Keep original preferences and installed-bundle backups safe during attended work.
+  - **Still open:** Studio One quit-time crash also reproduced on a clean start page with no VHS image loaded; cause is undetermined. Live system capture, physical MIDI/external-interface acceptance, VoiceOver, remaining appearance/host checks and actual macOS 26 runtime must not be marked passed. Phase 4C and parent Phase 5 acceptance remain incomplete. Phase 7A presets remains the next feature implementation and requires its own authorization.
 
 - **Phase 5 — Shared audio analysis and standalone audio/MIDI inputs**
   - Split on 2026-11-11: **5A** is the shared engine, bounded callback queues, normalized MIDI and synthetic tests, with no UI or device access. **5B** implements device adapters, permissions, Signal input UI and attended hardware acceptance. Parent Phase 5 remains incomplete until both are accepted.

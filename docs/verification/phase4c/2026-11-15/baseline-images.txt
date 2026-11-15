@@ -1,0 +1,5 @@
+__TEXT                      128a38000-128a9c000    [  400K   352K     0K     0K] r-x/rwx SM=COW          /Applications/Studio One 5.app/Contents/PlugIns/coreaudio.bundle/Contents/MacOS/coreaudio
+__DATA_CONST                128a9c000-128aac000    [   64K    64K    64K     0K] r--/rwx SM=COW          /Applications/Studio One 5.app/Contents/PlugIns/coreaudio.bundle/Contents/MacOS/coreaudio
+__LINKEDIT                  128abc000-128ac8000    [   48K    16K     0K     0K] r--/rwx SM=COW          /Applications/Studio One 5.app/Contents/PlugIns/coreaudio.bundle/Contents/MacOS/coreaudio
+__DATA                      128aac000-128ab0000    [   16K    16K    16K     0K] rw-/rwx SM=COW          /Applications/Studio One 5.app/Contents/PlugIns/coreaudio.bundle/Contents/MacOS/coreaudio
+__DATA                      128ab0000-128abc000    [   48K    48K    48K     0K] rw-/rwx SM=PRV          /Applications/Studio One 5.app/Contents/PlugIns/coreaudio.bundle/Contents/MacOS/coreaudio

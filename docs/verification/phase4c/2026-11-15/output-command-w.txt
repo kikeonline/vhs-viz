@@ -1,0 +1,41 @@
+App=com.kike.vhs (pid 29725)
+Window: "Verification", App: VHS.
+
+0 standard window Verification
+	1 text Live Preview
+	2 text Source
+	3 pop up button, Value: Solid
+	4 text Solid
+	5 text Saved
+	6 text Effects
+	7 text 0/16
+	8 button
+	9 menu button Add Effect
+	10 text No effects yet
+	11 scroll area, Secondary Actions: scroll up, scroll down
+		12 text Red
+		13 text field Red, Value: 0.70
+		14 slider (settable), Value: 0.7000000000000001, Secondary Actions: increment, decrement
+			15 value indicator
+		16 text Green
+		17 text field Green, Value: 0.08
+		18 slider (settable), Value: 0.08, Secondary Actions: increment, decrement
+			19 value indicator
+		20 text Blue
+		21 text field Blue, Value: 0.62
+		22 slider (settable), Value: 0.62, Secondary Actions: increment, decrement
+			23 value indicator
+	24 toolbar
+		25 container, Secondary Actions: name: remove from toolbar  target:0x0  selector:(null)
+			26 radio group
+				27 radio button Chain, Value: 1
+				28 radio button Nodes, Value: 0
+			29 button
+			30 button
+			31 button
+	32 close button
+	33 full screen button, Secondary Actions: zoom the window
+	34 minimize button
+	35 text Verification
+
+The focused UI element is 27 radio button Chain, Value: 1.

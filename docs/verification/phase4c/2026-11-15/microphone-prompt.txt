@@ -1,0 +1,12 @@
+App=com.apple.UserNotificationCenter (pid 53512)
+Window: "", App: UserNotificationCenter.
+
+0 system dialogue alert
+	1 image alert
+	2 text Allow “VHS” to access your microphone?
+	3 text VHS analyzes your selected audio input to show live levels and frequency bands. Audio is not recorded.
+	4 button Help
+	5 button Don’t Allow
+	6 button Allow
+
+No UI element is currently focused.

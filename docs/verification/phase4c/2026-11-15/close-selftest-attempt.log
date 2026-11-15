@@ -1,0 +1,10 @@
+PASS Metal renderer initialized
+PASS history starts with undo and redo unavailable
+PASS history changes publish command availability
+PASS slider gesture creates one history entry
+PASS Command-Z restores initial scene and enables redo
+PASS undo publishes redo availability
+PASS Shift-Command-Z restores edited scene
+PASS output opens with live view
+WINDOW CLOSE context: active=false, key=none, outputKey=false, enabled=false
+FAIL closing output releases view and preserves scene

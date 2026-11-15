@@ -1,6 +1,6 @@
 # Phase 4C — Attended desktop verification
 
-Status: deferred by user on 2026-11-11 until direct computer access is available. Separate from implementation of Phase 5A/5B; later feature phases may append their attended checks here without erasing earlier evidence. Preserve PHASE-4-VERIFICATION.md, PHASE-4A-VERIFICATION.md and PHASE-4B-VERIFICATION.md as historical evidence; this file tracks remaining work, not replacement passes.
+Status: attended verification was authorized on 2026-11-15 with the Mac unlocked; session is in progress. It was previously deferred on 2026-11-11 until direct computer access was available. Separate from implementation of Phase 5A/5B; later feature phases may append their attended checks here without erasing earlier evidence. Preserve PHASE-4-VERIFICATION.md, PHASE-4A-VERIFICATION.md and PHASE-4B-VERIFICATION.md as historical evidence; this file tracks remaining work, not replacement passes.
 
 ## Session prerequisites
 
@@ -13,8 +13,8 @@ An unlocked interactive desktop, Screen Recording and Accessibility access. VNC 
 | VoiceOver | Actual parameter, numeric validation, node/port announcements and keyboard traversal remain unverified. Utility AppleScript control was disabled; speech-copy attempts timed out. VoiceOver was turned off after testing. |
 | Accessibility settings | Bold Text and Reduce Motion animation timing remain unverified. Real Increase Contrast and basic usability with Reduce Motion passed in the prior session. |
 | File panels / visual review | Open/Save panel screenshots timed out; finish review of applicable uncovered states. 215 captures exist but only representative captures were individually reviewed. |
-| Standalone output | Command-W did not close output. Reproduce, fix if required, and verify actual Edit menu availability, Command-Z/Shift-Command-Z, Show Output, close/reopen and Command-1. Other recorded output and edit checks already passed. |
-| Host editor | Seed label wrapped as Se/ed. Command-A did not select the seed field; typing appended. Reproduce and correct applicable layout/focus behavior, then check actual host menus/shortcuts and keyboard/VoiceOver graph traversal. |
+| Standalone output | Resolved locally: Close Window/Command-W is exposed with key-window availability. Earlier actual foreground Command-W and the resumed full app self-test pass, including output close/reopen and scene preservation. Earlier native Edit-menu/undo/redo/Show Output/Command-1 evidence remains valid. |
+| Host editor | Seed label wrapped as Se/ed. The shared seed group now retains its intrinsic horizontal size; build, embedding/state harness and all eight plug-in layouts pass. New visual/actual Studio One acceptance is still pending. Command-A/focus and keyboard/VoiceOver traversal remain unverified; no speculative shortcut fix was applied. |
 | Studio One shutdown | FAILED: four quit-time crashes. Two pre-quit maps resolve the failing PC to Studio One coreaudio.bundle +0x94f0; one session had no VHS image loaded. Underlying defect unresolved. Verify a clean baseline and relevant lifecycle paths before accepting host shutdown; do not assume VHS teardown caused it. |
 | Hardware / minimum OS | Actual macOS 26 runtime, physical MIDI/controller routing, performance soak and external display acceptance remain future gates (#10 and respective feature phases), not completed by Phase 4C synthetic tests. |
 
@@ -60,3 +60,29 @@ Implementation and actual automated evidence are in PHASE-7-VERIFICATION.md. The
 - With a hardware MIDI controller, discover CC and notes, inspect channel/Omni, reject a filtered channel, confirm/cancel conflicts, clear/relearn and save/reopen. Check highest-note priority, note/velocity/gate release, velocity-zero note-on, all-notes-off and device loss without stuck modulation. Automated virtual-source delivery is separate evidence.
 - In actual Studio One, use the proven hidden controller-assignment path and note bus. Start playback/live monitoring before Learn; identify/cancel chased candidates, confirm a live CC/note, save/quit/reopen the embedded definition in independent instances. The existing prototype supplies Peak + MIDI; production RMS/bands/transients, dynamic automation lanes and host undo acceptance remain Phase 8.
 - After the new Window → Show Mappings command, observe actual Edit-menu enablement before/after a slider/mapping edit; Command-Z, Shift-Command-Z, Show Output, close/reopen output, and Command-1 from output. Dedicated mapping self-tests call model actions and are not menu/keyboard acceptance. Existing Studio One quit-time regression and all prior deferred acceptance remain open.
+
+## Attended session — November 15 (in progress)
+
+The user authorized verification and foreground input. [Session notes and evidence](verification/phase4c/2026-11-15/SESSION.md) distinguish actual observations from pending work.
+
+- Studio One shutdown **failed again on a clean start page with no VHS image loaded**. The November 15 crash and pre-quit map match the host coreaudio.bundle +0x94f0 signature. The underlying host defect remains unresolved; no clean shutdown acceptance is claimed.
+- Actual standalone Edit menu states, slider changes, Command-Z/Shift-Command-Z, Show Output, mouse close/reopen and Command-1 passed. Missing File Close/Command-W was reproduced; a source fix now exposes Close Window with window-aware availability, and actual foreground Command-W closes output. The initially pending automated close-shortcut self-test subsequently passed in the resumed session below; the fix and evidence are included in this progress checkpoint.
+- Native Save As completed against a disposable /tmp project; it reopened with base values and mappings. The dark native panel was visually reviewed. Light panel and remaining file states are not yet accepted.
+- The real microphone permission prompt, denial recovery message, Settings link, re-grant and required Quit & Reopen were exercised. Capture stayed Off on restart; explicit Start delivered built-in microphone samples at 44.1 kHz mono. Live meters and RMS mapping varied while the saved project/base value stayed unchanged. Stop reached Off. This does not accept external interfaces, calibrated levels, all formats or physical MIDI.
+- Mapping numeric fields passed actual focus/select-all/invalid Return/Escape/valid Return/Undo checks. No VoiceOver speech or full keyboard traversal pass is claimed yet.
+- System Audio reached the native picker. Its WindowManager overlay could not be accessed through either computer-use connection. The user has been asked to select Display/Entire Screen and Share; live system-audio capture/playback acceptance is pending that action. No stream success is inferred from the picker state.
+- The 100-function unit/GPU/input regression suite, debug signed build, grid lint and Signal source checks pass. Native appearance/host/hardware gates remain separate.
+
+No installed app or VST3 bundle has been replaced. Original song data is unchanged; a disposable host-song copy is prepared. Original local VHS preferences are backed up for restoration after this session. No phase is marked fully accepted by this partial session.
+
+## Resumed session — November 15
+
+Authorized by “continue phase 4c”. See the resumed section in [SESSION.md](verification/phase4c/2026-11-15/SESSION.md) and adjacent `*-resumed.log` files.
+
+- The existing System Audio selection reported Cancelled rather than a confirmed stream. Escape dismissed Inputs and returned focus to Chain. No live system-audio acceptance is claimed.
+- `tools/selftest.sh` now passes through `SELFTEST done`. The Close check recorded active=true, key=VHS Output, outputKey=true, enabled=true, then verified Command-W releases output without changing the scene; subsequent output, document, source, effects, graph, input and mapping regressions pass. The earlier failed close attempt was caused by its unusable focus context and is preserved as historical evidence.
+- Fixed the recorded Seed label wrapping by retaining the shared seed label/field group's intrinsic horizontal size. Signed debug build passes. `tools/test-vst3.sh` passes real processor/state fixtures, validator **47/0**, bundle signature and arm64 checks. The installed app/plug-in and original song remain unchanged.
+- The native visual embedding run could not make its first capture window key and exited with an explicit failure. `loginwindow` was reported as frontmost at that checkpoint; a later IORegistry read said IOConsoleLocked=No, so stable attended access is not established from either observation alone. No screenshots or physical-keyboard pass is inferred from background AX actions.
+- The separate layout-only embedding run passes through `PLUGIN SELFTEST done`: mapping/learn/state/isolation/output lifecycle and all eight light/dark/contrast editor/graph layouts. This is harness/geometry evidence, not visual or Studio One acceptance. Grid lint, Signal specification checks and `git diff --check` pass.
+
+Await stable unlocked desktop access and, for real sharing, the user's native sharing-picker selection. Physical hardware availability is also pending a user reply. VoiceOver, new native Seed rendering/select-all, sharing/playback, physical MIDI/interface, actual host lifecycle and all other unperformed gates stay open. The Studio One quit-time failure is unchanged; this resumed run did not repeat a known crashing quit.

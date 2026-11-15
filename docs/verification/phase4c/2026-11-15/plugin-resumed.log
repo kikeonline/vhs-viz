@@ -1,0 +1,15 @@
+Building for debugging...
+Build complete! (0.17 secs.)
+PLUGIN SELFTEST FAIL: check("light editor capture window is key")
+PASS base values stay independent
+PASS shared learn detects host channel/controller
+PASS host context reaches display timer
+PASS held notes stay independent
+PASS overflow clears queued held notes
+PASS two independent output windows
+PASS closing one output preserves the other
+PASS detaching editor preserves output
+PASS graph host state validates without an editor or external file
+PASS graph document/layout restore independently without auto-opening output
+PASS graph edits do not leak between instances
+PASS native plug-in renders a compiled branching/value graph

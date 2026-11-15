@@ -1,0 +1,9 @@
+App=com.kike.vhs (pid 31039)
+Window: "Verification", App: VHS.
+
+Changes since the previous snapshot (~ changed, - removed). Unchanged elements are omitted and keep their indexes.
+~ 	5 text Saved
+~ 						80 text field (settable) Maximum, Value: 1
+~ 						87 text 0.703
+
+The focused UI element is 36 standard window Verification.

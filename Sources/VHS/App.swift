@@ -9,6 +9,7 @@ import VHSSignal
     var body: some Scene {
         let _ = appDelegate.connect(model, showControl: { openWindow(id: "control") })
         // Read in App.body so command values change when history changes.
+        let canCloseWindow = menu.canCloseWindow
         let canUndo = menu.canUndo
         let canRedo = menu.canRedo
         let fileCommandsEnabled = menu.fileCommandsEnabled
@@ -18,7 +19,7 @@ import VHSSignal
         }
             .defaultSize(width: Layout.defaultWidth, height: Layout.defaultHeight)
             .windowResizability(.contentMinSize)
-            .commands { VHSCommands(model: model, canUndo: canUndo, canRedo: canRedo,
+            .commands { VHSCommands(model: model, canCloseWindow:canCloseWindow, canUndo: canUndo, canRedo: canRedo,
                                     fileCommandsEnabled: fileCommandsEnabled, canSave: canSave) }
     }
 }

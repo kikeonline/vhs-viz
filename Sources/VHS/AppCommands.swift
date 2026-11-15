@@ -4,6 +4,7 @@ import SwiftUI
 struct VHSCommands: Commands {
     @Environment(\.openWindow) private var openWindow
     let model: AppModel
+    let canCloseWindow: Bool
     let canUndo: Bool
     let canRedo: Bool
     let fileCommandsEnabled: Bool
@@ -16,6 +17,9 @@ struct VHSCommands: Commands {
                 .keyboardShortcut("o").disabled(!fileCommandsEnabled)
         }
         CommandGroup(replacing: .saveItem) {
+            Button("Close Window") { NSApp.keyWindow?.performClose(nil) }
+                .keyboardShortcut("w").disabled(!canCloseWindow)
+            Divider()
             Button("Save Project") { Task { _ = await model.files.saveProject() } }
                 .keyboardShortcut("s").disabled(!canSave)
             Button("Save Project As…") { Task { _ = await model.files.saveProject(asNewFile: true) } }
