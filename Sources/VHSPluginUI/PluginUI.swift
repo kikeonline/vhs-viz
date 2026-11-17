@@ -16,6 +16,7 @@ import VHSInput
     let graphEditor = GraphEditorState()
     var showsGraph = false
     let mappingEditor = MappingEditorState()
+    let presets = PresetBrowserState()
     @ObservationIgnored private var mappingEngine = MappingEngine()
     @ObservationIgnored private var mappingMIDI = MIDIState()
     @ObservationIgnored private var mappingTime = ContinuousClock.now
@@ -23,6 +24,7 @@ import VHSInput
     @ObservationIgnored private var documentRevision: UInt32 = 0
     @ObservationIgnored private var documentBytes = [UInt8](repeating:0,count:Int(VHS_STATE_CAPACITY))
     @ObservationIgnored private var pendingDocument: Data?
+    @ObservationIgnored private var pendingNotification = false
     var red = 0.24
     var green = 0.08
     var blue = 0.62
@@ -101,6 +103,17 @@ import VHSInput
         if feedbackTick % 4 == 0 { mappingEditor.feedback = mappingEngine.effective }
         publishDocument()
     }
+    func loadPreset(_ preset: PresetDocument) async throws {
+        let original = session.document
+        let prepared = try await render.preparePreset(preset)
+        guard session.document == original else { throw PresetError.changed }
+        let document = ProjectDocument(id:session.id,name:session.name,scene:prepared,graphLayout:session.graphLayout)
+        guard try ProjectCodec.encode(document).count <= VHS_STATE_CAPACITY else { throw GraphDiagnostic("This preset exceeds the plug-in’s 128 KiB state capacity. The current scene is preserved.") }
+        mappingEngine.reset(); mappingMIDI.reset(); mappingEditor.cancel(); mappingEditor.selected = nil
+        graphEditor.selection = nil; graphEditor.pendingOutput = nil
+        session.send(.replaceScene(prepared)); syncGraphBase(); queueDocument(); tick()
+        showsGraph = !prepared.canEditChain || prepared.source != .solid
+    }
     func sendGraph(_ action: SceneAction) {
         mappingEditor.cancel()
         session.send(action)
@@ -121,8 +134,8 @@ import VHSInput
         do {
             let data = try ProjectCodec.encode(session.document)
             guard data.count <= VHS_STATE_CAPACITY else { throw GraphDiagnostic("Plug-in state exceeds 128 KiB. Remove nodes or simplify layout before saving the song; the last valid state is retained.") }
-            pendingDocument = data; error = nil
-            if publishDocument() && notify { vhs_bridge_edit(bridge,UInt32.max,0,3) }
+            pendingDocument = data; pendingNotification = pendingNotification || notify; error = nil
+            publishDocument()
         }
         catch { self.error = error.localizedDescription }
     }
@@ -130,7 +143,11 @@ import VHSInput
         guard let data = pendingDocument else { return false }
         var published: UInt32 = 0
         let result = data.withUnsafeBytes { vhs_bridge_publish_document(bridge,$0.bindMemory(to:UInt8.self).baseAddress,UInt32(data.count),documentRevision,&published) }
-        if result >= 0 { documentRevision = published; pendingDocument = nil; return true }
+        if result >= 0 {
+            documentRevision = published; pendingDocument = nil
+            if pendingNotification { vhs_bridge_edit(bridge,UInt32.max,0,3); pendingNotification = false }
+            return true
+        }
         return false
     }
     private func receiveDocument() {
@@ -144,7 +161,7 @@ import VHSInput
             let document = count == 0 ? ProjectDocument(name:"Plug-in Scene") : try ProjectCodec.decode(Data(documentBytes.prefix(Int(count))))
             mappingEngine.reset(); mappingMIDI.reset(); mappingEditor.cancel(); mappingEditor.selected = nil
             session = ProjectSession(document:document); graphEditor.selection = nil; graphEditor.pendingOutput = nil
-            pendingDocument = nil; showsGraph = !document.scene.canEditChain
+            pendingDocument = nil; pendingNotification = false; showsGraph = !document.scene.canEditChain
             error = nil
         } catch { self.error = error.localizedDescription }
     }
@@ -168,6 +185,10 @@ struct PluginEditor: View {
     var body: some View {
         VStack(alignment:.leading,spacing:Space.sm) {
             HStack(spacing:Space.sm) {
+                Button("Presets") { runtime.presets.isPresented.toggle() }
+                    .popover(isPresented:Binding(get:{runtime.presets.isPresented},set:{runtime.presets.isPresented = $0})) {
+                        PresetBrowser(state:runtime.presets,scene:runtime.session.history.scene,load:runtime.loadPreset)
+                    }
                 Button("Mappings") { runtime.mappingEditor.isPresented.toggle() }
                     .help("Map host audio or MIDI to visual parameters")
                     .popover(isPresented:Binding(get:{runtime.mappingEditor.isPresented},set:{runtime.mappingEditor.isPresented = $0})) {
@@ -199,6 +220,10 @@ struct PluginEditor: View {
                 slider("Red", id: 0, value: runtime.red)
                 slider("Green", id: 1, value: runtime.green)
                 slider("Blue", id: 2, value: runtime.blue)
+                if !runtime.session.history.scene.canEditChain || runtime.session.history.scene.source != .solid {
+                    Text("Solid host controls are unavailable for this scene. Open Nodes to edit its parameters.")
+                        .font(KitType.meta).foregroundStyle(Ink.secondary).fixedSize(horizontal:false,vertical:true)
+                }
                 Button("Show Output", systemImage: KitIcon.output.rawValue) { runtime.showOutput() }
                     .help("Open this instance’s visual output")
                     .accessibilityLabel("Show Output")
@@ -225,6 +250,7 @@ struct PluginEditor: View {
                          exactChange: { runtime.edit(id, $0, 0); runtime.edit(id, $0, 1); runtime.edit(id, $0, 2) },
                          beginEdit: { runtime.edit(id, vhs_bridge_get(runtime.bridge, id), 0) },
                          endEdit: { runtime.edit(id, vhs_bridge_get(runtime.bridge, id), 2) })
+            .disabled(!runtime.session.history.scene.canEditChain || runtime.session.history.scene.source != .solid)
             .gridProbe("plugin-\(id)", area: "plugin-controls")
     }
 }

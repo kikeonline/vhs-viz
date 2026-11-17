@@ -207,7 +207,14 @@ IPlugView* PLUGIN_API Prototype::createView(FIDString name) {
         if(!runtime) return nullptr;
         vhs_bridge_callback(bridge,this,[](void* context,uint32 id,double value,uint32 phase) {
             auto* self=static_cast<Prototype*>(context);
-            if(phase==3) self->setDirty(true);
+            if(phase==3) {
+                // Scene/preset loads keep the existing parameter IDs and update
+                // host-visible values without manufacturing automation gestures.
+                for(uint32 i=0;i<3;++i)
+                    self->SingleComponentEffect::setParamNormalized(i,vhs_bridge_get(self->bridge,i));
+                if(self->componentHandler) self->componentHandler->restartComponent(kParamValuesChanged);
+                self->setDirty(true);
+            }
             else if(phase==0) self->beginEdit(id);
             else if(phase==1) { self->setParamNormalized(id,value); self->performEdit(id,value); }
             else self->endEdit(id);

@@ -29,6 +29,13 @@
 <key>UTTypeTagSpecification</key><dict>
 <key>public.filename-extension</key><array><string>vhsproject</string></array>
 <key>public.mime-type</key><string>application/vnd.vhs.project+json</string>
+</dict></dict><dict>
+<key>UTTypeIdentifier</key><string>com.kike.vhs.preset</string>
+<key>UTTypeDescription</key><string>VHS Preset</string>
+<key>UTTypeConformsTo</key><array><string>public.json</string></array>
+<key>UTTypeTagSpecification</key><dict>
+<key>public.filename-extension</key><array><string>vhspreset</string></array>
+<key>public.mime-type</key><string>application/vnd.vhs.preset+json</string>
 </dict></dict></array>
 <key>NSPrincipalClass</key><string>NSApplication</string>
 </dict></plist>

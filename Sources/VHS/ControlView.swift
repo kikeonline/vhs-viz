@@ -31,6 +31,11 @@ struct ControlView: View {
                         Text("Nodes").tag(true)
                     }.pickerStyle(.segmented).fixedSize()
                         .help("Switch between compatible chain and node editors")
+                    Button("Presets") { model.presets.isPresented.toggle() }
+                        .disabled(model.files.blocksSceneEditing)
+                        .popover(isPresented:Binding(get:{model.presets.isPresented},set:{model.presets.isPresented = $0})) {
+                            PresetBrowser(state:model.presets,scene:model.scene,load:model.loadPreset)
+                        }
                     Button("Mappings", systemImage:"slider.horizontal.3") { model.mappingEditor.isPresented.toggle() }
                         .help("Map audio or MIDI to visual parameters")
                         .popover(isPresented:Binding(get:{model.mappingEditor.isPresented},set:{model.mappingEditor.isPresented = $0})) {

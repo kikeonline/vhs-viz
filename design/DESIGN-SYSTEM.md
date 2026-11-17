@@ -40,3 +40,7 @@ Run `tools/check-signal.sh`, `tools/grid-lint.sh`, the Swift layout checker, rel
 ## Phase 7 mappings
 
 The shared `MappingEditor` in VHSGraphUI reuses Signal type/color/spacing, native pickers/toggles/buttons and NumericDraft validation. The 480×560 scrollable popover metrics are `Layout.mappingWidth`/`mappingHeight`, following the existing native overlay metric convention; its contents remain accessible at minimum/wide editor sizes. Mapping contributions use exact native-unit fields with Return/invalid feedback/Escape, without an unhelpfully large-range slider. Live effective-value text uses tabular value type and no implicit animation. Native appearance/keyboard/VoiceOver acceptance is tracked separately from layout probes.
+
+## Phase 7A presets
+
+The shared `PresetBrowser` uses Signal type, spacing, buttons and native lists, search fields, segmented scopes and file/confirmation panels. Named factory/user rows are inert until explicit Load. A labeled Name field supplies save/duplicate/rename destinations. `Layout.presetWidth`/`presetHeight` follow the existing native popover metric convention; the scrollable list absorbs space while actions stay reachable. See the Phase 7A verification report for appearance/layout evidence and pending native keyboard/VoiceOver/host acceptance.

@@ -1,0 +1,12 @@
+2026-11-16 19:10:18.026 VHS[50136:1778983] ApplePersistenceIgnoreState: Existing state will not be touched. New state will be written to /var/folders/k3/qt9b11v54zj1n07zm01ktk0c0000gn/T/com.kike.vhs.savedState
+PASS preset search/selection leaves live scene unchanged
+PASS standalone preset load is one dirty undoable scene replacement
+PASS preset load preserves project identity and file ownership
+PASS preset undo restores complete prior scene
+PASS preset redo restores complete loaded scene
+PASS invalid preset preserves standalone state and history
+PASS shared browser refresh finds saved user presets
+PASS shared user selection reads embedded scene
+PASS shared browser collision error preserves library
+PASS saved project recalls preset without library file
+PRESET SELFTEST done

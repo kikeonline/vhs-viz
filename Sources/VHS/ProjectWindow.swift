@@ -77,6 +77,10 @@ final class ProjectAppDelegate: NSObject, NSApplicationDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.isReady = true
+            // Verification must also run when macOS restores a no-window session.
+            let verification = ProcessInfo.processInfo.environment["APP_SNAPSHOT"] != nil
+                || CommandLine.arguments.contains { $0 == "--selftest" || $0.hasSuffix("-selftest") }
+            if verification { self.showControl?() }
             self.openPendingProject()
         }
     }

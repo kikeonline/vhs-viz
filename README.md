@@ -33,17 +33,17 @@ This repository contains the application sources, build scripts, design assets, 
 | [4](https://github.com/kikeonline/vhs-viz/issues/5) | Ordered transform, blur, pixelate, threshold, colorize, and RGB split effects | Implemented; automated checks pass; manual checks deferred |
 | [4A](https://github.com/kikeonline/vhs-viz/issues/13) | Node-based shader editor, typed connections, live Metal compilation | Implemented; automated checks pass; manual checks deferred |
 | 4B | [Signal UI implementation for current features](docs/PHASE-4B-VERIFICATION.md) | Implemented; partial manual verification recorded |
-| 4C | [Attended desktop verification](docs/PHASE-4C-VERIFICATION.md) | Deferred until computer access is available |
+| 4C | [Attended desktop verification](docs/PHASE-4C-VERIFICATION.md) | In progress; native/host/accessibility/hardware acceptance remains open |
 | 5A ([#6](https://github.com/kikeonline/vhs-viz/issues/6)) | [Shared audio-analysis and MIDI engine](docs/PHASE-5A-VERIFICATION.md) | Implemented; headless tests pass |
 | 5B ([#6](https://github.com/kikeonline/vhs-viz/issues/6)) | [Standalone device adapters and Signal input UI](docs/PHASE-5B-VERIFICATION.md) | Implemented; physical/permission/visual acceptance deferred |
 | [6](https://github.com/kikeonline/vhs-viz/issues/7) | [Standalone macOS system-audio capture](docs/PHASE-6-VERIFICATION.md) | Implemented; live sharing/permission/playback acceptance deferred |
 | [7](https://github.com/kikeonline/vhs-viz/issues/8) | [Persisted audio/MIDI mappings and MIDI learn](docs/PHASE-7-VERIFICATION.md) | Implemented; automated checks pass; attended acceptance deferred |
-| [7A](https://github.com/kikeonline/vhs-viz/issues/14) | Factory/user presets, browser, save and portable import/export | Planned |
+| [7A](https://github.com/kikeonline/vhs-viz/issues/14) | [Factory/user presets, browser, save and portable import/export](docs/PHASE-7A-VERIFICATION.md) | Implemented; automated/runtime checks pass; attended acceptance pending |
 | [8](https://github.com/kikeonline/vhs-viz/issues/12) | Production VST3, automation, DAW transport, and self-contained song recall | Planned |
 | [8A](https://github.com/kikeonline/vhs-viz/issues/15) | External-display selection, fullscreen, Fit/Fill and reconnect recovery | Planned |
 | [9](https://github.com/kikeonline/vhs-viz/issues/9) | Standalone/VST3 release, projection, performance, and accessibility | Planned |
 
-See [the roadmap tracker](https://github.com/kikeonline/vhs-viz/issues/1) for dependencies and completion criteria. Completed phase/issue identities are retained; the former Phase 8 readiness issue is now Phase 9. Phase 4 was subsequently authorized on 2026-11-10; its implementation and automated verification are complete; manual GUI checks are deferred by the user. Phases through 7 are implemented with the deferred acceptance recorded separately; Phase 7A is next and requires authorization. No AU, Windows, VST2, AAX, Intel/Rosetta delivery, sound generation, or video export is planned. Standalone physical/system audio capture remains in scope.
+See [the roadmap tracker](https://github.com/kikeonline/vhs-viz/issues/1) for dependencies and completion criteria. Completed phase/issue identities are retained; the former Phase 8 readiness issue is now Phase 9. Phase 4 was subsequently authorized on 2026-11-10; its implementation and automated verification are complete; manual GUI checks are deferred by the user. Phases through 7A are implemented with outstanding attended acceptance recorded separately. Phase 8 is the next feature implementation and requires authorization. No AU, Windows, VST2, AAX, Intel/Rosetta delivery, sound generation, or video export is planned. Standalone physical/system audio capture remains in scope.
 
 ## Design direction
 
@@ -132,3 +132,7 @@ Open Mappings, Add Mapping, choose an eligible target and input, then set native
 The current host prototype supplies Peak and MIDI; production RMS/band/transient sample delivery and host automation remain Phase 8. Physical/system/Studio One, native appearance, menus/keyboard and VoiceOver acceptance remain deferred in Phase 4C.
 
 `build/VHS.app/Contents/MacOS/VHS --mapping-selftest` runs isolated model-action checks. `APP_LAYOUT_ONLY=1 APP_SNAPSHOT_PAGES=mappings APP_SNAPSHOT=/tmp/VHS-mappings build/VHS.app/Contents/MacOS/VHS` measures mapping states/scrolling/appearance variants without capturing images. Neither command certifies physical sources or keyboard/visual acceptance.
+
+## Preset library
+
+Choose Presets in standalone or the embedded plug-in editor to browse factory/user looks, search, load, save, duplicate, rename, delete and import/export `.vhspreset` files. Loads validate and compile before one undoable scene replacement; projects and host state embed the content independently of the library file. See [preset behavior and format](docs/PRESETS.md) and [Phase 7A evidence](docs/PHASE-7A-VERIFICATION.md): 108 passing tests, standalone/embedded self-tests, SDK validator 47/0 and 16 browser layouts. Actual Studio One and native keyboard/VoiceOver acceptance remain pending.

@@ -11,14 +11,20 @@ import Observation
     public let builds: GraphBuildCoordinator
     @ObservationIgnored private var acceptedScene = SceneSnapshot()
     @ObservationIgnored private var activeGraph: ShaderGraph?
+    private let compiler: GraphCompiler
     private let clock: RenderClock
     private let surfaces = NSHashTable<MTKView>.weakObjects()
     public init(fixedTime: TimeInterval? = nil, shaderURL: URL? = nil) throws {
         renderer = try MetalRenderer(shaderURL: shaderURL)
         let compiler = GraphCompiler(device:renderer.device,shaderURL:shaderURL)
+        self.compiler = compiler
         builds = GraphBuildCoordinator { graph in try await compiler.compile(graph) }
         clock = RenderClock(fixedTime: fixedTime)
         frame = RenderFrame(scene: .init(), time: 0)
+    }
+    public func preparePreset(_ preset: PresetDocument) async throws -> SceneSnapshot {
+        let compiler = compiler
+        return try await PresetCodec.prepare(preset) { graph in _ = try await compiler.compile(graph) }
     }
     public func register(_ surface: MTKView) { surfaces.add(surface) }
     public func unregister(_ surface: MTKView) { surfaces.remove(surface) }

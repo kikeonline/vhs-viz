@@ -1,0 +1,16 @@
+PASS presets-empty-dark-high-contrast-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-empty-dark-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-empty-light-high-contrast-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-empty-light-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-error-dark-high-contrast-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-error-dark-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-error-light-high-contrast-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-error-light-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-factory-dark-high-contrast-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-factory-dark-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-factory-light-high-contrast-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-factory-light-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-user-dark-high-contrast-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-user-dark-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-user-light-high-contrast-layout.json: 25 probes in 9 areas, 0 lined up across areas
+PASS presets-user-light-layout.json: 25 probes in 9 areas, 0 lined up across areas

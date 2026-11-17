@@ -115,6 +115,7 @@ public struct SceneSnapshot: Equatable, Codable, Sendable {
 }
 
 public enum SceneAction: Sendable {
+    case replaceScene(SceneSnapshot)
     case setMappings([VisualMapping])
     case setSync(SceneSync)
     case setSeed(UInt32)
@@ -133,6 +134,7 @@ public enum SceneAction: Sendable {
 
 public enum SceneReducer {
     public static func reduce(_ scene: SceneSnapshot, _ action: SceneAction) -> SceneSnapshot {
+        if case let .replaceScene(next) = action { return (try? next.validate()) != nil ? next : scene }
         if case let .setMappings(mappings) = action { return scene.withMappings(mappings) }
         if case let .setSync(sync) = action { return scene.withSync(sync) }
         if case let .setSeed(seed) = action { return scene.withSeed(seed) }
@@ -140,7 +142,7 @@ public enum SceneReducer {
         if case let .setNodeValue(id,key,value) = action, let node = scene.graph.node(id) { return scene.withGraph(scene.graph.replacing(node.replacing(key,with:value))) }
         guard scene.canEditChain else { return scene }
         switch action {
-        case .setMappings, .setSync, .setSeed, .setGraph, .setNodeValue: return scene
+        case .replaceScene, .setMappings, .setSync, .setSeed, .setGraph, .setNodeValue: return scene
         case let .addEffect(effect):
             if scene.effects.count < EffectRegistry.maximumEffects, !scene.graph.nodes.contains(where: { $0.id == effect.id }), (try? effect.validate()) != nil {
                 return scene.withEffects(scene.effects + [effect])
@@ -175,7 +177,7 @@ public struct SceneHistory: Sendable {
     public mutating func beginEdit() { if editStart == nil { editStart = scene } }
     public mutating func send(_ action: SceneAction) {
         switch action {
-        case .setMappings, .setSync, .selectSource, .addEffect, .removeEffect, .moveEffect, .bypassEffect, .setGraph: endEdit()
+        case .replaceScene, .setMappings, .setSync, .selectSource, .addEffect, .removeEffect, .moveEffect, .bypassEffect, .setGraph: endEdit()
         default: break
         }
         let next = SceneReducer.reduce(scene, action)

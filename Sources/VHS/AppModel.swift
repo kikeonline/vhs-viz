@@ -50,6 +50,7 @@ final class MenuState: ObservableObject {
     var showsGraph = false
     let inputs = StandaloneInputs()
     let mappingEditor = MappingEditorState()
+    let presets = PresetBrowserState()
     @ObservationIgnored private var mappingEngine = MappingEngine()
     @ObservationIgnored private var mappingTime = ContinuousClock.now
     @ObservationIgnored private var midiSequence: UInt64 = 0
@@ -124,6 +125,15 @@ final class MenuState: ObservableObject {
     func redo() {
         guard !files.blocksSceneEditing else { return }
         mappingEditor.cancel(); session.redo(); sync()
+    }
+    func loadPreset(_ preset: PresetDocument) async throws {
+        guard !files.blocksSceneEditing, let renderSession else { throw PresetError.changed }
+        let original = document
+        let prepared = try await renderSession.preparePreset(preset)
+        guard document == original, !files.blocksSceneEditing else { throw PresetError.changed }
+        mappingEngine.reset(); mappingEditor.cancel(); mappingEditor.selected = nil
+        graphEditor.selection = nil; graphEditor.pendingOutput = nil
+        send(.replaceScene(prepared)); showsGraph = !prepared.canEditChain
     }
     func replaceProject(_ document: ProjectDocument, fileURL: URL? = nil) {
         mappingEngine.reset(); mappingEditor.cancel(); mappingEditor.selected = nil

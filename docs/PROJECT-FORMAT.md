@@ -46,3 +46,7 @@ The filename without extension is authoritative when opening, including external
 New/Open/close/quit block scene editing while resolving Save/Don't Save/Cancel. Open validates before prompting and re-reads the committed candidate after the decision: saving can have replaced the very file selected for Open. Replacing a project resets undo; switching sources is an ordinary undoable scene edit. Runtime clock time, output lifecycle, and UI state are never serialized.
 
 These guarantees cover ordinary write/replace errors, not power-loss durability, concurrent external writers, or network/cloud filesystem coordination. Those environments have not been validated.
+
+## Phase 7A preset content
+
+Presets use their own versioned `.vhspreset` envelope; see [PRESETS.md](PRESETS.md). Loading replaces only the scene within the current session, as one undoable action. The existing schema-5 project/host document already embeds graph/base values/seed/mappings/sync; no library path or new project schema is needed. Editor layout, project identity/title/path and saved baseline are preserved. Deleting a preset file does not affect subsequent project or song decoding.

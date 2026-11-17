@@ -1,0 +1,371 @@
+{
+  "probes" : [
+    {
+      "area" : "3B995AE1-5E95-458E-86FA-DB8B0AF8C153-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "3B995AE1-5E95-458E-86FA-DB8B0AF8C153-parameter",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 248
+    },
+    {
+      "area" : "3B995AE1-5E95-458E-86FA-DB8B0AF8C153-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "3B995AE1-5E95-458E-86FA-DB8B0AF8C153-label",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 248
+    },
+    {
+      "area" : "3B995AE1-5E95-458E-86FA-DB8B0AF8C153-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "3B995AE1-5E95-458E-86FA-DB8B0AF8C153-slider",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 288
+    },
+    {
+      "area" : "A14ABA4F-7329-4598-9CDE-D12F0C242269-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "A14ABA4F-7329-4598-9CDE-D12F0C242269-label",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 332
+    },
+    {
+      "area" : "A14ABA4F-7329-4598-9CDE-D12F0C242269-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "A14ABA4F-7329-4598-9CDE-D12F0C242269-parameter",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 332
+    },
+    {
+      "area" : "A14ABA4F-7329-4598-9CDE-D12F0C242269-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "A14ABA4F-7329-4598-9CDE-D12F0C242269-slider",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 372
+    },
+    {
+      "area" : "A247CD8B-7CAE-4222-8E09-80071160DFB8-parameter",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "A247CD8B-7CAE-4222-8E09-80071160DFB8-parameter",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 164
+    },
+    {
+      "area" : "A247CD8B-7CAE-4222-8E09-80071160DFB8-parameter",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "A247CD8B-7CAE-4222-8E09-80071160DFB8-label",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 164
+    },
+    {
+      "area" : "A247CD8B-7CAE-4222-8E09-80071160DFB8-parameter",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "A247CD8B-7CAE-4222-8E09-80071160DFB8-slider",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 204
+    },
+    {
+      "area" : "effect-chain",
+      "height" : 56,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "effect-chain",
+      "width" : 1079,
+      "x" : 20,
+      "y" : 758.9375
+    },
+    {
+      "area" : "effect-chain",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-chain-header",
+      "width" : 1079,
+      "x" : 20,
+      "y" : 758.9375
+    },
+    {
+      "area" : "effect-chain",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "effect-chain-empty",
+      "width" : 85.5,
+      "x" : 20,
+      "y" : 798.9375
+    },
+    {
+      "area" : "inspector",
+      "edge" : "lead",
+      "height" : 56,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source-picker",
+      "width" : 105.5,
+      "x" : 1156,
+      "y" : 88
+    },
+    {
+      "area" : "inspector",
+      "height" : 776,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "inspector",
+      "width" : 248,
+      "x" : 1156,
+      "y" : 88
+    },
+    {
+      "area" : "inspector",
+      "edge" : "lead",
+      "height" : 700,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "parameter-scroll",
+      "width" : 248,
+      "x" : 1156,
+      "y" : 164
+    },
+    {
+      "area" : "page",
+      "height" : 848,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "page",
+      "width" : 1440,
+      "x" : 0,
+      "y" : 52
+    },
+    {
+      "area" : "page",
+      "height" : 808,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-column",
+      "width" : 1079,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "page",
+      "height" : 808,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "parameters-column",
+      "width" : 280,
+      "x" : 1140,
+      "y" : 72
+    },
+    {
+      "area" : "preset-browser",
+      "height" : 560,
+      "inset" : 20,
+      "kind" : "area",
+      "name" : "preset-browser",
+      "width" : 560,
+      "x" : 0,
+      "y" : 32
+    },
+    {
+      "area" : "preset-browser",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preset-header",
+      "width" : 520,
+      "x" : 20,
+      "y" : 52
+    },
+    {
+      "area" : "preset-browser",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preset-scope",
+      "width" : 189.5,
+      "x" : 20,
+      "y" : 96
+    },
+    {
+      "area" : "preset-browser",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preset-search",
+      "width" : 520,
+      "x" : 20,
+      "y" : 132
+    },
+    {
+      "area" : "preset-browser",
+      "edge" : "lead",
+      "height" : 264,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preset-list",
+      "width" : 520,
+      "x" : 20,
+      "y" : 168
+    },
+    {
+      "area" : "preset-browser",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preset-actions",
+      "width" : 288,
+      "x" : 20,
+      "y" : 444
+    },
+    {
+      "area" : "preset-browser",
+      "edge" : "lead",
+      "height" : 24,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preset-name",
+      "width" : 520,
+      "x" : 20,
+      "y" : 504
+    },
+    {
+      "area" : "preset-browser",
+      "edge" : "lead",
+      "height" : 32,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preset-io",
+      "width" : 520,
+      "x" : 20,
+      "y" : 540
+    },
+    {
+      "area" : "preview",
+      "height" : 808,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "preview",
+      "width" : 1079,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-title",
+      "width" : 79,
+      "x" : 20,
+      "y" : 72
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 606.9375,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-surface",
+      "width" : 1079,
+      "x" : 20,
+      "y" : 104
+    },
+    {
+      "area" : "preview",
+      "edge" : "lead",
+      "height" : 16,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "preview-source",
+      "width" : 1079,
+      "x" : 20,
+      "y" : 726.9375
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.red",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 164
+    },
+    {
+      "area" : "source-parameters",
+      "height" : 232,
+      "inset" : 0,
+      "kind" : "area",
+      "name" : "source-parameters",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 164
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.green",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 248
+    },
+    {
+      "area" : "source-parameters",
+      "edge" : "lead",
+      "height" : 64,
+      "inset" : 0,
+      "kind" : "probe",
+      "name" : "source.solid.blue",
+      "width" : 240,
+      "x" : 1156,
+      "y" : 332
+    }
+  ],
+  "window" : {
+    "height" : 560,
+    "width" : 560
+  }
+}

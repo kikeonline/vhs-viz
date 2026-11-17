@@ -549,7 +549,7 @@ Status: implemented; automated verification in PHASE-7-VERIFICATION.md; physical
 
 ## Phase 7A — Factory and user presets (#14)
 
-Planned on 2026-11-09; implementation has not started.
+Authorized on 2026-11-16 by the roadmap #1 next-phase request. Implementation and automated evidence: PHASE-7A-VERIFICATION.md.
 
 ### S-041 Find and load a preset
 As a performer, I browse factory/user presets and load a look.
@@ -559,7 +559,7 @@ Acceptance:
 - [self] Search and explicit Load choose factory/user presets in standalone and VST3; factory examples cover node graphs and audio-reactive scenes without requiring named devices.
 - [unit] Version/type/size/graph validation and compile failure preserve the prior scene; load commits only after successful validation/compilation.
 - [self] Loading is one standalone undoable scene replacement; VST3 notifies host state changes without conflicting with host undo or overwriting an external project.
-Status: todo
+Status: implemented with automated/runtime evidence; attended keyboard/VoiceOver and actual Studio One acceptance pending.
 
 ### S-042 Save and organize user presets
 As a performer, I save, name, duplicate, rename, delete and exchange my presets.
@@ -568,7 +568,7 @@ Depends: S-041
 Acceptance:
 - [unit] Atomic writes, failed save/import, malformed data and naming/collision cases preserve valid presets; factory examples remain read-only.
 - [self] Save/duplicate/rename/delete and import/export work; overwrite/delete require explicit confirmation and factory presets can be copied to user presets.
-Status: todo
+Status: implemented with automated/runtime evidence; attended keyboard/VoiceOver and actual Studio One acceptance pending.
 
 ### S-043 Recall presets independently of the library
 As a performer, I reopen a project or song even after its preset file is gone.
@@ -578,7 +578,7 @@ Acceptance:
 - [unit] Portable presets include graph/base values/seed/mappings/MIDI-learn/sync, excluding live values, device/display identity and window visibility.
 - [unit] Stable host parameter IDs survive load; unresolved graph bindings are disabled visibly rather than mapped to another control.
 - [self] Project/DAW serialization embeds preset content; rename/delete/change of the library file does not alter saved scene recall; actual Studio One reopen is checked in S-032.
-Status: todo
+Status: implemented with automated/runtime evidence; attended keyboard/VoiceOver and actual Studio One acceptance pending.
 
 ## Phase 8 — Production VST3 (#12)
 
@@ -705,7 +705,7 @@ AU, Windows, VST2, AAX, Intel/Rosetta delivery, other DAW certification, sound g
 
 ## Phase 7 implementation notes — authorized 2026-11-14
 
-Automated implementation evidence: PHASE-7-VERIFICATION.md. Phase 7A remains unauthorized.
+Automated implementation evidence: PHASE-7-VERIFICATION.md. Phase 7A was subsequently authorized and implemented on 2026-11-16; see PHASE-7A-VERIFICATION.md.
 
 S-026–S-028 are authorized by “continue with next phase”. Scope: shared persisted mappings, standalone and existing host-editor learn, effective display-rate values, migration and fixtures. Production host automation remains Phase 8; physical/system/Studio One acceptance remains attended.
 

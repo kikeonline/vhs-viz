@@ -25,6 +25,40 @@ public func runPluginProbe(folder: String) async throws {
     defer { window.contentView = nil; window.close() }
     window.contentView = NSHostingView(rootView: PluginEditor(runtime: first))
     window.center(); window.makeKeyAndOrderFront(nil); NSApp.activate()
+    let presetNotifications = UnsafeMutablePointer<UInt32>.allocate(capacity:1)
+    presetNotifications.initialize(to:0)
+    vhs_bridge_callback(a,UnsafeMutableRawPointer(presetNotifications)) { context, _, _, phase in
+        if phase == 3 { context!.assumingMemoryBound(to:UInt32.self).pointee += 1 }
+    }
+    defer {
+        vhs_bridge_callback(a,nil,nil)
+        presetNotifications.deinitialize(count:1); presetNotifications.deallocate()
+    }
+    let beforePreset = first.session.document
+    let factory = FactoryPresets.all[2]
+    try await first.loadPreset(factory)
+    try check(first.session.history.scene == factory.scene && second.session.history.scene != factory.scene,
+              "preset load replaces only the owning plug-in instance")
+    try check(presetNotifications.pointee == 1 && first.session.history.past.count == 1,
+              "plug-in preset load publishes one host dirty notification and one scene edit")
+    var presetBytes = [UInt8](repeating:0,count:Int(VHS_STATE_CAPACITY))
+    var presetOrigin: UInt32 = 0, presetRevision: UInt32 = 0
+    let presetCount = vhs_bridge_copy_document(a,&presetBytes,UInt32(presetBytes.count),&presetOrigin,&presetRevision)
+    let embedded = try ProjectCodec.decode(Data(presetBytes.prefix(Int(presetCount))))
+    try check(embedded.scene == factory.scene && first.output == nil,"plug-in state embeds preset without opening output")
+    first.undoGraph()
+    try check(first.session.document == beforePreset,"plug-in local scene undo restores the prior preset content")
+    first.redoGraph()
+    try check(first.session.history.scene == factory.scene,"plug-in preset content can be restored by local scene redo")
+    let validPreset = first.session.document, notifications = presetNotifications.pointee
+    do {
+        try await first.loadPreset(.init(name:"Invalid",scene:factory.scene.withGraph(.init(nodes:[],edges:[]))))
+        throw ProbeFailure.check("invalid plug-in preset accepted")
+    } catch is GraphDiagnostic {}
+    try check(first.session.document == validPreset && presetNotifications.pointee == notifications,
+              "failed plug-in preset preserves state without host notification")
+    first.undoGraph(); first.showsGraph = false
+    vhs_bridge_callback(a,nil,nil)
     vhs_bridge_set(a, 0, 0.7); first.tick(); second.tick()
     try check(first.red == 0.7 && second.red == 0.24, "base values stay independent")
     var initialLearn = VisualMapping(target:.init(node:ShaderGraph.sourceID,key:ParameterID.solidBlue.rawValue))

@@ -1,0 +1,11 @@
+PASS Metal renderer initialized
+PASS history starts with undo and redo unavailable
+PASS history changes publish command availability
+PASS slider gesture creates one history entry
+PASS Command-Z restores initial scene and enables redo
+PASS undo publishes redo availability
+PASS Shift-Command-Z restores edited scene
+PASS output opens with live view
+WINDOW CLOSE context: active=false, key=none, outputKey=false, enabled=false
+2026-11-16 19:09:18.476 VHS[50017:1777582] ApplePersistenceIgnoreState: Existing state will not be touched. New state will be written to /var/folders/k3/qt9b11v54zj1n07zm01ktk0c0000gn/T/com.kike.vhs.savedState
+FAIL closing output releases view and preserves scene
