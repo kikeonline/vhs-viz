@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(VHSPrototype VERSION 0.4.1 LANGUAGES C CXX OBJCXX)
+project(VHS VERSION 0.8.0 LANGUAGES C CXX OBJCXX)
 set(CMAKE_CXX_STANDARD 17)
 set(SMTG_BUILD_UNIVERSAL_BINARY OFF CACHE BOOL "" FORCE)
 set(SMTG_ENABLE_VSTGUI_SUPPORT OFF CACHE BOOL "" FORCE)
@@ -9,14 +9,14 @@ set(SMTG_CREATE_PLUGIN_LINK OFF CACHE BOOL "" FORCE)
 set(SMTG_RUN_VST_VALIDATOR OFF CACHE BOOL "" FORCE)
 add_subdirectory(${VST3_SDK_ROOT} sdk)
 smtg_enable_vst3_sdk()
-smtg_add_vst3plugin(VHSPrototype Prototype.mm Prototype.h
+smtg_add_vst3plugin(VHS Processor.mm Processor.h
     ${VST3_SDK_ROOT}/public.sdk/source/vst/vstsinglecomponenteffect.cpp)
-target_include_directories(VHSPrototype PRIVATE ../Sources/VHSRealtime/include)
-target_link_libraries(VHSPrototype PRIVATE sdk ${VHS_SWIFT_LIB} "-framework AppKit")
-set_target_properties(VHSPrototype PROPERTIES BUILD_RPATH "@loader_path/../Frameworks" INSTALL_RPATH "@loader_path/../Frameworks")
-smtg_target_set_bundle(VHSPrototype BUNDLE_IDENTIFIER "com.vhs.phase3a" COMPANY_NAME "VHS")
-add_executable(VHSPrototypeTests PrototypeTests.mm Prototype.mm
+target_include_directories(VHS PRIVATE ../Sources/VHSRealtime/include)
+target_link_libraries(VHS PRIVATE sdk ${VHS_SWIFT_LIB} "-framework AppKit")
+set_target_properties(VHS PROPERTIES BUILD_RPATH "@loader_path/../Frameworks" INSTALL_RPATH "@loader_path/../Frameworks")
+smtg_target_set_bundle(VHS BUNDLE_IDENTIFIER "com.kike.vhs.vst3" COMPANY_NAME "VHS")
+add_executable(VHSProcessorTests ProcessorTests.mm Processor.mm
     ${VST3_SDK_ROOT}/public.sdk/source/common/memorystream.cpp
     ${VST3_SDK_ROOT}/public.sdk/source/vst/vstsinglecomponenteffect.cpp)
-target_include_directories(VHSPrototypeTests PRIVATE ../Sources/VHSRealtime/include)
-target_link_libraries(VHSPrototypeTests PRIVATE sdk sdk_hosting ${VHS_SWIFT_LIB} "-framework AppKit")
+target_include_directories(VHSProcessorTests PRIVATE ../Sources/VHSRealtime/include)
+target_link_libraries(VHSProcessorTests PRIVATE sdk sdk_hosting ${VHS_SWIFT_LIB} "-framework AppKit")

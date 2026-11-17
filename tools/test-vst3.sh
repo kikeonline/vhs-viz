@@ -8,7 +8,7 @@ fixture_dir=$(mktemp -d)
 trap 'rm -rf "$fixture_dir"' EXIT
 bin_dir=$(swift build -c debug --show-bin-path)
 "$bin_dir/VHSPluginProbe" --state-fixture "$fixture_dir/graph.json"
-.build/vst3/bin/Debug/VHSPrototypeTests "$fixture_dir/graph.json"
-.build/vst3/bin/Debug/validator "build/VHS Phase 3A.vst3"
-codesign --verify --strict "build/VHS Phase 3A.vst3"
-file "build/VHS Phase 3A.vst3/Contents/MacOS/VHSPrototype"
+.build/vst3/bin/Debug/VHSProcessorTests "$fixture_dir/graph.json"
+.build/vst3/bin/Debug/validator "build/VHS.vst3"
+codesign --verify --strict "build/VHS.vst3"
+file "build/VHS.vst3/Contents/MacOS/VHS"

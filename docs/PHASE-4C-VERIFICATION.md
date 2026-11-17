@@ -90,3 +90,7 @@ Await stable unlocked desktop access and, for real sharing, the user's native sh
 ## Phase 7A follow-up — 2026-11-16
 
 Phase 7A presets were separately authorized and implemented; see PHASE-7A-VERIFICATION.md. This does not close any acceptance gate above. Its first full standalone regression rerun could not close output because the process had no active/key window (`active=false, key=none, enabled=false`). The same signed build passed the entire standalone suite after exact-process System Events foregrounding, including Command-W/output reopen/Command-1 and the new preset checks. Both logs are retained under verification/phase7a. Actual attended focus/keyboard/VoiceOver/Studio One acceptance remains pending. Verification-only startup now explicitly opens the control window when macOS restores a no-window session; normal product launch behavior is unchanged.
+
+## Phase 8 locked-screen implementation — 2026-11-17
+
+The user separately authorized Phase 8 with the screen locked. Production host code and headless tests are recorded in PHASE-8-VERIFICATION.md; no new desktop, Studio One, hardware, sharing, layout/screenshot, keyboard/menu or VoiceOver acceptance was performed. Reaccept the new VHS.vst3 class ID/host UI with the routing, automation/dirty/song recall and editor/output lifecycle checklist in HOST.md. The old installed feasibility probe and original songs were not replaced; the pre-existing host quit crash and all unfinished checks above remain open.

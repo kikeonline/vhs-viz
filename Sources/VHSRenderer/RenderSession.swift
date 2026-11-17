@@ -28,7 +28,7 @@ import Observation
     }
     public func register(_ surface: MTKView) { surfaces.add(surface) }
     public func unregister(_ surface: MTKView) { surfaces.remove(surface) }
-    public func update(_ scene: SceneSnapshot, effective: SceneSnapshot? = nil) {
+    public func update(_ scene: SceneSnapshot, effective: SceneSnapshot? = nil, time: Double? = nil) {
         if scene.canEditChain {
             builds.cancel(); activeGraph = nil; renderer.installGraph(nil); acceptedScene = scene
         } else {
@@ -41,7 +41,7 @@ import Observation
         // Only apply values to the accepted base revision. While a new graph
         // builds/fails, retain the previous effective values and keep its clock running.
         let displayed = acceptedScene == scene ? (effective ?? acceptedScene) : frame.scene
-        frame = RenderFrame(scene: displayed, time: clock.time)
+        frame = RenderFrame(scene: displayed, time: time.flatMap { $0.isFinite ? $0 : nil } ?? clock.time)
         for view in surfaces.allObjects where view.window?.isVisible == true && !view.isHiddenOrHasHiddenAncestor {
             view.draw()
         }

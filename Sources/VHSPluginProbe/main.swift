@@ -1,5 +1,5 @@
 import AppKit
-import VHSPluginUI
+import VHSHostUI
 
 if CommandLine.arguments.count == 3 && CommandLine.arguments[1] == "--state-fixture" {
     do { try writePluginGraphFixture(to:CommandLine.arguments[2]); print("PASS generated graph state fixture"); exit(0) }

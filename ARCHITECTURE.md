@@ -7,7 +7,7 @@
 - VHSGraphUI: shared native graph canvas/library/inspector and transient editor selection/error state. Receives immutable graph/layout plus action/layout closures; owns no file controller, renderer, host singleton or audio path. Used by standalone and plug-in.
 - VHS: standalone file dialogs/menus/windows, capture/test modes and AppModel. AppModel owns a ProjectSession and RenderSession. Physical audio/MIDI/capture adapters remain future standalone work.
 - VHSRealtime: C atomic RGB mailboxes, preallocated bounded event queue and bounded try-once document mailbox. No Swift/UI/render calls from the processor.
-- VHSPluginUI: per-instance native runtime/editor/output, shared graph UI, document exchange and pure bounded state-validation export. The Objective-C++ adapter owns host buses/parameters/stream state. No standalone MenuState or termination commands enter the host.
+- VHSHostUI: per-instance native runtime/editor/output, shared graph UI, document exchange and pure bounded state-validation export. The Objective-C++ adapter owns host buses/parameters/stream state. No standalone MenuState or termination commands enter the host.
 
 ## Execution
 
@@ -17,10 +17,16 @@ GraphCompiler runs on an actor executor: validates, plans bounded passes, genera
 
 Live submission checks out one of three frame slots and drops on saturation. Each slot exclusively owns scratch textures until completion. The chain uses two textures; branching graphs use up to eight according to liveness. Shader intermediate color is linear RGBA16Float; final output encodes sRGB. Readback/waitUntilCompleted occurs only in opt-in verification and GPU tests.
 
-Host process() remains C++/C and unchanged by graph integration. Host state operations exchange at most 128 KiB of versioned document bytes through a try-once atomic-flag mailbox. State decoding/validation does not render or create an editor. The display timer applies restore and requests compilation; restoring state never auto-opens output. Pure state validation may allocate bounded decoding data; it is a host state operation, never called by process(). Production automation/undo/bypass/transport acceptance remains Phase 8.
+Host process() remains C++/C and unchanged by graph integration. Host state operations exchange at most 128 KiB of versioned document bytes through a try-once atomic-flag mailbox. State decoding/validation does not render or create an editor. The display timer applies restore and requests compilation; restoring state never auto-opens output. Pure state validation may allocate bounded decoding data; it is a host state operation, never called by process(). Phase 8 adds the production processor, host envelope/slot bank, shared analysis worker and beat-clock execution; actual automation/undo/transport/lifecycle acceptance remains pending. See docs/HOST.md and docs/PHASE-8-VERIFICATION.md.
 
 ## Existing seams
 
 The async compile closure has both production and controlled out-of-order/failure test implementations. Core reduction/validation runs without AppKit. Metal fixtures execute real pipelines. The native embedding harness drives the same shared graph editor/runtime as the plug-in, separately from actual DAW certification.
 
 Space/Grid/Tokens sources are symlinked into UI targets to avoid drift; each target records its own layout probes. A shared GraphEditorDiagnostics entry point exports the graph module's measurements for app/harness verification.
+
+## Phase 8 production host
+
+Plugin/Processor.* uses a distinct production class ID and bundle marker, and links libVHSHostUI.dylib. The source/module rename avoids reusing the installed feasibility probe's runtime identity. Fixed automation bindings and HostDocumentCodec live in VHSCore; the C bridge owns atomically stored normalized slot values and a coherent latest transport snapshot. Binary state captures these values without an editor, while the versioned host JSON embeds scene/preset/mapping/sync/layout and binding definitions. Scene/host state work stays outside process().
+
+The production callback copies mono/stereo analysis data into preallocated float buffers and the existing C queue. HostAudioWorker owns the shared analyzer on an actor. Display frames apply slot overrides, then MIDI/audio mapping offsets, and use either Free Run seconds or supplied DAW beats. RenderSession accepts finite external time while preserving standalone clock behavior. See docs/HOST.md and docs/PHASE-8-VERIFICATION.md for contracts, headless evidence and the remaining actual host/native acceptance.

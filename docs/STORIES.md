@@ -582,7 +582,7 @@ Status: implemented with automated/runtime evidence; attended keyboard/VoiceOver
 
 ## Phase 8 — Production VST3 (#12)
 
-All stories below are planned; implementation has not started.
+Authorized on 2026-11-17 for locked-screen implementation. Code and headless evidence: PHASE-8-VERIFICATION.md. Actual Studio One and native acceptance remain pending.
 
 ### S-029 Feed DAW audio and MIDI to VHS
 As a performer, I use Studio One audio and MIDI together to drive the visual engine.
@@ -592,7 +592,7 @@ Acceptance:
 - [manual] Documented Studio One routing delivers notes/velocity/CC and audio together using the proven event/audio bus layout; test live monitoring and stopped transport.
 - [unit] Supported mono/stereo/sample formats, in-place buffers, bypass, silence, suspension, sample-rate/block-size changes, and offline processing preserve unchanged audio output.
 - [self] Plug-in never opens capture devices or requests standalone audio/system permissions; SDK validator passes.
-Status: todo
+Status: implemented with headless evidence; actual Studio One/native acceptance pending.
 
 ### S-030 Automate visuals in Studio One
 As a performer, I record and play visual automation in the DAW.
@@ -602,7 +602,7 @@ Acceptance:
 - [manual] Stable exposed controls record/play automation with correct begin/end gestures and host undo behavior, including with the editor closed.
 - [manual] In Studio One, learn a CC/note for a source/effect/node parameter using the proven host workflow; cancel/clear/conflict handling and song recall pass without disrupting automation.
 - [unit] Parameter IDs and effect bindings remain stable after reorder/reload; CC follows the supported VST3 controller-to-parameter path.
-Status: todo
+Status: implemented with headless evidence; actual Studio One/native acceptance pending.
 
 ### S-031 Follow song playback and tempo
 As a performer, I synchronize animated visuals with the Studio One timeline.
@@ -611,7 +611,7 @@ Depends: S-029
 Acceptance:
 - [unit] Free Run preserves existing seconds-based motion; Follow DAW handles valid/missing context, tempo, stop, seek, and loop with a defined fallback.
 - [manual] Studio One play/stop/tempo/loop/seek produce the specified visual timing; video is display-rate, not sample-accurate.
-Status: todo
+Status: implemented with headless evidence; actual Studio One/native acceptance pending.
 
 ### S-032 Restore VHS with my song
 As a performer, I reopen a Studio One song and recover each instance without external project files.
@@ -621,7 +621,7 @@ Acceptance:
 - [unit] Versioned host state validates/migrates scene/graph, loaded preset content, MIDI-learn definitions, mappings, sync and automation bindings, including state-before-editor/state-during-processing calls.
 - [manual] Save, quit, and reopen a song containing two different instances; each restores independently with no external .vhsproject and no unsolicited output windows.
 - [self] Explicit project import/export shares scene/mapping semantics with standalone while preserving host session ownership.
-Status: todo
+Status: implemented with headless evidence; actual Studio One/native acceptance pending.
 
 ### S-033 Keep host and projection windows independent
 As a performer, I edit and project without disrupting Studio One.
@@ -631,7 +631,7 @@ Acceptance:
 - [manual] Output continues while the editor is closed; reopening and removing instances, song close, and host quit release the correct resources.
 - [manual] Host menus/shortcuts/undo remain correct; standalone app quit/file commands are not installed into the host menu tree.
 - [self] No shared mutable app singleton leaks scene, MIDI, undo, clock, or output between instances.
-Status: todo
+Status: implemented with headless evidence; actual Studio One/native acceptance pending.
 
 ## Phase 8A — External display and fullscreen output (#15)
 

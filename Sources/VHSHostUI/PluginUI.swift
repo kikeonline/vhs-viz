@@ -14,9 +14,26 @@ import VHSInput
     let render: RenderSession
     var session = ProjectSession(document:.init(name:"Plug-in Scene"))
     let graphEditor = GraphEditorState()
-    var showsGraph = false
+    var showsGraph = true
     let mappingEditor = MappingEditorState()
     let presets = PresetBrowserState()
+    var bindings: [HostAutomationBinding] = []
+    var hostValues: [Int:Double] = [:]
+    var filesBusy = false
+    var hostBaseScene: SceneSnapshot { HostAutomationBinding.applying(bindings,values:hostValues,to:session.history.scene) }
+    var showsHostControls = false
+    var audioSignals = AudioSignals()
+    var hostInputAvailable = false
+    var hostTransport: HostTransport?
+    var clockStatus = "Free Run · seconds"
+    @ObservationIgnored private var hostContextRevision: UInt32 = 0
+    @ObservationIgnored private var hostClock = HostVisualClock()
+    @ObservationIgnored private let freeClock = RenderClock()
+    @ObservationIgnored private let audioWorker: HostAudioWorker
+    @ObservationIgnored private var audioTask: Task<Void,Never>?
+    @ObservationIgnored private var activeAutomationSlot: Int?
+    @ObservationIgnored private var graphGesture = false
+    @ObservationIgnored private var graphEditStart: ProjectDocument?
     @ObservationIgnored private var mappingEngine = MappingEngine()
     @ObservationIgnored private var mappingMIDI = MIDIState()
     @ObservationIgnored private var mappingTime = ContinuousClock.now
@@ -38,25 +55,48 @@ import VHSInput
     @ObservationIgnored var output: NSWindow?
     @ObservationIgnored var timer: Timer?
     @ObservationIgnored var lastBlock = ContinuousClock.now
-    init(_ bridge: OpaquePointer, shaderURL: URL? = nil) throws {
+    init(_ bridge: OpaquePointer, shaderURL: URL? = nil, automaticPolling: Bool = true) throws {
         self.bridge = bridge
+        audioWorker = try HostAudioWorker(bridgeAddress:UInt(bitPattern:bridge))
         render = try RenderSession(shaderURL: shaderURL)
         vhs_bridge_retain(bridge)
         super.init()
+        if automaticPolling {
         timer = Timer(timeInterval: 1.0 / 60, repeats: true) { @Sendable [weak self] _ in
             MainActor.assumeIsolated { self?.tick() }
         }
         RunLoop.main.add(timer!, forMode: .common)
+        let worker = audioWorker
+        audioTask = Task { [weak self] in
+            while !Task.isCancelled {
+                if let signals = try? await worker.drain() { self?.audioSignals = signals }
+                do { try await Task.sleep(for:.milliseconds(16)) } catch { break }
+            }
+        }
+        }
         tick()
     }
     func stop() {
+        finishAutomationGesture()
+        audioTask?.cancel(); audioTask = nil
         render.builds.cancel()
         timer?.invalidate(); timer = nil
         output?.contentView = nil; output?.close(); output = nil
     }
     isolated deinit { vhs_bridge_release(bridge) }
+    func analyzeHostAudio() async throws { audioSignals = try await audioWorker.drain() }
     func tick() {
         receiveDocument()
+        var context = VHSHostContext(), revision: UInt32 = 0
+        if vhs_bridge_copy_host_context(bridge,&context,&revision) != 0, revision != hostContextRevision {
+            hostContextRevision = revision; lastBlock = .now
+            var transport = HostTransport()
+            transport.beats = context.beats; transport.tempo = context.tempo; transport.sampleRate = context.sampleRate
+            transport.samplePosition = context.samplePosition; transport.valid = context.flags & 1 != 0
+            transport.playing = context.flags & 2 != 0; transport.tempoValid = context.flags & 4 != 0
+            transport.musicalPositionValid = context.flags & 8 != 0; transport.offline = context.flags & 16 != 0
+            hostTransport = transport
+        }
         red = vhs_bridge_get(bridge, 0); green = vhs_bridge_get(bridge, 1); blue = vhs_bridge_get(bridge, 2)
         cc = vhs_bridge_get(bridge, 3)
         let base = SceneColor(red:red,green:green,blue:blue)
@@ -95,10 +135,25 @@ import VHSInput
         let elapsed = mappingTime.duration(to:now).components; mappingTime = now
         var input = mappingMIDI.mappingInputs(available:lastBlock.duration(to:now) <= .milliseconds(250))
         velocity = input.notes.map(\.velocity).max() ?? 0
-        if lastBlock.duration(to:now) <= .milliseconds(250) { input.audio[.peak] = peak }
+        let available = lastBlock.duration(to:now) <= .milliseconds(250) && hostTransport?.offline != true
+        hostInputAvailable = available && hostTransport != nil
+        if available {
+            input.audio[.peak] = peak
+            if audioSignals.ready {
+                input.audio[.rms] = audioSignals.rms; input.audio[.peak] = audioSignals.peak
+                input.audio[.low] = audioSignals.low; input.audio[.mid] = audioSignals.mid
+                input.audio[.high] = audioSignals.high; input.audio[.transient] = audioSignals.transient
+            }
+        } else { input = MappingInputs(); mappingMIDI.reset(); peak = 0; velocity = 0; cc = 0; playing = false }
+        var automation: [Int:Double] = [:]
+        for binding in bindings { automation[binding.slot] = vhs_bridge_get_automation(bridge,UInt32(binding.slot)) }
+        hostValues = automation
+        let automated = HostAutomationBinding.applying(bindings,values:automation,to:scene)
         mappingEditor.inputAvailable = input.midiAvailable
-        let effective = mappingEngine.evaluate(scene,inputs:input,deltaTime:Double(elapsed.seconds)+Double(elapsed.attoseconds)/1e18)
-        render.update(scene,effective:effective)
+        let effective = mappingEngine.evaluate(automated,inputs:input,deltaTime:Double(elapsed.seconds)+Double(elapsed.attoseconds)/1e18)
+        let time = hostClock.time(mode:scene.sync,transport:available ? hostTransport : nil,freeRun:freeClock.time)
+        clockStatus = hostClock.status
+        render.update(scene,effective:effective,time:time)
         feedbackTick += 1
         if feedbackTick % 4 == 0 { mappingEditor.feedback = mappingEngine.effective }
         publishDocument()
@@ -108,22 +163,83 @@ import VHSInput
         let prepared = try await render.preparePreset(preset)
         guard session.document == original else { throw PresetError.changed }
         let document = ProjectDocument(id:session.id,name:session.name,scene:prepared,graphLayout:session.graphLayout)
-        guard try ProjectCodec.encode(document).count <= VHS_STATE_CAPACITY else { throw GraphDiagnostic("This preset exceeds the plug-in’s 128 KiB state capacity. The current scene is preserved.") }
+        guard try HostDocumentCodec.encode(.init(project:document,bindings:bindings)).count <= VHS_STATE_CAPACITY else { throw GraphDiagnostic("This preset exceeds the plug-in’s 128 KiB state capacity. The current scene is preserved.") }
         mappingEngine.reset(); mappingMIDI.reset(); mappingEditor.cancel(); mappingEditor.selected = nil
         graphEditor.selection = nil; graphEditor.pendingOutput = nil
         session.send(.replaceScene(prepared)); syncGraphBase(); queueDocument(); tick()
         showsGraph = !prepared.canEditChain || prepared.source != .solid
     }
     func sendGraph(_ action: SceneAction) {
+        if case let .setNodeValue(node,key,.number(value)) = action,
+           let binding = bindings.first(where: { $0.target == .init(node:node,key:key) }),
+           let range = binding.range(in:session.history.scene.graph) {
+            let normalized = min(1,max(0,(value-range.lowerBound)/(range.upperBound-range.lowerBound)))
+            if activeAutomationSlot != binding.slot {
+                finishAutomationGesture()
+                activeAutomationSlot = binding.slot
+                edit(binding.parameterID,vhs_bridge_get_automation(bridge,UInt32(binding.slot)),0)
+            }
+            edit(binding.parameterID,normalized,1)
+            if !graphGesture { finishAutomationGesture() }
+            tick(); return
+        }
         mappingEditor.cancel()
         session.send(action)
         syncGraphBase(); queueDocument(); tick()
     }
     func setGraphLayout(_ layout: GraphLayout) { session.setGraphLayout(layout); queueDocument() }
-    func beginGraphEdit() { session.beginEdit() }
-    func endGraphEdit() { session.endEdit(); queueDocument() }
+    func beginGraphEdit() { graphGesture = true; graphEditStart = session.document; session.beginEdit() }
+    func endGraphEdit() {
+        finishAutomationGesture(); graphGesture = false; session.endEdit()
+        if graphEditStart != session.document { queueDocument() }
+        graphEditStart = nil
+    }
+    private func finishAutomationGesture() {
+        if let slot = activeAutomationSlot {
+            edit(HostAutomationBinding.firstParameterID+UInt32(slot),vhs_bridge_get_automation(bridge,UInt32(slot)),2)
+        }
+        activeAutomationSlot = nil
+    }
+    @discardableResult func expose(_ target: GraphParameterTarget) -> Int? {
+        guard HostAutomationBinding(slot:0,target:target).normalized(in:session.history.scene.graph) != nil else {
+            error = "This parameter is unavailable for automation."; return nil
+        }
+        error = nil
+        if let existing = bindings.first(where: { $0.target == target }) {
+            if !existing.enabled { bind(slot:existing.slot,to:target) }
+            return bindings.contains { $0.slot == existing.slot && $0.enabled } ? existing.slot : nil
+        }
+        guard let slot = (0..<HostAutomationBinding.capacity).first(where:{ slot in !bindings.contains { $0.slot == slot } }) else {
+            error = "All 256 automation slots are reserved. Rebind a slot explicitly to reuse a lane."; return nil
+        }
+        bind(slot:slot,to:target)
+        return bindings.contains { $0.slot == slot && $0.target == target } ? slot : nil
+    }
+    func bind(slot: Int, to target: GraphParameterTarget?) {
+        guard (0..<HostAutomationBinding.capacity).contains(slot) else { return }
+        finishAutomationGesture()
+        var next = bindings
+        var initialValue: Double?
+        if let target {
+            let binding = HostAutomationBinding(slot:slot,target:target)
+            guard let value = binding.normalized(in:session.history.scene.graph),
+                  !bindings.contains(where: { $0.slot != slot && $0.target == target }) else { return }
+            initialValue = value
+            next = bindings.filter { $0.slot != slot } + [binding]
+        } else if let previous = bindings.first(where:{ $0.slot == slot }) {
+            // Retire instead of freeing: automatic exposure never steals an old DAW lane.
+            next = bindings.filter { $0.slot != slot } + [.init(slot:slot,target:previous.target,enabled:false)]
+        } else { return }
+        do { _ = try HostDocumentCodec.encode(.init(project:session.document,bindings:next)) }
+        catch { self.error = error.localizedDescription; return }
+        bindings = next
+        if let value = initialValue { vhs_bridge_set_automation(bridge,UInt32(slot),value) }
+        queueDocument(); tick()
+    }
     func undoGraph() { mappingEditor.cancel(); session.undo(); syncGraphBase(); queueDocument(); tick() }
     func redoGraph() { mappingEditor.cancel(); session.redo(); syncGraphBase(); queueDocument(); tick() }
+    func syncImportedBase() { syncGraphBase(); mappingEngine.reset(); mappingMIDI.reset() }
+    func publishImportedProject() { queueDocument(); tick() }
     private func syncGraphBase() {
         if session.history.scene.canEditChain && session.history.scene.source == .solid {
             let color = session.history.scene.color
@@ -132,7 +248,7 @@ import VHSInput
     }
     private func queueDocument(notify: Bool = true) {
         do {
-            let data = try ProjectCodec.encode(session.document)
+            let data = try HostDocumentCodec.encode(.init(project:session.document,bindings:bindings))
             guard data.count <= VHS_STATE_CAPACITY else { throw GraphDiagnostic("Plug-in state exceeds 128 KiB. Remove nodes or simplify layout before saving the song; the last valid state is retained.") }
             pendingDocument = data; pendingNotification = pendingNotification || notify; error = nil
             publishDocument()
@@ -158,7 +274,9 @@ import VHSInput
         documentRevision = revision
         guard origin != 0 else { return }
         do {
-            let document = count == 0 ? ProjectDocument(name:"Plug-in Scene") : try ProjectCodec.decode(Data(documentBytes.prefix(Int(count))))
+            let host = count == 0 ? HostDocument() : try HostDocumentCodec.decode(Data(documentBytes.prefix(Int(count))))
+            finishAutomationGesture(); graphGesture = false; graphEditStart = nil
+            let document = host.project; bindings = host.bindings
             mappingEngine.reset(); mappingMIDI.reset(); mappingEditor.cancel(); mappingEditor.selected = nil
             session = ProjectSession(document:document); graphEditor.selection = nil; graphEditor.pendingOutput = nil
             pendingDocument = nil; pendingNotification = false; showsGraph = !document.scene.canEditChain
@@ -166,12 +284,18 @@ import VHSInput
         } catch { self.error = error.localizedDescription }
     }
     @ObservationIgnored private var lastDropped: UInt32 = 0
-    func edit(_ id: UInt32, _ value: Double, _ phase: UInt32) { vhs_bridge_edit(bridge, id, value, phase) }
+    func edit(_ id: UInt32, _ value: Double, _ phase: UInt32) {
+        // Local bridge state also works in a headless embedding without a controller callback.
+        if phase == 1, id >= HostAutomationBinding.firstParameterID, id < HostAutomationBinding.firstParameterID+UInt32(HostAutomationBinding.capacity) {
+            vhs_bridge_set_automation(bridge,id-HostAutomationBinding.firstParameterID,value)
+        }
+        vhs_bridge_edit(bridge, id, value, phase)
+    }
     func showOutput() {
         if let output { output.makeKeyAndOrderFront(nil); return }
         let window = NSWindow(contentRect: .init(x: 0, y: 0, width: Layout.previewWidth, height: Layout.previewHeight),
                               styleMask: [.titled, .closable, .resizable, .miniaturizable], backing: .buffered, defer: false)
-        window.title = "VHS Prototype Output"
+        window.title = "VHS Output"
         window.isReleasedWhenClosed = false
         window.contentView = NSHostingView(rootView: PluginSurface(runtime: self))
         window.delegate = self; output = window
@@ -187,17 +311,26 @@ struct PluginEditor: View {
             HStack(spacing:Space.sm) {
                 Button("Presets") { runtime.presets.isPresented.toggle() }
                     .popover(isPresented:Binding(get:{runtime.presets.isPresented},set:{runtime.presets.isPresented = $0})) {
-                        PresetBrowser(state:runtime.presets,scene:runtime.session.history.scene,load:runtime.loadPreset)
+                        PresetBrowser(state:runtime.presets,scene:runtime.hostBaseScene,load:runtime.loadPreset)
                     }
                 Button("Mappings") { runtime.mappingEditor.isPresented.toggle() }
                     .help("Map host audio or MIDI to visual parameters")
                     .popover(isPresented:Binding(get:{runtime.mappingEditor.isPresented},set:{runtime.mappingEditor.isPresented = $0})) {
                         MappingEditor(scene:runtime.session.history.scene,state:runtime.mappingEditor,host:true,send:runtime.sendGraph)
                     }
-                Button(runtime.showsGraph ? "Probe Controls" : "Nodes") { runtime.showsGraph.toggle() }
+                Button(runtime.showsGraph ? "Solid Controls" : "Nodes") { runtime.showsGraph.toggle() }
+                Button("Host Controls") { runtime.showsHostControls.toggle() }
+                    .popover(isPresented:Binding(get:{runtime.showsHostControls},set:{runtime.showsHostControls = $0})) {
+                        HostControls(runtime:runtime)
+                    }
+                Menu("Scene") {
+                    Button("Undo Scene Change") { runtime.undoGraph() }.disabled(!runtime.session.history.canUndo)
+                    Button("Redo Scene Change") { runtime.redoGraph() }.disabled(!runtime.session.history.canRedo)
+                    Divider()
+                    Button("Import Project…") { Task { await runtime.importProject() } }
+                    Button("Export Project…") { Task { await runtime.exportProject() } }
+                }
                 if runtime.showsGraph {
-                    Button("Undo Graph Edit") { runtime.undoGraph() }.disabled(!runtime.session.history.canUndo)
-                    Button("Redo Graph Edit") { runtime.redoGraph() }.disabled(!runtime.session.history.canRedo)
                     Button("Show Output") { runtime.showOutput() }
                     Text(runtime.render.builds.status.message).font(KitType.meta).foregroundStyle(Ink.secondary).lineLimit(2)
                 }
@@ -206,12 +339,12 @@ struct PluginEditor: View {
                 if let error = runtime.error { Text(error).font(KitType.meta).foregroundStyle(Ink.secondary).fixedSize(horizontal:false,vertical:true) }
                 HStack(alignment:.top,spacing:Space.lg) {
                     PluginSurface(runtime:runtime).frame(width:Layout.graphPreviewWidth,height:Layout.graphPreviewWidth*9/16)
-                    Text("Host graph state is embedded. Mappings are embedded; production automation follows in Phase 8.").font(KitType.meta).foregroundStyle(Ink.secondary)
+                    Text(runtime.clockStatus + " · Audio bounce does not export visuals.").font(KitType.meta).foregroundStyle(Ink.secondary)
                 }
-                GraphEditor(graph:runtime.session.history.scene.graph,layout:runtime.session.graphLayout,seed:runtime.session.history.scene.seed,state:runtime.graphEditor,
+                GraphEditor(graph:runtime.hostBaseScene.graph,layout:runtime.session.graphLayout,seed:runtime.session.history.scene.seed,state:runtime.graphEditor,
                             send:runtime.sendGraph,setLayout:runtime.setGraphLayout,beginEdit:runtime.beginGraphEdit,endEdit:runtime.endGraphEdit)
             } else { probeControls }
-        }.padding(Space.margin).signalTheme()
+        }.padding(Space.margin).signalTheme().disabled(runtime.filesBusy)
     }
     private var probeControls: some View {
         HStack(alignment: .top, spacing: Space.xl) {
@@ -313,5 +446,5 @@ struct PluginSurface: NSViewRepresentable {
 
 @_cdecl("vhs_document_validate") public nonisolated func validateHostDocument(_ data: UnsafePointer<UInt8>?, _ count: UInt32) -> Int32 {
     guard let data, count > 0, count <= VHS_STATE_CAPACITY else { return 0 }
-    return (try? ProjectCodec.decode(Data(bytes:data,count:Int(count)))) == nil ? 0 : 1
+    return (try? HostDocumentCodec.decode(Data(bytes:data,count:Int(count)))) == nil ? 0 : 1
 }

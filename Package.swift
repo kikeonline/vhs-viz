@@ -3,9 +3,9 @@ import PackageDescription
 let package = Package(name: "VHS", platforms: [.macOS(.v26)], products: [
     .executable(name: "VHS", targets: ["VHS"]),
     .library(name: "VHSInput", targets: ["VHSInput"]),
-    .library(name: "VHSPluginUI", type: .dynamic, targets: ["VHSPluginUI"])
+    .library(name: "VHSHostUI", type: .dynamic, targets: ["VHSHostUI"])
 ], targets: [
-    .executableTarget(name: "VHSPluginProbe", dependencies: ["VHSPluginUI"], swiftSettings: [.defaultIsolation(MainActor.self)]),
+    .executableTarget(name: "VHSPluginProbe", dependencies: ["VHSHostUI"], swiftSettings: [.defaultIsolation(MainActor.self)]),
     .target(name: "VHSCore"),
     .target(name: "VHSSignal", resources: [.copy("Resources/tokens.json")], swiftSettings: [.defaultIsolation(MainActor.self)]),
     .testTarget(name: "VHSSignalTests", dependencies: ["VHSSignal", "VHSCore"]),
@@ -17,7 +17,8 @@ let package = Package(name: "VHS", platforms: [.macOS(.v26)], products: [
     .target(name: "VHSSystemIO", dependencies: ["VHSRealtime"], cSettings: [.unsafeFlags(["-fobjc-arc"])], linkerSettings: [.linkedFramework("ScreenCaptureKit"), .linkedFramework("CoreMedia")]),
     .target(name: "VHSDevices", dependencies: ["VHSInput", "VHSDeviceIO", "VHSRealtime", "VHSSystemIO"]),
     .testTarget(name: "VHSDevicesTests", dependencies: ["VHSDevices", "VHSDeviceIO", "VHSInput", "VHSRealtime", "VHSSystemIO"]),
-    .target(name: "VHSPluginUI", dependencies: ["VHSCore", "VHSRenderer", "VHSRealtime", "VHSGraphUI", "VHSSignal", "VHSInput"], swiftSettings: [.defaultIsolation(MainActor.self)]),
+    .target(name: "VHSHostUI", dependencies: ["VHSCore", "VHSRenderer", "VHSRealtime", "VHSGraphUI", "VHSSignal", "VHSInput"], swiftSettings: [.defaultIsolation(MainActor.self)]),
+    .testTarget(name: "VHSHostUITests", dependencies: ["VHSHostUI", "VHSCore", "VHSRealtime", "VHSInput"]),
     .testTarget(name: "VHSRealtimeTests", dependencies: ["VHSRealtime"]),
     .target(name: "VHSRenderer", dependencies: ["VHSCore"], resources: [.copy("Shaders")]),
     .executableTarget(name: "VHS", dependencies: ["VHSCore", "VHSRenderer", "VHSGraphUI", "VHSSignal", "VHSDevices", "VHSInput"], swiftSettings: [.defaultIsolation(MainActor.self)]),

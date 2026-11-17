@@ -84,3 +84,53 @@ import VHSRealtime
     #expect(editor.withUnsafeBufferPointer { vhs_bridge_publish_document(bridge,$0.baseAddress,3,revision,&revision) } == 3)
     #expect(revision == 3)
 }
+
+@Test func hostBanksContextAndTransactionalRestoreAreIndependent() throws {
+    let a = try #require(vhs_bridge_create()), b = try #require(vhs_bridge_create())
+    defer { vhs_bridge_release(a); vhs_bridge_release(b) }
+    vhs_bridge_set_automation(a,255,0.7)
+    #expect(vhs_bridge_get_automation(a,255) == 0.7 && vhs_bridge_get_automation(b,255) == 0)
+    for value in [Double.nan,-1,2] { vhs_bridge_set_automation(a,255,value) }
+    #expect(vhs_bridge_get_automation(a,255) == 0.7)
+    var context = VHSHostContext(); context.beats = 9.5; context.tempo = 137; context.sampleRate = 48000
+    context.samplePosition = 98765; context.flags = 15
+    vhs_bridge_host_context(a,context)
+    var copied = VHSHostContext(), revision: UInt32 = 0
+    #expect(vhs_bridge_copy_host_context(a,&copied,&revision) == 1 && revision == 2)
+    #expect(copied.beats == 9.5 && copied.samplePosition == 98765 && copied.flags == 15)
+    #expect(vhs_bridge_copy_host_context(b,&copied,&revision) == 0)
+    let bytes: [UInt8] = [4,5,6], colors = [0.1,0.2,0.3]
+    var slots = [Double](repeating:0.5,count:Int(VHS_AUTOMATION_SLOTS))
+    #expect(bytes.withUnsafeBufferPointer { data in colors.withUnsafeBufferPointer { c in slots.withUnsafeBufferPointer { s in
+        vhs_bridge_restore_state(a,data.baseAddress,3,c.baseAddress,s.baseAddress,1)
+    }}} == 3)
+    #expect(vhs_bridge_document_revision(a) == 1 && vhs_bridge_get_bypass(a) == 1)
+    #expect(vhs_bridge_get(a,0) == 0.1 && vhs_bridge_get_automation(a,255) == 0.5)
+    slots[0] = .nan
+    #expect(bytes.withUnsafeBufferPointer { data in colors.withUnsafeBufferPointer { c in slots.withUnsafeBufferPointer { s in
+        vhs_bridge_restore_state(a,data.baseAddress,3,c.baseAddress,s.baseAddress,0)
+    }}} == -1)
+    #expect(vhs_bridge_document_revision(a) == 1 && vhs_bridge_get_bypass(a) == 1)
+}
+
+@Test func concurrentLatestHostContextNeverTears() async throws {
+    let bridge = try #require(vhs_bridge_create())
+    defer { vhs_bridge_release(bridge) }
+    let address = UInt(bitPattern:bridge)
+    let writer = Task.detached {
+        for i in 1...20_000 {
+            var context = VHSHostContext(); context.beats = Double(i); context.tempo = Double(i)+1
+            context.samplePosition = Int64(i); context.sampleRate = Double(i)+2; context.flags = UInt32(i)
+            vhs_bridge_host_context(OpaquePointer(bitPattern:address)!,context)
+        }
+    }
+    for _ in 0..<20_000 {
+        var context = VHSHostContext()
+        if vhs_bridge_copy_host_context(bridge,&context,nil) != 0 {
+            #expect(context.beats == Double(context.samplePosition))
+            #expect(context.tempo == context.beats+1 && context.sampleRate == context.beats+2)
+            #expect(context.flags == UInt32(context.samplePosition))
+        }
+    }
+    await writer.value
+}

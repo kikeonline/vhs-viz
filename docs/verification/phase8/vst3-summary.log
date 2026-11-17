@@ -1,0 +1,8 @@
+PASS generated graph state fixture
+PASS concurrent state: 40 validated restores/snapshots during 2000 process blocks without an editor
+PASS production host: fixed slots/editor-closed automation/state, mono 96 kHz analysis sample parity, musical context, bypass/offline transparency, legacy migration
+PASS graph state: embedded topology/parameters/seed/layout, before-editor restore, truncated/malformed rejection preserves prior state
+PASS real processor: stereo float/double, byte equality/NaN, in-place, silence, zero block, note offsets, transport, CC1, instance isolation, transactional state
+Result: 47 tests passed, 0 tests failed
+build/VHS.vst3/Contents/MacOS/VHS: Mach-O 64-bit bundle arm64
+Strict signature verification completed successfully (test script exit 0).

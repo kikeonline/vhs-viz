@@ -44,7 +44,7 @@ public func runPluginProbe(folder: String) async throws {
     var presetBytes = [UInt8](repeating:0,count:Int(VHS_STATE_CAPACITY))
     var presetOrigin: UInt32 = 0, presetRevision: UInt32 = 0
     let presetCount = vhs_bridge_copy_document(a,&presetBytes,UInt32(presetBytes.count),&presetOrigin,&presetRevision)
-    let embedded = try ProjectCodec.decode(Data(presetBytes.prefix(Int(presetCount))))
+    let embedded = try HostDocumentCodec.decode(Data(presetBytes.prefix(Int(presetCount)))).project
     try check(embedded.scene == factory.scene && first.output == nil,"plug-in state embeds preset without opening output")
     first.undoGraph()
     try check(first.session.document == beforePreset,"plug-in local scene undo restores the prior preset content")
@@ -172,5 +172,5 @@ public func writePluginGraphFixture(to path: String) throws {
     mapping.source = .cc; mapping.channel = 3; mapping.number = 74
     let document = ProjectDocument(name:"Graph Host Fixture",scene:SceneSnapshot(source:.noise,seed:678).withGraph(graph).withMappings([mapping]),
                                  graphLayout:.init(positions:[mix.id.uuidString:.init(x:480,y:240)],pan:.init(x:24,y:48),zoom:0.75))
-    try ProjectCodec.encode(document).write(to:URL(fileURLWithPath:path),options:.atomic)
+    try HostDocumentCodec.encode(.init(project:document,bindings:[.init(slot:9,target:.init(node:amount.id,key:"value"))])).write(to:URL(fileURLWithPath:path),options:.atomic)
 }

@@ -21,6 +21,18 @@ int vhs_bridge_pop(VHSBridge*, VHSInput*);
 uint32_t vhs_bridge_dropped(VHSBridge*);
 void vhs_bridge_set(VHSBridge*, uint32_t, double);
 double vhs_bridge_get(VHSBridge*, uint32_t);
+#define VHS_AUTOMATION_SLOTS 256
+#define VHS_AUTOMATION_FIRST 0x2000
+VHSAudioQueue* vhs_bridge_audio(VHSBridge*);
+void vhs_bridge_set_automation(VHSBridge*, uint32_t slot, double value);
+double vhs_bridge_get_automation(VHSBridge*, uint32_t slot);
+typedef struct VHSHostContext {
+    double beats, tempo, sampleRate;
+    int64_t samplePosition;
+    uint32_t flags; // 1 present, 2 playing, 4 tempo-valid, 8 beats-valid, 16 offline
+} VHSHostContext;
+void vhs_bridge_host_context(VHSBridge*, VHSHostContext);
+int vhs_bridge_copy_host_context(VHSBridge*, VHSHostContext*, uint32_t* revision);
 // Control-thread only. No Swift callback is ever installed on the audio path.
 typedef void (*VHSEdit)(void*, uint32_t, double, uint32_t);
 void vhs_bridge_callback(VHSBridge*, void*, VHSEdit);
@@ -46,6 +58,17 @@ extern "C" {
 #endif
 // UI publication cannot overwrite a host restore it has not consumed.
 int vhs_bridge_publish_document(VHSBridge*, const uint8_t*, uint32_t, uint32_t expectedRevision, uint32_t* publishedRevision);
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+void vhs_bridge_set_bypass(VHSBridge*, uint32_t);
+uint32_t vhs_bridge_get_bypass(VHSBridge*);
+// Control/state thread only. Commit document, base controls and revision together.
+int vhs_bridge_restore_state(VHSBridge*, const uint8_t*, uint32_t, const double*, const double*, uint32_t);
 #ifdef __cplusplus
 }
 #endif

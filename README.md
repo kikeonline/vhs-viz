@@ -39,11 +39,11 @@ This repository contains the application sources, build scripts, design assets, 
 | [6](https://github.com/kikeonline/vhs-viz/issues/7) | [Standalone macOS system-audio capture](docs/PHASE-6-VERIFICATION.md) | Implemented; live sharing/permission/playback acceptance deferred |
 | [7](https://github.com/kikeonline/vhs-viz/issues/8) | [Persisted audio/MIDI mappings and MIDI learn](docs/PHASE-7-VERIFICATION.md) | Implemented; automated checks pass; attended acceptance deferred |
 | [7A](https://github.com/kikeonline/vhs-viz/issues/14) | [Factory/user presets, browser, save and portable import/export](docs/PHASE-7A-VERIFICATION.md) | Implemented; automated/runtime checks pass; attended acceptance pending |
-| [8](https://github.com/kikeonline/vhs-viz/issues/12) | Production VST3, automation, DAW transport, and self-contained song recall | Planned |
+| [8](https://github.com/kikeonline/vhs-viz/issues/12) | [Production VST3, automation, DAW transport, and self-contained song recall](docs/PHASE-8-VERIFICATION.md) | Implemented; 120 tests and SDK validator 47/0 pass; actual Studio One/native acceptance pending |
 | [8A](https://github.com/kikeonline/vhs-viz/issues/15) | External-display selection, fullscreen, Fit/Fill and reconnect recovery | Planned |
 | [9](https://github.com/kikeonline/vhs-viz/issues/9) | Standalone/VST3 release, projection, performance, and accessibility | Planned |
 
-See [the roadmap tracker](https://github.com/kikeonline/vhs-viz/issues/1) for dependencies and completion criteria. Completed phase/issue identities are retained; the former Phase 8 readiness issue is now Phase 9. Phase 4 was subsequently authorized on 2026-11-10; its implementation and automated verification are complete; manual GUI checks are deferred by the user. Phases through 7A are implemented with outstanding attended acceptance recorded separately. Phase 8 is the next feature implementation and requires authorization. No AU, Windows, VST2, AAX, Intel/Rosetta delivery, sound generation, or video export is planned. Standalone physical/system audio capture remains in scope.
+See [the roadmap tracker](https://github.com/kikeonline/vhs-viz/issues/1) for dependencies and completion criteria. Completed phase/issue identities are retained; the former Phase 8 readiness issue is now Phase 9. Phase 4 was subsequently authorized on 2026-11-10; its implementation and automated verification are complete; manual GUI checks are deferred by the user. Phases through 8 are implemented with outstanding attended acceptance recorded separately. Phase 8A is the next feature implementation and requires authorization. No AU, Windows, VST2, AAX, Intel/Rosetta delivery, sound generation, or video export is planned. Standalone physical/system audio capture remains in scope.
 
 ## Design direction
 
@@ -103,9 +103,9 @@ Self-tests and snapshots use ephemeral state. Snapshot mode writes actual window
 
 ### Phase 3A VST3 feasibility probe
 
-`tools/build-vst3.sh --install` builds an ad-hoc signed arm64 **VHS Phase 3A.vst3** for the user VST3 folder. Requires full Xcode, CMake and git/network on first SDK fetch. `tools/test-vst3.sh` runs actual processor fixtures and Steinberg's validator; `tools/probe-vst3-ui.sh` checks native embedding/output lifetimes and captures light/dark views. `python3 tools/vst3-fixtures.py` creates deterministic audio/MIDI routing fixtures in `/tmp`.
+Historically the feasibility build installed **VHS Phase 3A.vst3**. Current `tools/build-vst3.sh` builds the distinct production **VHS.vst3** locally; `--install` explicitly installs that production bundle into the user VST3 folder. The old installed probe is not overwritten. Requires full Xcode, CMake and git/network on first SDK fetch. `tools/test-vst3.sh` runs actual processor fixtures and Steinberg's validator; `tools/probe-vst3-ui.sh` checks native embedding/output lifetimes and captures light/dark views. `python3 tools/vst3-fixtures.py` creates deterministic audio/MIDI routing fixtures in `/tmp`.
 
-Studio One Professional 5.5.2 ARM64 scanned and loaded the probe; stereo audio and routed notes/velocity/CC drove the existing Solid renderer together. Two-instance state/output isolation and song recall/removal were observed. This is a feasibility prototype, with runtime-only CC learn and minimal RGB recall. The current Phase 7 editor replaces temporary learn/demo bindings with explicit persisted mappings; production automation remains Phase 8. See [verification and exact routing](docs/PHASE-3A-VERIFICATION.md) and [architecture decision](docs/decisions/0001-vst3-runtime.md).
+Studio One Professional 5.5.2 ARM64 scanned and loaded the probe; stereo audio and routed notes/velocity/CC drove the existing Solid renderer together. Two-instance state/output isolation and song recall/removal were observed. This is a feasibility prototype, with runtime-only CC learn and minimal RGB recall. The current Phase 7 editor replaces temporary learn/demo bindings with explicit persisted mappings; Phase 8 now implements the production automation/clock/analysis paths; actual host acceptance remains pending. See [verification and exact routing](docs/PHASE-3A-VERIFICATION.md) and [architecture decision](docs/decisions/0001-vst3-runtime.md).
 
 ### Ordered effects (Phase 4)
 
@@ -117,7 +117,7 @@ Choose Add Effect below Live Preview, then select a chain row to edit its contro
 
 Choose Nodes in the toolbar. Add Node searches the library; connect by dragging, clicking output/input ports, or the inspector’s typed pickers. Duplicate/remove, numeric/color controls, global Seed, canvas positions and pan/zoom are supported. Graph edits are undoable; layout is saved outside musical undo. Chain remains available only for equivalent graphs and never flattens branches. Schemas 1–3 migrate to graph-aware schema 4. See [graph contracts](docs/SHADER-GRAPHS.md) and [automated verification](docs/PHASE-4A-VERIFICATION.md).
 
-The 0.4.1 compatibility probe embeds the same editor and recalls complete graph documents in an extended host-state envelope, while retaining legacy RGB recall. Actual Studio One graph interaction and active visual/keyboard checks remain deferred by the user; Phase 7 now supplies persisted mappings; production automation remains Phase 8.
+The 0.4.1 compatibility probe embeds the same editor and recalls complete graph documents in an extended host-state envelope, while retaining legacy RGB recall. Actual Studio One graph interaction and active visual/keyboard checks remain deferred by the user; Phase 7 now supplies persisted mappings; Phase 8 now implements the production automation/clock/analysis paths; actual host acceptance remains pending.
 
 `APP_LAYOUT_ONLY=1 APP_SNAPSHOT_PAGES=nodes tools/snap.sh` measures graph layouts without image capture. `APP_LAYOUT_ONLY=1 tools/probe-vst3-ui.sh` runs native embedding/state/lifecycle and layout checks without requiring screenshots. Neither is visual/keyboard certification.
 
@@ -136,3 +136,11 @@ The current host prototype supplies Peak and MIDI; production RMS/band/transient
 ## Preset library
 
 Choose Presets in standalone or the embedded plug-in editor to browse factory/user looks, search, load, save, duplicate, rename, delete and import/export `.vhspreset` files. Loads validate and compile before one undoable scene replacement; projects and host state embed the content independently of the library file. See [preset behavior and format](docs/PRESETS.md) and [Phase 7A evidence](docs/PHASE-7A-VERIFICATION.md): 108 passing tests, standalone/embedded self-tests, SDK validator 47/0 and 16 browser layouts. Actual Studio One and native keyboard/VoiceOver acceptance remain pending.
+
+## Production VST3 (Phase 8)
+
+`tools/build-vst3.sh` produces the ad-hoc signed Apple Silicon `build/VHS.vst3` with its own class ID and `libVHSHostUI.dylib`. `tools/test-vst3.sh` runs processor/state/concurrency fixtures and the SDK validator without opening an editor. `tools/test.sh` includes headless host-runtime tests; no app activation is needed.
+
+Host Controls exposes the stable 256-slot automation bank and Free Run/Follow DAW selection. Slots bind to graph UUID/key targets, survive reorder/preset changes and reserve old lanes until explicitly rebound. Follow DAW uses quarter-note beats as animation seconds; missing timing holds the last beat. The shared worker supplies RMS, peak, bands and transient analysis. Project import/export is explicit; song state embeds graph/preset/mappings/sync/bindings and normalized slot values, including with the editor closed.
+
+See [host behavior/format/routing](docs/HOST.md) and [Phase 8 evidence](docs/PHASE-8-VERIFICATION.md). Actual Studio One automation/dirty/song/lifecycle, native appearance/layout/keyboard/VoiceOver and minimum-OS acceptance remain pending. Audio bounce does not export visuals.

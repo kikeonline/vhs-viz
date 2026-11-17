@@ -94,8 +94,8 @@ public struct MappingEditor: View {
                 var next = m; next.source = value
                 if value == .cc && next.number == nil { next.number = 1 }
                 update(next)
-            })) { ForEach(MappingSource.allCases,id:\.self) { Text($0.title).tag($0).disabled(host && !$0.isMIDI && $0 != .peak) } }
-            if host { Text("Host audio: Peak available; RMS, bands and transients unavailable.").font(KitType.meta).foregroundStyle(Ink.secondary).fixedSize(horizontal:false,vertical:true) }
+            })) { ForEach(MappingSource.allCases,id:\.self) { Text($0.title).tag($0) } }
+            if host { Text("Host audio supplies RMS, Peak, bands and transients. Bypass or missing callbacks release input contributions.").font(KitType.meta).foregroundStyle(Ink.secondary).fixedSize(horizontal:false,vertical:true) }
             if m.source.isMIDI {
                 Picker("Channel",selection:binding(m,\.channel)) {
                     Text("Omni").tag(nil as Int?)

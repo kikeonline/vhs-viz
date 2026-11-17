@@ -1,0 +1,24 @@
+Building for debugging...
+[Computing dependencies]
+[2 / 6] VHSRealtimeTests-product
+[4 / 8] VHSRealtimeTests-product
+[9 / 11] VHSRealtimeTests-product
+Build complete! (0.82 secs.)
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Test concurrentProducerConsumerKeepsEventPayloads() started.
+◇ Test hostBanksContextAndTransactionalRestoreAreIndependent() started.
+◇ Test boundedQueuePreservesOrderAndRejectsOverflow() started.
+◇ Test concurrentLatestHostContextNeverTears() started.
+◇ Test hostRestoreWinsOverUnconsumedEditorPublication() started.
+◇ Test documentMailboxBoundsRevisionAndIsolation() started.
+◇ Test bridgeValuesAndInstanceIsolation() started.
+✔ Test bridgeValuesAndInstanceIsolation() passed after 0.001 seconds.
+✔ Test hostBanksContextAndTransactionalRestoreAreIndependent() passed after 0.001 seconds.
+✔ Test documentMailboxBoundsRevisionAndIsolation() passed after 0.001 seconds.
+✔ Test hostRestoreWinsOverUnconsumedEditorPublication() passed after 0.001 seconds.
+✔ Test boundedQueuePreservesOrderAndRejectsOverflow() passed after 0.002 seconds.
+✔ Test concurrentProducerConsumerKeepsEventPayloads() passed after 0.056 seconds.
+✔ Test concurrentLatestHostContextNeverTears() passed after 0.067 seconds.
+✔ Test run with 7 tests in 0 suites passed after 0.067 seconds.

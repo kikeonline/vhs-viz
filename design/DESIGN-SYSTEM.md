@@ -4,7 +4,7 @@ VHS / Signal was approved on 2026-11-10. [KIT.md](KIT.md) and [tokens.json](toke
 
 ## Shared native module
 
-`Sources/VHSSignal` is imported by standalone, VHSGraphUI and VHSPluginUI. It has no app/runtime dependency or mutable theme singleton. Scene colors remain content; performance output is an unstyled Metal surface. System menus, alerts, file/color panels, window chrome and host ownership stay native.
+`Sources/VHSSignal` is imported by standalone, VHSGraphUI and VHSHostUI. It has no app/runtime dependency or mutable theme singleton. Scene colors remain content; performance output is an unstyled Metal surface. System menus, alerts, file/color panels, window chrome and host ownership stay native.
 
 The approved JSON is bundled unchanged at `Resources/tokens.json`. `tools/check-signal.sh` detects copy drift. Update both copies together. Runtime semantic colors, spacing, specified layout metrics, radii and type sizes read this data. Do not create another palette or spacing scale. `Resources.swift` resolves the plug-in's adjacent resource bundle independently of a DAW's Bundle.main; command-line development uses SwiftPM resources.
 
@@ -44,3 +44,7 @@ The shared `MappingEditor` in VHSGraphUI reuses Signal type/color/spacing, nativ
 ## Phase 7A presets
 
 The shared `PresetBrowser` uses Signal type, spacing, buttons and native lists, search fields, segmented scopes and file/confirmation panels. Named factory/user rows are inert until explicit Load. A labeled Name field supplies save/duplicate/rename destinations. `Layout.presetWidth`/`presetHeight` follow the existing native popover metric convention; the scrollable list absorbs space while actions stay reachable. See the Phase 7A verification report for appearance/layout evidence and pending native keyboard/VoiceOver/host acceptance.
+
+## Phase 8 host controls
+
+`Sources/VHSHostUI` owns the production host editor/runtime. It reuses Signal and the shared graph/mapping/preset UI. Host Controls uses native pickers, a lazy scrolling slot list, NumericParameter host gestures, explicit exposure/reserved/unavailable feedback and the sync selector. The local Scene menu handles scene undo and explicit project import/export without installing standalone menus in the host. Full host audio mapping choices are enabled. Locked-screen verification covers build/headless behavior and styling lint only; native light/dark/increased-contrast, minimum/wide layouts, keyboard and VoiceOver acceptance are pending.
